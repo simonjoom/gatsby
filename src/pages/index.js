@@ -24,7 +24,11 @@ class BlogIndex extends React.Component {
           title={siteTitle}
         />
         <Bio />
+        <Link style={{ boxShadow: 'none' }} to="/test">
+              Test
+                </Link>
         {posts.map(({ node }) => {
+        console.log(node.fields.slug)
           const title = get(node, 'frontmatter.title') || node.fields.slug
           return (
             <div key={node.fields.slug}>
