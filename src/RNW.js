@@ -3,7 +3,7 @@
 import { canUseDOM } from 'fbjs/lib/ExecutionEnvironment'
 import { Component } from 'react'
 import { ColorPropType } from 'react-native-web'
-import MyModal from './Modal'
+import MyModal from './helpers/Modal'
 
 type StatusBarAnimation = 'none' | 'fade' | 'slide'
 type StatusBarStyle = 'default' | 'light-content' | 'dark-content'
