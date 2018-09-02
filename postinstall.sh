@@ -9,3 +9,4 @@ cp -Rf ./utils ./node_modules/gatsby/dist/
 cp -Rf ./@reach ./node_modules/
 cp -Rf ./react-dev-utils ./node_modules/
 cp -Rf ./react-native-web ./node_modules/
+cp -Rf ./react-navigation-stack ./node_modules/

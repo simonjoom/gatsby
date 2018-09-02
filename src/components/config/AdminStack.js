@@ -24,7 +24,7 @@ export const SignUpAdminScreen = ({ navigation }) =>
     ChildrenComp: SignUpAdmin,
     title: 'SignUp',
   })
-  /*
+/*
 export const SignInAdminScreen = ({ navigation }) =>
   MainScreen({
     navigation: navigation,
@@ -41,7 +41,7 @@ const navigationOptions = ({ navigation }) => ({
   },
 })
 
-//SignInAdminScreen.navigationOptions = 
+//SignInAdminScreen.navigationOptions =
 SignUpAdminScreen.navigationOptions = LoginAdminScreen.navigationOptions = navigationOptions
 
 const arr = {
@@ -61,7 +61,7 @@ const arr = {
 
 const newScene = new RoutesBackend(arr)
 const ta = Object.keys(arr)
- ta.push('APIREADME')
+ta.push('APIREADME')
 const Backend = ({ navigation }) => (
   <RunBackend Routes={ta} navigation={navigation} />
 )
@@ -96,38 +96,45 @@ const ModalStack = dismissableStackNavigator(
   }
 )
 console.log('mRoute', ModalNavigator)
-
-const MainStackAdmin = createStackNavigator(
-  {
-    // Main: { screen: MainScreen },
-    Login: {
-      path: '',
-      screen: LoginAdminScreen,
-    },
-    SignUp: {
-      screen: SignUpAdminScreen,
-    },
-  /*  SignIn: {
+//LoginAdminScreen
+const MainStackAdmin = ({ screen, title }) =>
+  createStackNavigator(
+    {
+      // Main: { screen: MainScreen },
+      Login: {
+        path: '',
+        screen: ({ navigation, screenProps }) =>
+          MainScreen({
+            screenProps,
+            navigation,
+            ChildrenComp: screen,
+            title: title,
+          }),
+      },
+      SignUp: {
+        screen: SignUpAdminScreen,
+      },
+      /*  SignIn: {
       screen: SignInAdminScreen,
     },*/
-    Backend: {
-      screen: ModalStack,
-    },
-  },
-  {
-    initialRouteName: 'Login',
-   transitionConfig: Transition,
-    useNativeAnimations: false,
-    //mode: 'modal',
-    navigationOptions: ({ navigation }) => ({
-      headerTitle: 'Main',
-      headerRight: <Hamburger navigation={navigation} />,
-      headerLeft: <Plus navigation={navigation} route="Login" />,
-      headerStyle: {
-        backgroundColor: Colors.$green,
+      Backend: {
+        screen: ModalStack,
       },
-    }),
-  }
-)
+    },
+    {
+      initialRouteName: 'Login',
+      transitionConfig: Transition,
+      useNativeAnimations: false,
+      //mode: 'modal',
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: 'Main',
+        headerRight: <Hamburger navigation={navigation} />,
+        headerLeft: <Plus navigation={navigation} route="Login" />,
+        headerStyle: {
+          backgroundColor: Colors.$green,
+        },
+      }),
+    }
+  )
 
 export default MainStackAdmin

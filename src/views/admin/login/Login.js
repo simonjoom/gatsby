@@ -5,8 +5,7 @@ import styles from "./Login.styles";
 import color from "src/statics/colors";
 import { translate } from "src/i18n";
 import Logo from 'src/svgcomp';
-
-import NavigationButton from "src/components/navigation-button/NavigationButton";
+ 
 import Title from "src/components/title/Title";
 import Button from "src/components/button/Button";
 //import { SimpleLineIcons as Icon } from '@expo/vector-icons';

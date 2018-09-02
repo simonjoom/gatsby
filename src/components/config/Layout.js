@@ -12,7 +12,7 @@ export const MainScreen = ({
   return (
     <Gradient>
       <LayoutScreen
-        title={title + ' Screen'}
+        title={title}
         navigation={navigation}
         screenProps={screenProps}
       >
