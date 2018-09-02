@@ -1,0 +1,43 @@
+fragment CountryFragment on Country {
+  id
+  name
+}
+
+mutation upsertCountry($id: ID!, $name: String!) {
+  upsertCountry(
+    where: { id: $id }
+    update: { name: $name }
+    create: { name: $name }
+  ) {
+    ...CountryFragment
+  }
+} 
+mutation deleteCountry($id: ID) {
+  deleteCountry(where: { id: $id }) {
+    ...CountryFragment
+  }
+}
+query Country($id: ID) {
+  country(where: { id: $id }) {
+    ...CountryFragment
+  }
+}
+query Countries {
+  countries {
+    ...CountryFragment
+  }
+}
+
+subscription Countriessub($mutation: [MutationType!]) {
+  country(where: { mutation_in: $mutation }) {
+    mutation
+    node {
+      ...CountryFragment
+    }
+    updatedFields
+    previousValues {
+      id
+      name
+    }
+  }
+}

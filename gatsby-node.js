@@ -1,8 +1,10 @@
 const _ = require('lodash')
 const Promise = require('bluebird')
 const path = require('path')
+ 
 const eslintFormatter = require('react-dev-utils/eslintFormatter')
 const { createFilePath } = require('gatsby-source-filesystem')
+const paths = require('./paths')  
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
@@ -90,6 +92,7 @@ exports.onCreateWebpackConfig = ({
         },
         {
           test: /\.(js|jsx|mjs)$/,
+          exclude: /react-native-web/,
           enforce: 'pre',
           use: [
             {
@@ -110,21 +113,22 @@ exports.onCreateWebpackConfig = ({
           include: path.resolve(__dirname, 'src'),
           exclude: [/[/\\\\]node_modules[/\\\\]/, /babelhelper/],
         },
+        {
+          test: /\.(js|jsx|mjs)$/,
+          use: [loaders.jsx({})],
+           exclude: /(bower_components)/,
+          include: paths.srcPaths
+        },
+        {
+          test: /\.jsx?$/,
+          exclude: paths.srcPathsExc,
+          use: [loaders.js({cacheDirectory: false,highlightCode: true})],
+        },
+        {
+          test: /\.(graphql|gql)$/,
+          loader: 'graphql-tag/loader',
+        },
       ],
-    },
-    resolve: {
-      extensions: [
-        '.web.js',
-        '.mjs',
-        '.js',
-        '.json',
-        '.md',
-        '.web.jsx',
-        '.jsx',
-        '.gql',
-        '.graphql',
-      ],
-      modules: [path.resolve(__dirname, 'src'), 'node_modules'],
-    },
+    } 
   })
 }

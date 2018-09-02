@@ -1,0 +1,80 @@
+fragment UserFragment on User {
+  id
+  name
+  email
+  company {
+    id
+    name
+  }
+  password
+  firstName
+  lastName
+  active_flag
+  role
+}
+
+mutation upsertUser(
+  $name: String!
+  $namewhere: String
+  $email: String!
+  $password: String!
+  $company: OrganizationUpdateOneWithoutOwnerInput
+  $firstName: String
+  $lastName: String
+  $active_flag: Active
+  $role: Role
+) {
+  upsertUser(
+    where: { name: $namewhere }
+    create: {
+      name: $name
+      email: $email
+      company: $company
+      password: $password
+      firstName: $firstName
+      lastName: $lastName
+      active_flag: $active_flag
+      role: $role
+    }
+    update: {
+      name: $name
+      email: $email
+      company: $company
+      password: $password
+      firstName: $firstName
+      lastName: $lastName
+      active_flag: $active_flag
+      role: $role
+    }
+  ) {
+    ...UserFragment
+  }
+}
+mutation deleteUser($name: String) {
+  deleteUser(where: { name: $name }) {
+    ...UserFragment
+  }
+}
+query user($name: String) {
+  user(where: { name: $name }) {
+    ...UserFragment
+  }
+}
+query users {
+  users {
+    ...UserFragment
+  }
+}
+subscription usersub($where: UserSubscriptionWhereInput) {
+  user(where: $where) {
+    mutation
+    node {
+      ...UserFragment
+    }
+    updatedFields
+    previousValues {
+      id
+      name
+    }
+  }
+}

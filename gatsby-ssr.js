@@ -12,7 +12,7 @@ import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { createHttpLink } from 'apollo-link-http'
 import { ApolloLink, Observable } from 'apollo-link'
-import StorageKeys from './statics/storage-keys'
+import StorageKeys from './src/statics/storage-keys'
 
 //const preferDefault = m => (m && m.default) || m
 //exports.pathPrefix='/gatsby-starter-blog';
@@ -126,7 +126,7 @@ const apolloClient = setupApolloClient()
 export const wrapRootElement = ({ element }) => (
   <ApolloProvider client={apolloClient}>{element}</ApolloProvider>
 )
-
+let done;
 export const replaceRenderer = ({
   bodyComponent,
   replaceBodyHTMLString,
@@ -135,23 +135,25 @@ export const replaceRenderer = ({
   let SecondWrap = wrapRootElement({ element: bodyComponent })
   return new Promise(resolve => {
     try {
-        class App extends React.Component {
-            render() {
-              return SecondWrap;
-            }
-          }
+      class App extends React.Component {
+        render() {
+          return SecondWrap
+        }
+      }
 
       return getDataFromTree(SecondWrap).then(() => {
-     //   console.log('getDataFromTree')
+        //   console.log('getDataFromTree')
+      if (done){
         AppRegistry.registerComponent('App', () => App)
         const { element, getStyleElement } = AppRegistry.getApplication('App')
-       // console.log('test', element)
         const styleElement = getStyleElement()
         const html = renderToString(element)
+        done=true;
         // renders ApolloQueries to string and then inserts it into the page
         replaceBodyHTMLString(html)
         // sets head components with styled components and apollo state
         setHeadComponents([makeApolloState(apolloClient), styleElement])
+      }
         resolve()
       })
     } catch (error) {

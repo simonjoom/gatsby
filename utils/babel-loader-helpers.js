@@ -12,7 +12,7 @@ const prepareOptions = (babel, resolve = require.resolve) => {
     }
   };
 
-  if (process.env.NODE_ENV !== `test`) {
+ if (process.env.NODE_ENV !== `test`) {
     pluginBabelConfig = require(path.join(process.cwd(), `./.cache/babelState.json`));
   }
 
@@ -49,7 +49,9 @@ const prepareOptions = (babel, resolve = require.resolve) => {
       browsers: pluginBabelConfig.browserslist
     };
   }
-
+fallbackPlugins.push(babel.createConfigItem([resolve(`@babel/plugin-transform-flow-strip-types`)], {
+    type: `plugin`
+  }));
   fallbackPresets.push(babel.createConfigItem([resolve(`@babel/preset-env`), {
     loose: true,
     modules: false,

@@ -2,13 +2,44 @@ import React from 'react'
 import { Link } from 'gatsby'
 
 import { rhythm, scale } from '../utils/typography'
+import { MainStack, MainStackAdmin } from './config'
+import { View } from 'react-native'
+import NavigationService from './config/NavigationService'
+import {
+  createBottomTabNavigator,
+  createSwitchNavigator,
+  createDrawerNavigator,
+} from 'react-navigation'
+
+const HOST = process.env.__DEV__
+  ? 'http://localhost:3000'
+  : 'http://ns327841.ip-37-187-112.eu/'
 
 class Template extends React.Component {
   render() {
+    // const HistoryNavigator = withBrowserHistory(Drawer)
     const { location, children } = this.props
     const rootPath = `${__PATH_PREFIX__}/`
     let header
-
+    const Drawer = createDrawerNavigator(
+      {
+        Inbox: {
+          path: '',
+          screen: MainStackAdmin,
+        },
+        Main: {
+          path: 'sent',
+          screen: MainStack,
+        },
+      },
+      {
+        initialRouteName: 'Inbox',
+        contentOptions: {
+          activeTintColor: '#e91e63',
+        },
+        useNativeAnimations: false,
+      }
+    )
     if (location.pathname === rootPath) {
       header = (
         <h1
@@ -52,8 +83,9 @@ class Template extends React.Component {
         </h3>
       )
     }
+
     return (
-      <div
+      <Drawer
         style={{
           marginLeft: 'auto',
           marginRight: 'auto',
@@ -63,7 +95,7 @@ class Template extends React.Component {
       >
         {header}
         {children}
-      </div>
+      </Drawer>
     )
   }
 }

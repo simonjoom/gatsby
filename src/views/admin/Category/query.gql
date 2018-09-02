@@ -1,0 +1,44 @@
+fragment CategoryFragment on Category {
+  id
+  name
+}
+mutation upsertCategory($id: ID!, $name: String!) {
+  upsertCategory(
+    where: { id: $id }
+    update: { name: $name }
+    create: { name: $name }
+  ) {
+    ...CategoryFragment
+  }
+}
+
+mutation deleteCategory($id: ID) {
+  deleteCategory(where: { id: $id }) {
+    ...CategoryFragment
+  }
+}
+query Category($id: ID) {
+  category(where: { id: $id }) {
+    ...CategoryFragment
+  }
+}
+
+query Categories {
+  categories {
+    ...CategoryFragment
+  }
+}
+
+subscription Categoriessub($mutation: [MutationType!]) {
+  category(where: { mutation_in: $mutation }) {
+    mutation
+    node {
+      ...CategoryFragment
+    }
+    updatedFields
+    previousValues {
+      id
+      name
+    }
+  }
+}

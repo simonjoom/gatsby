@@ -1,23 +1,3 @@
-/*module.exports = {
-  "env": {
-    "browser": true,
-    "es6": true,
-  },
-  "plugins": [
-    "react",
-  ],
-  "globals": {
-    "graphql": false,
-  },
-  "parserOptions": {
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true,
-      "jsx": true,
-    },
-  }
-}
-*/
 module.exports = {
   env: {
     browser: true,
@@ -25,9 +5,7 @@ module.exports = {
     "react-native/react-native": true
   },
   extends: [
-    "standard",
-    "plugin:flowtype/recommended",
-    "plugin:react/recommended",
+    "standard", 
     "prettier",
     "prettier/flowtype",
     "prettier/react",
@@ -45,7 +23,18 @@ module.exports = {
       jsx: true
     }
   },
-  rules: {    
+  rules: { 
+  "no-use-before-define":0,
+    "camelcase":0,
+  "no-unused-vars":0,
+  "no-unused-expressions":0,
+  "eqeqeq":"warn",
+  "import/no-duplicates":"warn",
+  "react-native/no-unused-styles":"warn",
+  "no-unneeded-ternary":"warn",
+    "spaced-comment":"warn",
+    "react/no-string-refs":"warn",
+    "no-extra-bind":"warn",
     "react/prop-types":"warn",
      "prettier/prettier":"warn",
      "react-native/no-color-literals":"warn",

@@ -6,6 +6,7 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 require(`v8-compile-cache`);
 
+const webpack = require('webpack'); 
 const fs = require(`fs-extra`);
 
 const path = require(`path`);
@@ -186,10 +187,14 @@ function () {
         "process.env": processEnv(stage, `development`),
         __PATH_PREFIX__: JSON.stringify(program.prefixPaths ? store.getState().config.pathPrefix : ``)
       })];
-
+    
+    
       switch (stage) {
         case `develop`:
-          configPlugins = configPlugins.concat([plugins.hotModuleReplacement(), plugins.noEmitOnErrors(), new FriendlyErrorsWebpackPlugin({
+          configPlugins = configPlugins.concat([plugins.hotModuleReplacement(), plugins.noEmitOnErrors(),new webpack.DefinePlugin({
+      __DEV__: true,
+      __PROD__: false,
+    }), new FriendlyErrorsWebpackPlugin({
             clearConsole: false
           })]);
           break;
@@ -204,7 +209,10 @@ function () {
                 }
               }
             })]);
-            configPlugins = configPlugins.concat([plugins.extractText(), // Write out stats object mapping named dynamic imports (aka page
+            configPlugins = configPlugins.concat([plugins.extractText(),new webpack.DefinePlugin({
+      __DEV__: false,
+      __PROD__: true,
+    }), // Write out stats object mapping named dynamic imports (aka page
             // components) to all their async chunks.
             {
               apply: function apply(compiler) {
@@ -268,7 +276,8 @@ function () {
     function getDevtool() {
       switch (stage) {
         case `develop`:
-          return `eval`;
+        //  return `eval`;
+          return `source-map`;
         // use a normal `source-map` for the html phases since
         // it gives better line and column numbers
 
@@ -360,7 +369,19 @@ function () {
       return {
         // Use the program's extension list (generated via the
         // 'resolvableExtensions' API hook).
-        extensions: [...program.extensions],
+        extensions: 
+        //["*.web.js",...program.extensions],
+        [
+        '.web.js',
+        '.mjs',
+        '.js',
+        '.json',
+        '.md',
+        '.web.jsx',
+        '.jsx',
+        '.gql',
+        '.graphql',
+        ],
         // Default to using the site's node_modules directory to look for
         // modules. But also make it possible to install modules within the src
         // directory if you need to install a specific version of a module for a
@@ -374,10 +395,26 @@ function () {
           // relative path imports are used sometimes
           // See https://stackoverflow.com/a/49455609/6420957 for more details
           "@babel/runtime": path.dirname(require.resolve(`@babel/runtime/package.json`)),
-          "core-js": path.dirname(require.resolve(`core-js/package.json`)),
+     //     "core-js": path.dirname(require.resolve(`core-js/package.json`)),
           "react-hot-loader": path.dirname(require.resolve(`react-hot-loader/package.json`)),
           "react-lifecycles-compat": directoryPath(`.cache/react-lifecycles-compat.js`),
-          "create-react-context": directoryPath(`.cache/create-react-context.js`)
+          "create-react-context": directoryPath(`.cache/create-react-context.js`), 
+           "lodash":"lodash-es",
+        'react-native-vector-icons/FontAwesome':
+          'expo-web/dist/exports/FontAwesome',
+        'react-native-vector-icons/MaterialIcons':
+          'expo-web/dist/exports/MaterialIcons',
+        'react-native-vector-icons/Ionicons': 'expo-web/dist/exports/Ionicons',
+        'react-native-vector-icons/MaterialCommunityIcons':
+          'expo-web/dist/exports/MaterialCommunityIcons',
+        'react-native-vector-icons/SimpleLineIcons':
+          'expo-web/dist/exports/SimpleLineIcons',
+        'react-native-vector-icons/Entypo': 'expo-web/dist/exports/Entypo',
+        './assets/images/expo-icon.png': './assets/images/expo-icon@2x.png',
+        './assets/images/slack-icon.png': './assets/images/slack-icon@2x.png',
+         'react-native-picker': directoryPath(`./src/myPicker.js`),
+           "react-native-linear-gradient": "react-native-web-linear-gradient",
+      "react-native": directoryPath(`./src/RNW.js`)
         }
       };
     }

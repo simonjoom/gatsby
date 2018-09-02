@@ -1,0 +1,56 @@
+fragment PictureFragment on Picture {
+  id
+  file
+}
+fragment BigpicturesFragment on Bigpicture {
+  id
+  file
+  upload {
+    path
+    filename
+  }
+}
+
+mutation upsertPicture($id: ID!, $file: String!) {
+  upsertBigpicture(
+    where: { id: $id }
+    update: { file: $file }
+    create: { file: $file }
+  ) {
+    ...BigpicturesFragment
+  }
+}
+mutation deletePicture($id: ID) {
+  deleteBigpicture(where: { id: $id }) {
+    ...BigpicturesFragment
+  }
+}
+query picture($id: ID) {
+  bigpicture(where: { id: $id }) {
+    ...BigpicturesFragment
+  }
+}
+query pictures {
+  bigpictures {
+    ...BigpicturesFragment
+  }
+}
+
+subscription picturesub($mutation: [MutationType!]) {
+  bigpicture(where: { mutation_in: $mutation }) {
+    mutation
+    node {
+      id
+      file
+      upload {
+        path
+        filename
+      }
+    }
+    updatedFields
+    previousValues {
+      id
+      file
+    }
+  }
+}

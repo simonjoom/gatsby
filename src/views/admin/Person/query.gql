@@ -1,0 +1,82 @@
+fragment PersonFragment on Person {
+  id
+  name
+  email
+  phone
+  owner {
+    id
+    name
+  }
+  pictures {
+    id
+  }
+  products {
+    id
+  }
+  deals {
+    id
+  }
+}
+mutation upsertPerson(
+  $name: String!
+  $namewhere: String
+  $email: String
+  $phone: String
+  $owner: UserUpdateOneInput
+  $pictures: PictureUpdateManyInput
+  $products: ProductUpdateManyInput
+  $deals: DealUpdateManyWithoutParticipantsInput
+) {
+  upsertPerson(
+    where: { name: $namewhere }
+    update: {
+      name: $name
+      owner: $owner
+      email: $email
+      phone: $phone
+      pictures: $pictures
+      products: $products
+      deals: $deals
+    }
+    create: {
+      name: $name
+      owner: $owner
+      email: $email
+      phone: $phone
+      pictures: $pictures
+      products: $products
+      deals: $deals
+    }
+  ) {
+    ...PersonFragment
+  }
+}
+mutation deletePerson($name: String) {
+  deletePerson(where: { name: $name }) {
+    ...PersonFragment
+  }
+}
+query person($name: String) {
+  person(where: { name: $name }) {
+    ...PersonFragment
+  }
+}
+query persons {
+  persons {
+    ...PersonFragment
+  }
+}
+
+subscription personsub($where: PersonSubscriptionWhereInput) {
+  person(where: $where) {
+    mutation
+    node {
+      ...PersonFragment
+    }
+    updatedFields
+    previousValues {
+      id
+      name
+    }
+  }
+}

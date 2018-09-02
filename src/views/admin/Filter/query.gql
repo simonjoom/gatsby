@@ -1,0 +1,57 @@
+fragment OrganizationFragmentF on Organization {
+  id
+  name
+  budget
+  bid
+  country {
+    id
+    name
+  }
+  category {
+    id
+    name
+  }
+  owner {
+    id
+  }
+  persons {
+    id
+  }
+}
+
+query CategoriesF {
+  categories {
+    id
+    name
+  }
+}
+query CountriesF {
+  countries {
+    id
+    name
+  }
+}
+
+query OrganizationsForCountry($namecountry: String!) {
+  organizations(where: { country_some: { name: $namecountry } }) {
+    ...OrganizationFragment
+  }
+}
+
+query OrganizationsForCategory($namecategory: String!) {
+  organizations(where: { category_some: { name: $namecategory } }) {
+    ...OrganizationFragmentF
+  }
+}
+
+query availableOrganizationsForBudget($budget: Int) {
+  organizations(where: { budget_gte: $budget }) {
+    ...OrganizationFragmentF
+  }
+}
+
+query availableOrganizationsForBid($bid: Int) {
+  organizations(where: { bid_gte: $bid }) {
+    ...OrganizationFragmentF
+  }
+}

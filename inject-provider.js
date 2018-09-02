@@ -1,63 +1,65 @@
-import React from "react"  
-import { ApolloProvider } from "react-apollo";
+import React from 'react'
+import { ApolloProvider } from 'react-apollo'
 
-import { AsyncStorage } from "react-native";
-import { ApolloClient } from "apollo-client";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { createHttpLink } from "apollo-link-http";
-import { ApolloLink, Observable, split } from "apollo-link";
-import { onError } from "apollo-link-error";
+import { AsyncStorage } from 'react-native'
+import { ApolloClient } from 'apollo-client'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { createHttpLink } from 'apollo-link-http'
+import { ApolloLink, Observable, split } from 'apollo-link'
+import { onError } from 'apollo-link-error'
 //import { ApolloClient, InMemoryCache, HttpLink, split } from 'apollo-client-preset';
-import { WebSocketLink } from "apollo-link-ws";
-import { createUploadLink } from "apollo-upload-client";
+import { WebSocketLink } from 'apollo-link-ws'
+import { createUploadLink } from 'apollo-upload-client'
 //import { setContext } from 'apollo-link-context';
-import { getMainDefinition } from "apollo-utilities";
+import { getMainDefinition } from 'apollo-utilities'
 
-import StorageKeys from "./statics/storage-keys";
+import StorageKeys from './src/statics/storage-keys'
 //require('dotenv').config()
-let cachedToken = "";
-let pathbackend="http://ns327841.ip-37-187-112.eu/graphql/";
-let uriwebsocket="ws://ns327841.ip-37-187-112.eu/subscriptions";
+let cachedToken = ''
+let pathbackend = 'http://ns327841.ip-37-187-112.eu/graphql/'
+let uriwebsocket = 'ws://ns327841.ip-37-187-112.eu/subscriptions'
 //+process.env.REACT_APP_ENDPOINT;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   // dev code
-  pathbackend="http://localhost:4000/graphql/";
-  uriwebsocket="ws://localhost:4000/subscriptions";
+  pathbackend = 'http://localhost:4000/graphql/'
+  uriwebsocket = 'ws://localhost:4000/subscriptions'
 }
 
 //process.env.REACT_APP_ENDPOINT;
 const isFile = value => {
-  return (typeof File !== "undefined" && value instanceof File) ||
-  (typeof Blob !== "undefined" && value instanceof Blob);
+  return (
+    (typeof File !== 'undefined' && value instanceof File) ||
+    (typeof Blob !== 'undefined' && value instanceof Blob)
+  )
 }
 async function getAuthorizationToken() {
   const token = cachedToken
     ? cachedToken
-    : await AsyncStorage.getItem(StorageKeys.GC_TOKEN);
+    : await AsyncStorage.getItem(StorageKeys.GC_TOKEN)
 
-  cachedToken = token;
+  cachedToken = token
 
-  return token;
+  return token
 }
 
 export function setupApolloClient() {
   const connectionParams = async () => {
-    return {};
+    return {}
     //const token = await getAuthorizationToken();
     //return token ? { authorization: `Bearer ${token}` } : {};
-  };
+  }
 
   const wsLink = new WebSocketLink({
-    uri: uriwebsocket, 
+    uri: uriwebsocket,
     options: {
       reconnect: true,
-      connectionParams: connectionParams
-    }
-  });
+      connectionParams: connectionParams,
+    },
+  })
 
   const httpLink = new createHttpLink({
-    uri: pathbackend
-  });
+    uri: pathbackend,
+  })
   /*
     const authMiddleware = setContext(
       (_, { headers }) =>
@@ -81,65 +83,64 @@ export function setupApolloClient() {
     if (graphQLErrors) {
       graphQLErrors.map(err =>
         console.log(`[GraphQL error]: Message: ${err.message}`)
-      );
+      )
     }
     if (networkError)
-      console.log(`[Network error]: ${networkError}`, networkError);
-  });
-
+      console.log(`[Network error]: ${networkError}`, networkError)
+  })
 
   const request = oper => {
     //const token = await getAuthorizationToken();
     //const authorizationHeader = token ? `Bearer ${token}` : null
     oper.setContext({
-      headers: connectionParams
-    });
-  };
+      headers: connectionParams,
+    })
+  }
   const middlewareAuthLink = new ApolloLink(
     (operation, forward) =>
       new Observable(observer => {
-        let handle;
+        let handle
         Promise.resolve(operation)
           .then(oper => request(oper))
           .then(() => {
             handle = forward(operation).subscribe({
               next: observer.next.bind(observer),
               error: observer.error.bind(observer),
-              complete: observer.complete.bind(observer)
-            });
+              complete: observer.complete.bind(observer),
+            })
           })
-          .catch(observer.error.bind(observer));
+          .catch(observer.error.bind(observer))
 
         return () => {
-          if (handle) handle.unsubscribe();
-        };
+          if (handle) handle.unsubscribe()
+        }
       })
-  );
+  )
   const isSubscriptionOperation = ({ query }) => {
-    const { kind, operation } = getMainDefinition(query);
-    console.log(query,kind)
-    return kind === "OperationDefinition" && operation === "subscription";
-  };
+    const { kind, operation } = getMainDefinition(query)
+    console.log(query, kind)
+    return kind === 'OperationDefinition' && operation === 'subscription'
+  }
 
-  const UploadLink = createUploadLink({ uri: pathbackend });
-  const httpLinkWithAuth = middlewareAuthLink.concat(httpLink);
+  const UploadLink = createUploadLink({ uri: pathbackend })
+  const httpLinkWithAuth = middlewareAuthLink.concat(httpLink)
 
-  const requestLink = split(isSubscriptionOperation, wsLink, httpLink);
+  const requestLink = split(isSubscriptionOperation, wsLink, httpLink)
 
-  const isUpload = ({ variables }) => Object.values(variables).some(isFile);
+  const isUpload = ({ variables }) => Object.values(variables).some(isFile)
 
-  const terminalLink = split(isUpload, UploadLink, requestLink);
+  const terminalLink = split(isUpload, UploadLink, requestLink)
 
   const client = new ApolloClient({
     link: ApolloLink.from([errorLink, terminalLink]),
     cache: new InMemoryCache(),
-    connectToDevTools: false
-  });
+    connectToDevTools: false,
+  })
 
-  return client;
+  return client
 }
 
-const apolloClient = setupApolloClient();
+const apolloClient = setupApolloClient()
 
 // eslint-disable-next-line react/prop-types,react/display-name
 export default ({ element }) => (

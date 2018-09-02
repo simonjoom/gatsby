@@ -1,0 +1,65 @@
+fragment PipelineFragment on Pipeline {
+    id
+    name
+    deals {
+      id
+    }
+    order_nr
+    deal_probability
+  }
+
+
+mutation upsertPipeline(
+  $name: String!
+  $namewhere: String
+  $order_nr: String
+  $deal_probability: Probability
+  $deals: DealUpdateManyInput
+) {
+  upsertPipeline(
+    where: { name: $namewhere }
+    update: {
+      name: $name
+      order_nr: $order_nr
+      deal_probability: $deal_probability
+      deals: $deals
+    }
+    create: {
+      name: $name
+      order_nr: $order_nr
+      deal_probability: $deal_probability
+      deals: $deals
+    }
+  ) {
+    ...PipelineFragment
+  }
+}
+mutation deletePipeline($name: String) {
+  deletePipeline(where: { name: $name }) {
+    ...PipelineFragment
+  }
+}
+query pipeline($name: String) {
+  pipeline(where: { name: $name }) {
+    ...PipelineFragment
+  }
+}
+query pipelines {
+  pipelines {
+    ...PipelineFragment
+  }
+}
+
+subscription pipelinesub($where: PipelineSubscriptionWhereInput) {
+  pipeline(where: $where) {
+    mutation
+    node {
+      ...PipelineFragment
+    }
+    updatedFields
+    previousValues {
+      id
+      name
+    }
+  }
+}
