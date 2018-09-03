@@ -9,6 +9,24 @@
 
 Kick off your project with this react-native boilerplate. This barebones starter ships with the main Gatsby configuration files you might need. 
 
+
+Working fully Inside:
+
+ ['gatsby-source-filesystem'](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-source-filesystem)
+
+ ['gatsby-remark-autolink-headers'](https://github.com/ChristopherBiscardi/gatsby-mdx/)
+
+ ['gatsby-mdx'](https://github.com/ChristopherBiscardi/gatsby-mdx/)
+
+ ['gatsby-plugin-sharp'](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-sharp)
+
+ ['gatsby-plugin-feed'](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-feed)
+
+ ['gatsby-plugin-offline'](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-offline)
+
+ ['gatsby-plugin-react-helmet'](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-react-helmet)
+
+
 _Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://next.gatsbyjs.org/docs/gatsby-starters/)._
 
 ## 🚀 Quick start
