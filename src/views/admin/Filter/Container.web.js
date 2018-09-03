@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { graphql, compose, withApollo } from "react-apollo";
-import { 
+import React, { Component } from 'react'
+import { graphql, compose, withApollo } from 'react-apollo'
+import {
   CategoriesF,
-  CountriesF, 
+  CountriesF,
   OrganizationsForCountry,
   OrganizationsForCategory,
   availableOrganizationsForBudget,
-  availableOrganizationsForBid
-} from "./query.gql"; 
-import Comp from "./index";
+  availableOrganizationsForBid,
+} from './query.gql'
+import Comp from './index'
 // import ResortComp from "../resort/ResortContainer";
 
 // TODO: Faster mutation by invalidating cache instead of using refetchQueries
@@ -17,55 +17,55 @@ function getProps(props, client) {
     Categories: () =>
       client.query({
         query: CategoriesF,
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       }),
     Countries: () =>
       client.query({
         query: CountriesF,
-        fetchPolicy: "network-only"
+        fetchPolicy: 'network-only',
       }),
     OrganizationsForCountry: ({ namecountry }) =>
       client.query({
         query: OrganizationsForCountry,
-        fetchPolicy: "network-only",
-        variables: { namecountry }
+        fetchPolicy: 'network-only',
+        variables: { namecountry },
       }),
     OrganizationsForCategory: ({ namecategory }) =>
       client.query({
         query: OrganizationsForCategory,
-        fetchPolicy: "network-only",
-        variables: { namecategory }
+        fetchPolicy: 'network-only',
+        variables: { namecategory },
       }),
     availableOrganizationsForBudget: ({ budget }) =>
       client.query({
         query: availableOrganizationsForBudget,
-        fetchPolicy: "network-only",
-        variables: { budget }
+        fetchPolicy: 'network-only',
+        variables: { budget },
       }),
     availableOrganizationsForBid: ({ bid }) =>
       client.query({
         query: availableOrganizationsForBid,
-        fetchPolicy: "network-only",
-        variables: { bid }
-      })
-  };
+        fetchPolicy: 'network-only',
+        variables: { bid },
+      }),
+  }
   mprops.Categoriesandcountries = () =>
-    Promise.all([mprops.Categories(), mprops.Countries()]);
-  return { ...mprops, props };
+    Promise.all([mprops.Categories(), mprops.Countries()])
+  return { ...mprops, props }
 }
 
 const testl = WrappedComponent => {
   return class Wtestl extends Component {
     render() {
-      this.props = getProps(this.props, this.props.client);
-      return <WrappedComponent {...this.props} />;
+      this.props = getProps(this.props, this.props.client)
+      return <WrappedComponent {...this.props} />
     }
-  };
-};
+  }
+}
 
 const FilterOut = compose(
   withApollo,
   testl
-)(Comp);
+)(Comp)
 
-export default FilterOut;
+export default FilterOut

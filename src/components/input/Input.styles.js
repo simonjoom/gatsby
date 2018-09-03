@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
-import color from 'src/statics/colors';
-import font from 'src/statics/fonts';
+import color from 'src/statics/colors'
+import font from 'src/statics/fonts'
 
 export default StyleSheet.create({
   input: {
@@ -47,4 +47,4 @@ export default StyleSheet.create({
     fontFamily: font,
     paddingTop: 8,
   },
-});
+})

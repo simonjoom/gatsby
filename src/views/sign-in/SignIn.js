@@ -1,79 +1,79 @@
-import React, { PureComponent } from 'react';
-import { View, AsyncStorage, ActivityIndicator } from 'react-native';
+import React, { PureComponent } from 'react'
+import { View, AsyncStorage, ActivityIndicator } from 'react-native'
 
-import NavigationButton from '../../components/navigation-button/NavigationButton';
-import Title from '../../components/title/Title';
-import colors from '../../statics/colors';
-import Input from '../../components/input/Input';
-import KeyboardAwareCenteredView from '../../components/layout/KeyboardAwareCenteredView';
+import NavigationButton from '../../components/navigation-button/NavigationButton'
+import Title from '../../components/title/Title'
+import colors from '../../statics/colors'
+import Input from '../../components/input/Input'
+import KeyboardAwareCenteredView from '../../components/layout/KeyboardAwareCenteredView'
 
-import StorageKeys from '../../statics/storage-keys';
+import StorageKeys from '../../statics/storage-keys'
 
-import { translate } from '../../i18n';
+import { translate } from '../../i18n'
 
-import styles from './SignIn.styles';
+import styles from './SignIn.styles'
 
 class SignIn extends PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       email: '',
       password: '',
       error: '',
       loading: false,
-    };
+    }
 
-    this.authenticateUser = this.authenticateUser.bind(this);
-    this.validateEmail = this.validateEmail.bind(this);
-    this.validatePassword = this.validatePassword.bind(this);
+    this.authenticateUser = this.authenticateUser.bind(this)
+    this.validateEmail = this.validateEmail.bind(this)
+    this.validatePassword = this.validatePassword.bind(this)
   }
 
   focusNextField(nextField) {
-    this.refs[nextField].focus();
+    this.refs[nextField].focus()
   }
 
   validateEmail() {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.state.email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.state.email)
   }
 
   validatePassword() {
-    return !!this.state.password;
+    return !!this.state.password
   }
 
   validateFields() {
-    return this.validateEmail() && this.validatePassword();
+    return this.validateEmail() && this.validatePassword()
   }
 
   async authenticateUser() {
-    const { email, password } = this.state;
+    const { email, password } = this.state
 
-    this.setState({ error: '', loading: true });
+    this.setState({ error: '', loading: true })
 
     if (!this.validateFields()) {
       return this.setState({
         error: "Un des champs n'est pas correctement rempli.",
         loading: false,
-      });
+      })
     }
 
     try {
       const { data } = await this.props.authenticateUser({
         email,
         password,
-      });
+      })
 
-      await AsyncStorage.setItem(StorageKeys.GC_TOKEN, data.login.token);
+      await AsyncStorage.setItem(StorageKeys.GC_TOKEN, data.login.token)
 
       this.setState({ loading: false }, () => {
-        this.props.navigation.navigate('App');
-      });
+        this.props.navigation.navigate('App')
+      })
     } catch (e) {
-      console.log(e);
+      console.log(e)
       this.setState({
         error: 'Une erreur est survenue.',
         loading: false,
-      });
+      })
     }
   }
 
@@ -81,7 +81,10 @@ class SignIn extends PureComponent {
     return (
       <KeyboardAwareCenteredView>
         <View style={styles.container}>
-          <NavigationButton onPress={() => this.props.navigation.goBack()} back />
+          <NavigationButton
+            onPress={() => this.props.navigation.goBack()}
+            back
+          />
           <Title
             style={{ marginBottom: 50, marginTop: 10 }}
             size={22}
@@ -112,7 +115,9 @@ class SignIn extends PureComponent {
             withValidation
             validationFunction={this.validatePassword}
           />
-          {this.state.loading && <ActivityIndicator color={colors.white} animating />}
+          {this.state.loading && (
+            <ActivityIndicator color={colors.white} animating />
+          )}
           {!!this.state.error && (
             <Title
               color={colors.white}
@@ -133,8 +138,8 @@ class SignIn extends PureComponent {
           />
         </View>
       </KeyboardAwareCenteredView>
-    );
+    )
   }
 }
 
-export default SignIn;
+export default SignIn

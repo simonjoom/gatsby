@@ -1,22 +1,21 @@
-import React from 'react';
-import { Image, StatusBar, TouchableOpacity, View } from 'react-native';
+import React from 'react'
+import { Image, StatusBar, TouchableOpacity, View } from 'react-native'
 
-import styles from './Login.styles';
-import color from 'src/statics/colors';
-import { translate } from 'src/i18n';
-import Logo from 'src/svgcomp';
+import styles from './Login.styles'
+import color from 'src/statics/colors'
+import { translate } from 'src/i18n'
+import Logo from 'src/svgcomp'
 
-import Gradient from 'src/components/gradient/Gradient';
-import Title from 'src/components/title/Title';
-import Button from 'src/components/button/Button';
+import Gradient from 'src/components/gradient/Gradient'
+import Title from 'src/components/title/Title'
+import Button from 'src/components/button/Button'
 //import { SimpleLineIcons as Icon } from '@expo/vector-icons';
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import Icon from 'react-native-vector-icons/SimpleLineIcons'
 
 const Login = props => (
   <Gradient>
     <View style={styles.container}>
-    
-    <Logo id="feature-svg-component" />
+      <Logo id="feature-svg-component" />
       <Title style={{ marginBottom: 120 }} color={color.white} size={32}>
         Aromaclop
       </Title>
@@ -34,9 +33,9 @@ const Login = props => (
       </View>
     </View>
   </Gradient>
-);
+)
 
-Login.propTypes = {};
-Login.defaultProps = {};
+Login.propTypes = {}
+Login.defaultProps = {}
 
-export default Login;
+export default Login

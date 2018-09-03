@@ -77,6 +77,7 @@ exports.onCreateWebpackConfig = (
         },
         {
           test: testPattern,
+          include: path.resolve(__dirname,  "src/pages"),
           exclude: decks,
           use: [
             loaders.js(),

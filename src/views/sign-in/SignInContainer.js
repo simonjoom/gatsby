@@ -1,7 +1,7 @@
-import { graphql, compose, withApollo } from 'react-apollo';
+import { graphql, compose, withApollo } from 'react-apollo'
 
-import SignIn from './SignIn';
- /*import queries from './queries.gql';
+import SignIn from './SignIn'
+/*import queries from './queries.gql';
 
 export default compose(
   withApollo,

@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
-import font from '../../statics/fonts/index';
+import font from '../../statics/fonts/index'
 
 export default StyleSheet.create({
   touchable: {
@@ -16,4 +16,4 @@ export default StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
   },
-});
+})

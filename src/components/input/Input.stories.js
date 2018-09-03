@@ -1,15 +1,15 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react-native';
-import { text, number, color, boolean, select } from '@storybook/addon-knobs';
+import React from 'react'
+import { storiesOf } from '@storybook/react-native'
+import { text, number, color, boolean, select } from '@storybook/addon-knobs'
 
-import Input from './Input';
+import Input from './Input'
 
 function handleSubmit(value) {
-  console.log(value);
+  console.log(value)
 }
 
-const keyboardTypes = ['default', 'numeric', 'email-address', 'phone-pad'];
-const returnKeys = ['default', 'done', 'go', 'next', 'search', 'send'];
+const keyboardTypes = ['default', 'numeric', 'email-address', 'phone-pad']
+const returnKeys = ['default', 'done', 'go', 'next', 'search', 'send']
 
 storiesOf('Input', module).add('default', () => (
   <Input
@@ -17,7 +17,7 @@ storiesOf('Input', module).add('default', () => (
     label={text('Label', 'Age')}
     helper={text(
       'Helper',
-      'Selon l’article L3511-2-1, il est interdit de vendre des dispositifs électroniques de vapotage ou des flacons de recharge à des mineurs.',
+      'Selon l’article L3511-2-1, il est interdit de vendre des dispositifs électroniques de vapotage ou des flacons de recharge à des mineurs.'
     )}
     placeHolder={text('PlaceHolder', '')}
     width={number('Width', 300)}
@@ -30,4 +30,4 @@ storiesOf('Input', module).add('default', () => (
     returnKey={select('ReturnKey', returnKeys, 'default')}
     autoFocus
   />
-));
+))

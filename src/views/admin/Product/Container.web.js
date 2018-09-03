@@ -1,15 +1,15 @@
-import { graphql, compose, withApollo } from "react-apollo";
+import { graphql, compose, withApollo } from 'react-apollo'
 import {
   upsertProduct,
   product,
   deleteProduct,
   products,
-  productsub
-} from "./query.gql";
-import Comp from "./index";
-import { loader } from "../loader";
+  productsub,
+} from './query.gql'
+import Comp from './index'
+import { loader } from '../loader'
 
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator } from 'react-navigation'
 //TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
 const ProductOut = compose(
@@ -22,27 +22,27 @@ const ProductOut = compose(
           variables: { name },
           refetchQueries: [
             {
-              query: products
-            }
-          ]
-        })
-    })
+              query: products,
+            },
+          ],
+        }),
+    }),
   }),
   graphql(upsertProduct, {
     props: ({ mutate, ownProps }) => ({
       productsub: () =>
         ownProps.client.subscribe({
           query: productsub,
-          fetchPolicy: "network-only",
+          fetchPolicy: 'network-only',
           variables: {
-            mutation_in: ["CREATED", "UPDATED", "DELETED"] 
-          }
+            mutation_in: ['CREATED', 'UPDATED', 'DELETED'],
+          },
         }),
       product: ({ name }) =>
         ownProps.client.query({
           query: product,
-          fetchPolicy: "network-only",
-          variables: { name }
+          fetchPolicy: 'network-only',
+          variables: { name },
         }),
       upsertProduct: ({ name, namewhere, unit, code, owner, deals }) =>
         mutate({
@@ -52,16 +52,16 @@ const ProductOut = compose(
             unit,
             code,
             owner,
-            deals
+            deals,
           },
           refetchQueries: [
             {
-              query: products
-            }
-          ]
-        })
-    })
+              query: products,
+            },
+          ],
+        }),
+    }),
   }),
   loader
-)(Comp);
-export default ProductOut;
+)(Comp)
+export default ProductOut

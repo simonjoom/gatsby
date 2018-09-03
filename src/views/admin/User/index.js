@@ -1,33 +1,33 @@
-import React, { Component } from "react"; 
-import Helper from "../helper/helper"; 
- 
+import React, { Component } from 'react'
+import Helper from '../helper/helper'
+
 class User extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.initfetch = [
       {
-        id: "",
-        name: "",
-        email: "",
+        id: '',
+        name: '',
+        email: '',
         company: null,
-        password: "",
-        firstName: "",
-        lastName: "",
-        active_flag: "NOTACTIVATED",
-        role: "USER"
-      }
-    ];
+        password: '',
+        firstName: '',
+        lastName: '',
+        active_flag: 'NOTACTIVATED',
+        role: 'USER',
+      },
+    ]
     this.initplaceholder = {
-      id: "ID",
-      name: "String*@",
-      email: "String*@",
-      company: "Organization",
-      password: "String*",
-      firstName: "String",
-      lastName: "String",
-      active_flag: "Enum:NOTACTIVATED,ACTIVATED",
-      role: "Enum:USER,PERSON"
-    };
+      id: 'ID',
+      name: 'String*@',
+      email: 'String*@',
+      company: 'Organization',
+      password: 'String*',
+      firstName: 'String',
+      lastName: 'String',
+      active_flag: 'Enum:NOTACTIVATED,ACTIVATED',
+      role: 'Enum:USER,PERSON',
+    }
   }
 
   render() {
@@ -39,16 +39,16 @@ class User extends Component {
       navigation,
       upsertUser,
       parentId,
-      screenProps
-    } = this.props;
+      screenProps,
+    } = this.props
     //const selected = this.state.selected;
-    console.log("updateUser", data.users, this.props);
+    console.log('updateUser', data.users, this.props)
     //  const users = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allUsers;
     const passProps = {
       ...this.props.navigation.state.params,
-    };
-    let datas = data.users;
-    if (!(datas && datas.length > 0)) datas = this.initfetch;
+    }
+    let datas = data.users
+    if (!(datas && datas.length > 0)) datas = this.initfetch
     //{users && users.map((user, i) => (<Title key={"tt" + i}>{user.name}</Title>))}
     return (
       <Helper
@@ -60,22 +60,22 @@ class User extends Component {
         upsertQuery={upsertUser}
         selectQuery={user}
         subscribe={usersub}
-        selectResultSelect="user" 
+        selectResultSelect="user"
         root="User"
         parentId={parentId}
         passProps={passProps}
         screenProps={screenProps}
       />
-    );
+    )
   }
 }
 //
-User.propTypes = {};
+User.propTypes = {}
 User.defaultProps = {
   connected: false,
-  parent: "",
+  parent: '',
   parentId: 0,
-  selectedId: false
-};
+  selectedId: false,
+}
 
-export default User;
+export default User

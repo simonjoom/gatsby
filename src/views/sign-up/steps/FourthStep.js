@@ -1,29 +1,29 @@
-import React, { PureComponent } from 'react';
-import Colors from 'src/statics/colors';
-import { View } from 'react-native';
+import React, { PureComponent } from 'react'
+import Colors from 'src/statics/colors'
+import { View } from 'react-native'
 
-import Title from 'src/components/title/Title';
-import Input from 'src/components/input/Input';
-import NavigationButton from 'src/components/navigation-button/NavigationButton';
-import styles from '../SignUp.styles';
-import { translate } from 'src/i18n';
+import Title from 'src/components/title/Title'
+import Input from 'src/components/input/Input'
+import NavigationButton from 'src/components/navigation-button/NavigationButton'
+import styles from '../SignUp.styles'
+import { translate } from 'src/i18n'
 
 class FourthStep extends PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       email: '',
       password: '',
-    };
+    }
   }
 
   validateFields() {
-    return !!this.state.email && !!this.state.password;
+    return !!this.state.email && !!this.state.password
   }
 
   focusNextField(nextField) {
-    this.refs[nextField].focus();
+    this.refs[nextField].focus()
   }
 
   render() {
@@ -36,7 +36,8 @@ class FourthStep extends PureComponent {
             size={22}
             color={Colors.white}
           >
-            {translate('finish_sign_up')}&nbsp;!
+            {translate('finish_sign_up')}
+            &nbsp;!
           </Title>
           <Input
             style={{ marginBottom: 20 }}
@@ -60,15 +61,17 @@ class FourthStep extends PureComponent {
         <View style={styles.nextButton}>
           <NavigationButton
             enabled={this.validateFields()}
-            onPress={() => this.validateFields() && this.props.nextStep(this.state)}
+            onPress={() =>
+              this.validateFields() && this.props.nextStep(this.state)
+            }
           />
         </View>
       </View>
-    );
+    )
   }
 }
 
-FourthStep.propTypes = {};
-FourthStep.defaultProps = {};
+FourthStep.propTypes = {}
+FourthStep.defaultProps = {}
 
-export default FourthStep;
+export default FourthStep

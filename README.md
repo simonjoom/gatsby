@@ -4,10 +4,10 @@
   </a>
 </p>
 <h1 align="center">
-  Gatsby's default starter
+  Gatsby's react-native starter
 </h1>
 
-Kick off your project with this default boilerplate. This barebones starter ships with the main Gatsby configuration files you might need. 
+Kick off your project with this react-native boilerplate. This barebones starter ships with the main Gatsby configuration files you might need. 
 
 _Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://next.gatsbyjs.org/docs/gatsby-starters/)._
 
@@ -22,25 +22,17 @@ _Have another more specific idea? You may want to check out our vibrant collecti
     npm install -g gatsby-cli
     ```
 
-2.  **Create a Gatsby site.**
-
-    Use the Gatsby CLI to create a new site, specifying the default starter.
-
-    ```sh
-    # create a new Gatsby site using the default starter
-    gatsby new my-default-starter
-    ```
-
-3.  **Start developing.**
+2.  **Start developing.**
 
     Navigate into your new site’s directory and start it up.
 
     ```sh
-    cd my-default-starter/
+    yarn install
+
     gatsby develop
     ```
 
-4.  **Open the source code and start editing!**
+3.  **Open the source code and start editing!**
 
     Your site is now running at `http://localhost:8000`!
     

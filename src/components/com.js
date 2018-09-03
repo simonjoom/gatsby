@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'gatsby' 
+import { Link } from 'gatsby'
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 
 const styles = StyleSheet.create({
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   buttonText: { fontWeight: 'bold', color: 'black' },
 })
 
-const Test = () => ( 
+const Test = () => (
   <View style={styles.box}>
     <Text style={styles.text}>
       Hi this is React-Native-Web rendered by Gatsby
@@ -26,7 +26,7 @@ const Test = () => (
       <Text style={styles.buttonText}>Button</Text>
     </TouchableOpacity>
     <Link to="/page-2/">Go to page 2</Link>
-  </View> 
+  </View>
 )
 
 export default Test

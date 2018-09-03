@@ -1,15 +1,15 @@
-import { graphql, compose, withApollo } from "react-apollo";
+import { graphql, compose, withApollo } from 'react-apollo'
 import {
   upsertPipeline,
   pipeline,
   pipelinesub,
   deletePipeline,
-  pipelines
-} from "./query.gql";
-import Comp from "./index";
-import { loader } from "../loader";
+  pipelines,
+} from './query.gql'
+import Comp from './index'
+import { loader } from '../loader'
 //import ResortComp from "../resort/ResortContainer";
- 
+
 //TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
 const PipelineOut = compose(
@@ -22,34 +22,34 @@ const PipelineOut = compose(
           variables: { name },
           refetchQueries: [
             {
-              query: pipelines
-            }
-          ]
-        })
-    })
+              query: pipelines,
+            },
+          ],
+        }),
+    }),
   }),
   graphql(upsertPipeline, {
     props: ({ mutate, ownProps }) => ({
       pipelinesub: () =>
         ownProps.client.subscribe({
           query: pipelinesub,
-          fetchPolicy: "network-only",
+          fetchPolicy: 'network-only',
           variables: {
-            where: { mutation_in: ["CREATED", "UPDATED", "DELETED"] }
-          }
+            where: { mutation_in: ['CREATED', 'UPDATED', 'DELETED'] },
+          },
         }),
       pipeline: ({ name }) =>
         ownProps.client.query({
           query: pipeline,
-          fetchPolicy: "network-only",
-          variables: { name }
+          fetchPolicy: 'network-only',
+          variables: { name },
         }),
       upsertPipeline: ({
         name,
         namewhere,
         deals,
         order_nr,
-        deal_probability
+        deal_probability,
       }) =>
         mutate({
           variables: {
@@ -57,17 +57,17 @@ const PipelineOut = compose(
             namewhere,
             deals,
             order_nr,
-            deal_probability
+            deal_probability,
           },
           refetchQueries: [
             {
-              query: pipelines
-            }
-          ]
-        })
-    })
+              query: pipelines,
+            },
+          ],
+        }),
+    }),
   }),
   loader
-)(Comp);
+)(Comp)
 
-export default PipelineOut;
+export default PipelineOut

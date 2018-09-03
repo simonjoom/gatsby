@@ -1,37 +1,40 @@
-import React from 'react';
-import { View } from 'react-native';
+import React from 'react'
+import { View } from 'react-native'
 
-import Colors from 'src/statics/colors';
+import Colors from 'src/statics/colors'
 
-import Input from 'src/components/input/Input';
-import Title from 'src/components/title/Title';
-import NavigationButton from 'src/components/navigation-button/NavigationButton';
-import { translate } from 'src/i18n';
-import styles from '../SignUp.styles';
+import Input from 'src/components/input/Input'
+import Title from 'src/components/title/Title'
+import NavigationButton from 'src/components/navigation-button/NavigationButton'
+import { translate } from 'src/i18n'
+import styles from '../SignUp.styles'
 
 class FirstStep extends React.PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       firstName: '',
       lastName: '',
-    };
+    }
   }
 
   focusNextField(nextField) {
-    this.refs[nextField].focus();
+    this.refs[nextField].focus()
   }
 
   validateFields() {
-    return !!this.state.firstName && !!this.state.lastName;
+    return !!this.state.firstName && !!this.state.lastName
   }
 
   render() {
     return (
       <View>
         <View style={{ flex: 1 }}>
-          <NavigationButton onPress={() => this.props.navigation.goBack()} back />
+          <NavigationButton
+            onPress={() => this.props.navigation.goBack()}
+            back
+          />
           <Title
             style={{ marginBottom: 50, marginTop: 10 }}
             size={22}
@@ -53,7 +56,9 @@ class FirstStep extends React.PureComponent {
             label={translate('last_name')}
             returnKey="next"
             autoCapitalize="characters"
-            onChangeText={lastName => this.setState({ lastName: lastName.toUpperCase() })}
+            onChangeText={lastName =>
+              this.setState({ lastName: lastName.toUpperCase() })
+            }
             value={this.state.lastName}
             onSubmit={() => this.props.nextStep(this.state)}
           />
@@ -61,12 +66,14 @@ class FirstStep extends React.PureComponent {
         <View style={styles.nextButton}>
           <NavigationButton
             enabled={this.validateFields()}
-            onPress={() => this.validateFields() && this.props.nextStep(this.state)}
+            onPress={() =>
+              this.validateFields() && this.props.nextStep(this.state)
+            }
           />
         </View>
       </View>
-    );
+    )
   }
 }
 
-export default FirstStep;
+export default FirstStep

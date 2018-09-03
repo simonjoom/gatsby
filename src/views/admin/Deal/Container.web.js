@@ -1,7 +1,7 @@
-import { graphql, compose, withApollo } from "react-apollo";
-import { upsertDeal, deal, dealsub, deleteDeal, deals } from "./query.gql";
-import Comp from "./index";
-import { loader } from "../loader";
+import { graphql, compose, withApollo } from 'react-apollo'
+import { upsertDeal, deal, dealsub, deleteDeal, deals } from './query.gql'
+import Comp from './index'
+import { loader } from '../loader'
 
 const DealOut = compose(
   withApollo,
@@ -13,27 +13,27 @@ const DealOut = compose(
           variables: { title },
           refetchQueries: [
             {
-              query: deals
-            }
-          ]
-        })
-    })
+              query: deals,
+            },
+          ],
+        }),
+    }),
   }),
   graphql(upsertDeal, {
     props: ({ mutate, ownProps }) => ({
       dealsub: () =>
         ownProps.client.subscribe({
           query: dealsub,
-          fetchPolicy: "network-only",
+          fetchPolicy: 'network-only',
           variables: {
-            where: { mutation_in: ["CREATED", "UPDATED", "DELETED"] }
-          }
+            where: { mutation_in: ['CREATED', 'UPDATED', 'DELETED'] },
+          },
         }),
       deal: ({ title }) =>
         ownProps.client.query({
           query: deal,
-          fetchPolicy: "network-only",
-          variables: { title }
+          fetchPolicy: 'network-only',
+          variables: { title },
         }),
       upsertDeal: ({
         namewhere,
@@ -47,7 +47,7 @@ const DealOut = compose(
         participants,
         products,
         status,
-        probability
+        probability,
       }) =>
         mutate({
           variables: {
@@ -62,16 +62,16 @@ const DealOut = compose(
             participants,
             products,
             status,
-            probability
+            probability,
           },
           refetchQueries: [
             {
-              query: deals
-            }
-          ]
-        })
-    })
+              query: deals,
+            },
+          ],
+        }),
+    }),
   }),
   loader
-)(Comp);
-export default DealOut;
+)(Comp)
+export default DealOut

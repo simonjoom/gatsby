@@ -1,11 +1,11 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react-native';
-import { boolean } from '@storybook/addon-knobs';
+import React from 'react'
+import { storiesOf } from '@storybook/react-native'
+import { boolean } from '@storybook/addon-knobs'
 
-import NavigationButton from './NavigationButton';
+import NavigationButton from './NavigationButton'
 
 function log() {
-  console.log('Done');
+  console.log('Done')
 }
 
 storiesOf('NavigationButton', module).add('default', () => (
@@ -14,4 +14,4 @@ storiesOf('NavigationButton', module).add('default', () => (
     disable={boolean('Disable', true)}
     callback={log}
   />
-));
+))

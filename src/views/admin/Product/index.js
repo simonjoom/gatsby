@@ -1,27 +1,27 @@
-import React, { Component } from "react"; 
-import Helper from "../helper/helper"; 
+import React, { Component } from 'react'
+import Helper from '../helper/helper'
 
 class Product extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.initfetch = [
       {
-        id: "",
-        name: "",
-        unit: "",
-        code: "",
+        id: '',
+        name: '',
+        unit: '',
+        code: '',
         owner: null,
-        deals: []
-      }
-    ];
+        deals: [],
+      },
+    ]
     this.initplaceholder = {
-      id: "ID",
-      name: "String*@",
-      unit: "String",
-      code: "String",
-      owner: "User",
-      deals: "[Deal]"
-    };
+      id: 'ID',
+      name: 'String*@',
+      unit: 'String',
+      code: 'String',
+      owner: 'User',
+      deals: '[Deal]',
+    }
   }
 
   render() {
@@ -33,15 +33,15 @@ class Product extends Component {
       upsertProduct,
       parentId,
       productsub,
-      screenProps
-    } = this.props;
+      screenProps,
+    } = this.props
 
     //  const products = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allProducts;
     const passProps = {
       ...this.props.navigation.state.params,
-    };
-    let datas = data.products;
-    if (!(datas && datas.length > 0)) datas = this.initfetch;
+    }
+    let datas = data.products
+    if (!(datas && datas.length > 0)) datas = this.initfetch
     //{products && products.map((product, i) => (<Title key={"tt" + i}>{product.name}</Title>))}
     return (
       <Helper
@@ -59,17 +59,17 @@ class Product extends Component {
         passProps={passProps}
         screenProps={screenProps}
       />
-    );
+    )
   }
 }
 //
-Product.propTypes = {};
+Product.propTypes = {}
 Product.defaultProps = {
   setModalVisible: () => {},
   connected: false,
-  parent: "",
+  parent: '',
   parentId: 0,
-  selectedId: false
-};
+  selectedId: false,
+}
 
-export default Product;
+export default Product

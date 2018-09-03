@@ -1,37 +1,37 @@
-import React, { Component } from "react";
-import Helper from "../helper/helper";
+import React, { Component } from 'react'
+import Helper from '../helper/helper'
 
 class Deal extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.initfetch = [
       {
-        id: "",
-        title: "",
-        value: "",
-        currency: "",
+        id: '',
+        title: '',
+        value: '',
+        currency: '',
         owner: null,
         org: null,
         participants: [],
         products: [],
         stage: null,
-        status: "OPEN",
-        probability: ""
-      }
-    ];
+        status: 'OPEN',
+        probability: '',
+      },
+    ]
     this.initplaceholder = {
-      id: "ID",
-      title: "String*",
-      value: "String*",
-      currency: "String*",
-      owner: "User",
-      org: "Organization",
-      participants: "[Person]",
-      products: "[Product]",
-      stage: "Stage",
-      status: "Enum:OPEN,WON,LOST,DELETED",
-      probability: "String"
-    };
+      id: 'ID',
+      title: 'String*',
+      value: 'String*',
+      currency: 'String*',
+      owner: 'User',
+      org: 'Organization',
+      participants: '[Person]',
+      products: '[Product]',
+      stage: 'Stage',
+      status: 'Enum:OPEN,WON,LOST,DELETED',
+      probability: 'String',
+    }
   }
 
   render() {
@@ -43,16 +43,16 @@ class Deal extends Component {
       dealsub,
       navigation,
       parentId,
-      screenProps
-    } = this.props; 
+      screenProps,
+    } = this.props
     //const selected = this.state.selected;
-    console.log("updateDeal", data.deals, this.props);
+    console.log('updateDeal', data.deals, this.props)
 
-    let datas = data.deals;
-    if (!(datas && datas.length > 0)) datas = this.initfetch;
+    let datas = data.deals
+    if (!(datas && datas.length > 0)) datas = this.initfetch
     const passProps = {
-      ...this.props.navigation.state.params
-    };
+      ...this.props.navigation.state.params,
+    }
 
     return (
       <Helper
@@ -70,17 +70,17 @@ class Deal extends Component {
         passProps={passProps}
         screenProps={screenProps}
       />
-    );
+    )
   }
 }
 
-Deal.propTypes = {};
+Deal.propTypes = {}
 Deal.defaultProps = {
   setModalVisible: () => {},
   connected: false,
-  parent: "",
+  parent: '',
   parentId: 0,
-  selectedId: null
-};
+  selectedId: null,
+}
 
-export default Deal;
+export default Deal

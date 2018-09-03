@@ -1,6 +1,6 @@
-import { graphql, compose, withApollo } from 'react-apollo';
+import { graphql, compose, withApollo } from 'react-apollo'
 //import { signUp, userAdmins, users,allUsers } from './query.gql';
-import SignUpComp from './SignUp';
+import SignUpComp from './SignUp'
 
 export default SignUpComp
 /*

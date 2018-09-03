@@ -1,17 +1,17 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { View, Text, TextInput, Dimensions } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { View, Text, TextInput, Dimensions } from 'react-native'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import color from "src/statics/colors";
-import styles from "./Input.styles";
+import color from 'src/statics/colors'
+import styles from './Input.styles'
 
 let { width, height } = {
-  width: (Dimensions.get("window").width * 2) / 3,
-  height: (Dimensions.get("window").height * 2) / 3
-};
+  width: (Dimensions.get('window').width * 2) / 3,
+  height: (Dimensions.get('window').height * 2) / 3,
+}
 
-const Mywidth = width > height ? width : height;
+const Mywidth = width > height ? width : height
 //const Myheight = width > height ? height : width;
 
 const propTypes = {
@@ -37,49 +37,49 @@ const propTypes = {
   withValidation: PropTypes.bool,
   widthAuto: PropTypes.bool,
   noborder: PropTypes.bool,
-  validationFunction: PropTypes.func
-};
+  validationFunction: PropTypes.func,
+}
 
 const defaultProps = {
   style: {},
   width: Mywidth,
   widthAuto: false,
-  placeHolder: "",
+  placeHolder: '',
   placeHolderColor: color.grey,
   autoFocus: false,
-  keyboardType: "default",
-  returnKey: "default",
+  keyboardType: 'default',
+  returnKey: 'default',
   maxLength: 50,
   secure: false,
   cursorColor: color.white,
-  focusColor: "rgba(255, 255, 255, 0.8)",
-  blurColor: "rgba(255, 255, 255, 0.3)",
+  focusColor: 'rgba(255, 255, 255, 0.8)',
+  blurColor: 'rgba(255, 255, 255, 0.3)',
   onChangeText: () => {},
-  autoCapitalize: "none",
-  value: "",
+  autoCapitalize: 'none',
+  value: '',
   withValidation: false,
-  validationFunction: () => {}
-};
+  validationFunction: () => {},
+}
 
 class Input extends PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      color: this.props.blurColor
-    };
+      color: this.props.blurColor,
+    }
   }
 
   handleFocus() {
-    this.setState({ color: this.props.focusColor });
+    this.setState({ color: this.props.focusColor })
   }
 
   handleBlur() {
-    this.setState({ color: this.props.blurColor });
+    this.setState({ color: this.props.blurColor })
   }
 
   focus() {
-    this.input.focus();
+    this.input.focus()
   }
 
   renderValidationIcon() {
@@ -91,19 +91,19 @@ class Input extends PureComponent {
           <Ionicons size={25} color={color.white} name="ios-close" />
         )}
       </View>
-    );
+    )
   }
 
   render() {
-    const { type, widthAuto, style, noborder } = this.props;
-    const stylesc = type === "small" ? styles.inputsmall : styles.input;
-    const stylesl = type === "small" ? styles.labelsmall : styles.label;
-    const rootStyle = { backgroundColor: "transparent" };
+    const { type, widthAuto, style, noborder } = this.props
+    const stylesc = type === 'small' ? styles.inputsmall : styles.input
+    const stylesl = type === 'small' ? styles.labelsmall : styles.label
+    const rootStyle = { backgroundColor: 'transparent' }
     const borderStyle = noborder
       ? { borderBottomWidth: 0 }
-      : { borderBottomColor: this.state.color };
-    const textInputStyle = [stylesc, borderStyle];
-    if (!widthAuto) rootStyle.width = this.props.width;
+      : { borderBottomColor: this.state.color }
+    const textInputStyle = [stylesc, borderStyle]
+    if (!widthAuto) rootStyle.width = this.props.width
     return (
       <View style={[style, rootStyle]}>
         {this.props.label && (
@@ -135,13 +135,13 @@ class Input extends PureComponent {
           <Text style={styles.helper}>{this.props.helper}</Text>
         )}
       </View>
-    );
+    )
   }
 }
 
-Input.propTypes = propTypes;
-Input.defaultProps = defaultProps;
+Input.propTypes = propTypes
+Input.defaultProps = defaultProps
 
-export default Input;
+export default Input
 
 //autoFocus={this.props.autoFocus}  ??? problem

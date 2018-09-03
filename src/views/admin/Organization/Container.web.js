@@ -1,4 +1,4 @@
-import { graphql, compose, withApollo } from "react-apollo";
+import { graphql, compose, withApollo } from 'react-apollo'
 
 import {
   upsertOrganization,
@@ -6,11 +6,11 @@ import {
   deleteOrganization,
   organizations,
   organizationsub,
-} from "./query.gql";
-import { loader } from "../loader";
-import Comp from "./index";
+} from './query.gql'
+import { loader } from '../loader'
+import Comp from './index'
 // import ResortComp from "../resort/ResortContainer";
- 
+
 // TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
 const OrganizationOut = compose(
@@ -23,27 +23,27 @@ const OrganizationOut = compose(
           variables: { name },
           refetchQueries: [
             {
-              query: organizations
-            }
-          ]
-        })
-    })
+              query: organizations,
+            },
+          ],
+        }),
+    }),
   }),
   graphql(upsertOrganization, {
     props: ({ mutate, ownProps }) => ({
       organizationsub: () =>
         ownProps.client.subscribe({
           query: organizationsub,
-          fetchPolicy: "network-only",
+          fetchPolicy: 'network-only',
           variables: {
-            mutation_in: ["CREATED", "UPDATED", "DELETED"]
-          }
+            mutation_in: ['CREATED', 'UPDATED', 'DELETED'],
+          },
         }),
       organization: ({ name }) =>
         ownProps.client.query({
           query: organization,
-          fetchPolicy: "network-only",
-          variables: { name }
+          fetchPolicy: 'network-only',
+          variables: { name },
         }),
       upsertOrganization: ({
         namewhere,
@@ -53,7 +53,7 @@ const OrganizationOut = compose(
         budget,
         bid,
         country,
-        category
+        category,
       }) => {
         const variables = {
           namewhere,
@@ -63,20 +63,20 @@ const OrganizationOut = compose(
           budget,
           bid,
           country,
-          category
-        };
+          category,
+        }
         return mutate({
           variables,
           refetchQueries: [
             {
-              query: organizations
-            }
-          ]
-        });
-      }
-    })
+              query: organizations,
+            },
+          ],
+        })
+      },
+    }),
   }),
   loader
-)(Comp);
+)(Comp)
 
-export default OrganizationOut;
+export default OrganizationOut

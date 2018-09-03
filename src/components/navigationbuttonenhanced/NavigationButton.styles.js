@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   touchable: {
@@ -11,12 +11,12 @@ export default StyleSheet.create({
     zIndex: -1,
   },
   container: {
-    width:"50%",
-    marginBottom:"50px",
-    flexDirection:"row",
+    width: '50%',
+    marginBottom: '50px',
+    flexDirection: 'row',
     backgroundColor: 'transparent',
   },
   icon: {
     zIndex: 10,
   },
-});
+})

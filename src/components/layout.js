@@ -47,53 +47,52 @@ const Vomp = ({ header, children, navigation, location }) => {
 class Template extends React.Component {
   render() {
     // const HistoryNavigator = withBrowserHistory(Drawer)
-    const { location, children,title } = this.props
+    const { location, children, title } = this.props
     const rootPath = `${__PATH_PREFIX__}/`
-    console.log(location.pathname,rootPath)
-    let style={
-            ...scale(1.5),
-            marginBottom: rhythm(1.5),
-            marginTop: 0,
-          };
+    console.log(location.pathname, rootPath)
+    let style = {
+      ...scale(1.5),
+      marginBottom: rhythm(1.5),
+      marginTop: 0,
+    }
 
     if (location.pathname !== rootPath) {
-      style={
-            fontFamily: 'Montserrat, sans-serif',
-            marginTop: 0,
-               alignSelf: "flex-end"
-          }
+      style = {
+        fontFamily: 'Montserrat, sans-serif',
+        marginTop: 0,
+        alignSelf: 'flex-end',
+      }
     }
-    
+
     let header = HH => (
-        <HH
-          style={style}
+      <HH style={style}>
+        <Link
+          style={{
+            boxShadow: 'none',
+            textDecoration: 'none',
+            color: 'inherit',
+          }}
+          to={'/'}
         >
-          <Link
-            style={{
-              boxShadow: 'none',
-              textDecoration: 'none',
-              color: 'inherit',
-            }}
-            to={'/'}
-          >
-            Gatsby Starter Blog
-          </Link>
-        </HH>)
-        
+          Gatsby Starter Blog
+        </Link>
+      </HH>
+    )
+
     const Drawer = createDrawerNavigator(
       {
         Inbox: {
           path: '',
           screen: MainStackAdmin({
             screen: Vomp({ header: header('h2'), children, location }),
-            title: title?title:"notitle",
+            title: title ? title : 'notitle',
           }),
         },
         Main: {
           path: 'sent',
           screen: MainStackAdmin({
             screen: Vomp({ header: header('h2'), children, location }),
-            title: title?title:"notitle",
+            title: title ? title : 'notitle',
           }),
         },
       },
@@ -105,8 +104,8 @@ class Template extends React.Component {
         useNativeAnimations: false,
       }
     )
-    console.log("render Drawer")
-    return <Drawer location={location}/>
+    console.log('render Drawer')
+    return <Drawer location={location} />
   }
 }
 

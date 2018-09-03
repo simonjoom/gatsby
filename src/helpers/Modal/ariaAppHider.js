@@ -13,28 +13,28 @@
  * https://github.com/rayandrews/react-native-web-modal
  */
 
-import warning from 'warning';
-import { canUseDOM } from './utils';
+import warning from 'warning'
+import { canUseDOM } from './utils'
 
-let globalElement = null;
+let globalElement = null
 
 export function assertNodeList(nodeList, selector) {
   if (!nodeList || !nodeList.length) {
     throw new Error(
       `modal-react-native-web: No elements were found for selector ${selector}.`
-    );
+    )
   }
 }
 
 export function setElement(element) {
-  let useElement = element;
+  let useElement = element
   if (typeof useElement === 'string' && canUseDOM) {
-    const el = document.querySelectorAll(useElement);
-    assertNodeList(el, useElement);
-    useElement = 'length' in el ? el[0] : el;
+    const el = document.querySelectorAll(useElement)
+    assertNodeList(el, useElement)
+    useElement = 'length' in el ? el[0] : el
   }
-  globalElement = useElement || globalElement;
-  return globalElement;
+  globalElement = useElement || globalElement
+  return globalElement
 }
 
 export function validateElement(appElement) {
@@ -48,30 +48,30 @@ export function validateElement(appElement) {
         'when modal is opened. It is not recommended, but you can opt-out',
         'by setting `ariaHideApp={false}`.',
       ].join(' ')
-    );
+    )
 
-    return false;
+    return false
   }
 
-  return true;
+  return true
 }
 
 export function hide(appElement) {
   if (validateElement(appElement)) {
-    (appElement || globalElement).setAttribute('aria-hidden', 'true');
+    ;(appElement || globalElement).setAttribute('aria-hidden', 'true')
   }
 }
 
 export function show(appElement) {
   if (validateElement(appElement)) {
-    (appElement || globalElement).removeAttribute('aria-hidden');
+    ;(appElement || globalElement).removeAttribute('aria-hidden')
   }
 }
 
 export function documentNotReadyOrSSRTesting() {
-  globalElement = null;
+  globalElement = null
 }
 
 export function resetForTesting() {
-  globalElement = null;
+  globalElement = null
 }

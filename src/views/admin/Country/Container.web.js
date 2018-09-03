@@ -1,17 +1,17 @@
-import { graphql, compose, withApollo } from "react-apollo";
+import { graphql, compose, withApollo } from 'react-apollo'
 
 import {
   upsertCountry,
   Country,
   deleteCountry,
   Countries,
-  Countriessub
-} from "./query.gql";
-import { loader } from "../loader";
-import Comp from "./index";
+  Countriessub,
+} from './query.gql'
+import { loader } from '../loader'
+import Comp from './index'
 // import ResortComp from "../resort/ResortContainer";
 
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator } from 'react-navigation'
 // TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
 const CountryOut = compose(
@@ -24,40 +24,40 @@ const CountryOut = compose(
           variables: { name },
           refetchQueries: [
             {
-              query: Countries
-            }
-          ]
-        })
-    })
+              query: Countries,
+            },
+          ],
+        }),
+    }),
   }),
   graphql(upsertCountry, {
     props: ({ mutate, ownProps }) => ({
       Countriessub: () =>
         ownProps.client.subscribe({
           query: Countriessub,
-          fetchPolicy: "network-only",
+          fetchPolicy: 'network-only',
           variables: {
-            mutation_in: ["CREATED", "UPDATED", "DELETED"]
-          }
+            mutation_in: ['CREATED', 'UPDATED', 'DELETED'],
+          },
         }),
       Country: ({ id }) =>
         ownProps.client.query({
           query: Country,
-          fetchPolicy: "network-only",
-          variables: { id }
+          fetchPolicy: 'network-only',
+          variables: { id },
         }),
       upsertCountry: ({ id, name }) =>
         mutate({
           variables: { id, name },
           refetchQueries: [
             {
-              query: Countries
-            }
-          ]
-        })
-    })
+              query: Countries,
+            },
+          ],
+        }),
+    }),
   }),
   loader
-)(Comp);
+)(Comp)
 
-export default CountryOut;
+export default CountryOut

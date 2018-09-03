@@ -1,11 +1,11 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react-native';
-import { text, number, color } from '@storybook/addon-knobs';
+import React from 'react'
+import { storiesOf } from '@storybook/react-native'
+import { text, number, color } from '@storybook/addon-knobs'
 
-import Button from './Button';
+import Button from './Button'
 
 function log() {
-  console.log('Callback!');
+  console.log('Callback!')
 }
 
 storiesOf('Button', module).add('default', () => (
@@ -21,4 +21,4 @@ storiesOf('Button', module).add('default', () => (
     labelColor={color('LabelColor', '#F9F9F9')}
     callback={log}
   />
-));
+))

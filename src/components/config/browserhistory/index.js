@@ -1,1 +1,1 @@
-export { default as withBrowserHistory } from './withBrowserHistory';
+export { default as withBrowserHistory } from './withBrowserHistory'

@@ -1,14 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { View, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { View, TouchableOpacity } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import Colors from 'src/statics/colors';
+import Colors from 'src/statics/colors'
 
-const Hamburger = ({ navigation, route })  => (
+const Hamburger = ({ navigation, route }) => (
   <View>
     <TouchableOpacity
-      onPress={() => {navigation.openDrawer()}}
+      onPress={() => {
+        navigation.openDrawer()
+      }}
     >
       <Icon
         name="menu"
@@ -18,11 +20,11 @@ const Hamburger = ({ navigation, route })  => (
       />
     </TouchableOpacity>
   </View>
-);
+)
 
 Hamburger.propTypes = {
   navigation: PropTypes.object,
   navigate: PropTypes.func,
-};
+}
 
-export default Hamburger;
+export default Hamburger

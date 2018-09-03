@@ -1,6 +1,6 @@
-import { graphql, compose, withApollo } from "react-apollo";
-import { singleUpload, uploads } from "./query.gql";
-import Comp from "./index";
+import { graphql, compose, withApollo } from 'react-apollo'
+import { singleUpload, uploads } from './query.gql'
+import Comp from './index'
 //import ResortComp from "../resort/ResortContainer";
 
 const UploadOut = compose(
@@ -8,26 +8,26 @@ const UploadOut = compose(
   graphql(uploads),
   graphql(singleUpload, {
     props: ({ mutate, ownProps, ...other }) => ({
-      handleUpload: file => { 
+      handleUpload: file => {
         return mutate({
           variables: { file },
           update(
             proxy,
             {
-              data: { singleUpload }
+              data: { singleUpload },
             }
           ) {
-            const data = proxy.readQuery({ query: uploads });
+            const data = proxy.readQuery({ query: uploads })
             var sc = data.uploads.find(
               a => a.filename === singleUpload.filename
-            );
-            if (!sc) data.uploads.push(singleUpload);
-            proxy.writeQuery({ query: uploads, data });
-          }
-        });
-      }
-    })
+            )
+            if (!sc) data.uploads.push(singleUpload)
+            proxy.writeQuery({ query: uploads, data })
+          },
+        })
+      },
+    }),
   })
-)(Comp);
+)(Comp)
 
-export default UploadOut;
+export default UploadOut

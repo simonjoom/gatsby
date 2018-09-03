@@ -15,7 +15,7 @@ const transitionConfig = () => {
       const thisSceneIndex = scene.index
       const height = layout.initHeight
       const width = layout.initWidth
-      console.log("position",sceneProps)
+      console.log('position', sceneProps)
 
       const translateX = position.interpolate({
         inputRange: [thisSceneIndex - 1, thisSceneIndex, thisSceneIndex + 1],

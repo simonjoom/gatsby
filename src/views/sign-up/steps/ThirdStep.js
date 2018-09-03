@@ -1,36 +1,36 @@
-import React, { PureComponent } from 'react';
-import {allShops,allResorts} from '../query.gql';
+import React, { PureComponent } from 'react'
+import { allShops, allResorts } from '../query.gql'
 
-import { graphql } from 'react-apollo';
-import Banner from 'src/components/banner/Banner';
-import { View } from 'react-native';
+import { graphql } from 'react-apollo'
+import Banner from 'src/components/banner/Banner'
+import { View } from 'react-native'
 
-import Colors from 'src/statics/colors';
-import Title from 'src/components/title/Title';
-import Button from 'src/components/button/Button';
-import NavigationButton from 'src/components/navigation-button/NavigationButton';
-import { translate } from 'src/i18n';
+import Colors from 'src/statics/colors'
+import Title from 'src/components/title/Title'
+import Button from 'src/components/button/Button'
+import NavigationButton from 'src/components/navigation-button/NavigationButton'
+import { translate } from 'src/i18n'
 
 class ThirdStep extends PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       selectedShopId: null,
-    };
+    }
 
-    this.onBannerSelected = this.onBannerSelected.bind(this);
+    this.onBannerSelected = this.onBannerSelected.bind(this)
   }
 
   onBannerSelected({ shopId }) {
-    this.setState({ selectedShopId: shopId });
+    this.setState({ selectedShopId: shopId })
   }
 
   render() {
     if (this.props.data.loading) {
-      return null;
+      return null
     }
-console.log(this.props.data.allShops)
+    console.log(this.props.data.allShops)
     return (
       <View>
         <View style={{ marginLeft: 20 }}>
@@ -56,14 +56,14 @@ console.log(this.props.data.allShops)
           />
         )}
       </View>
-    );
+    )
   }
 }
 
-ThirdStep.propTypes = {};
-ThirdStep.defaultProps = {};
+ThirdStep.propTypes = {}
+ThirdStep.defaultProps = {}
 
-export default graphql(allResorts)(ThirdStep);
+export default graphql(allResorts)(ThirdStep)
 
 /*
 export default graphql(allShops)(ThirdStep);

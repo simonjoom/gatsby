@@ -1,27 +1,32 @@
-import React from 'react';
+import React from 'react'
 
-import { StyleSheet, ActivityIndicator, View, StatusBar, AsyncStorage } from 'react-native';
-import Title from 'src/components/title/Title';
+import {
+  StyleSheet,
+  ActivityIndicator,
+  View,
+  StatusBar,
+  AsyncStorage,
+} from 'react-native'
+import Title from 'src/components/title/Title'
 
-import Colors from 'src/statics/colors';
-import { translate } from 'src/i18n';
-import StorageKeys from 'src/statics/storage-keys';
+import Colors from 'src/statics/colors'
+import { translate } from 'src/i18n'
+import StorageKeys from 'src/statics/storage-keys'
 
 class FinalStep extends React.PureComponent {
-
   async componentWillMount() {
-    const { data } =  await this.props.signUp({
+    const { data } = await this.props.signUp({
       email: this.props.email,
       password: this.props.password,
       firstName: this.props.firstName,
       lastName: this.props.lastName,
-      shopId: this.props.selectedShopId
-    });
+      shopId: this.props.selectedShopId,
+    })
 
-    await AsyncStorage.setItem(StorageKeys.GC_TOKEN, data.signup.token);
+    await AsyncStorage.setItem(StorageKeys.GC_TOKEN, data.signup.token)
 
-    StatusBar.setBarStyle('dark-content');
-    this.props.navigation.navigate('App');
+    StatusBar.setBarStyle('dark-content')
+    this.props.navigation.navigate('App')
   }
 
   render() {
@@ -35,7 +40,7 @@ class FinalStep extends React.PureComponent {
           {translate('gathering_articles')}
         </Title>
       </View>
-    );
+    )
   }
 }
 
@@ -44,6 +49,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-});
+})
 
-export default FinalStep;
+export default FinalStep

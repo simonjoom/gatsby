@@ -1,15 +1,15 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react'
+import PropTypes from 'prop-types'
 import {
   Text,
   TouchableOpacity,
   Dimensions,
-  ActivityIndicator
-} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+  ActivityIndicator,
+} from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
 
-import color from "../../statics/colors/index";
-import styles from "./Button.styles";
+import color from '../../statics/colors/index'
+import styles from './Button.styles'
 
 const propTypes = {
   style: PropTypes.object,
@@ -25,29 +25,29 @@ const propTypes = {
   position: PropTypes.string,
   fontSize: PropTypes.number,
   loading: PropTypes.bool,
-  disabled: PropTypes.bool
-};
+  disabled: PropTypes.bool,
+}
 
 let { width, height } = {
-  width: (Dimensions.get("window").width * 2) / 3,
-  height: (Dimensions.get("window").height * 2) / 3
-};
+  width: (Dimensions.get('window').width * 2) / 3,
+  height: (Dimensions.get('window').height * 2) / 3,
+}
 
-const Mywidth = width > height ? width : height;
-const Myheight = width > height ? height : width;
+const Mywidth = width > height ? width : height
+const Myheight = width > height ? height : width
 
 const defaultProps = {
   style: {},
   labelColor: color.white,
   iconColor: color.white,
-  backgroundColor: "transparent",
+  backgroundColor: 'transparent',
   height: 50,
   //width: "auto",
-  position: "center",
+  position: 'center',
   borderColor: color.white,
   fontSize: 14,
-  disabled: false
-};
+  disabled: false,
+}
 
 const Button = props => {
   const {
@@ -63,8 +63,8 @@ const Button = props => {
     borderColor,
     fontSize,
     loading,
-    disabled
-  } = props;
+    disabled,
+  } = props
   return (
     <TouchableOpacity
       onPress={() => !disabled && onPress()}
@@ -73,15 +73,15 @@ const Button = props => {
         {
           height: height,
           alignSelf:
-            position === "left"
-              ? "flex-start"
-              : position === "right"
-                ? "flex-end"
+            position === 'left'
+              ? 'flex-start'
+              : position === 'right'
+                ? 'flex-end'
                 : position,
           backgroundColor: backgroundColor,
-          borderColor: borderColor
+          borderColor: borderColor,
         },
-        props.style
+        props.style,
       ]}
     >
       {icon && <Icon size={24} name={icon} color={iconColor} />}
@@ -91,8 +91,8 @@ const Button = props => {
             styles.text,
             {
               color: labelColor,
-              fontSize: fontSize
-            }
+              fontSize: fontSize,
+            },
           ]}
         >
           {label}
@@ -100,10 +100,10 @@ const Button = props => {
       )}
       {loading && <ActivityIndicator color="white" />}
     </TouchableOpacity>
-  );
-};
+  )
+}
 
-Button.propTypes = propTypes;
-Button.defaultProps = defaultProps;
+Button.propTypes = propTypes
+Button.defaultProps = defaultProps
 
-export default Button;
+export default Button

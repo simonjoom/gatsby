@@ -1,16 +1,16 @@
-import { graphql, compose, withApollo } from "react-apollo";
+import { graphql, compose, withApollo } from 'react-apollo'
 import {
   upsertPicture,
   picture,
   picturesub,
   deletePicture,
   pictures,
-  getInfo
-} from "./query.gql";
-import Comp from "./index";
-import { loader } from "../loader";
+  getInfo,
+} from './query.gql'
+import Comp from './index'
+import { loader } from '../loader'
 //import ResortComp from "../resort/ResortContainer";
- 
+
 //TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
 const PictureOut = compose(
@@ -23,43 +23,43 @@ const PictureOut = compose(
           variables: { id },
           refetchQueries: [
             {
-              query: pictures
-            }
-          ]
-        })
-    })
+              query: pictures,
+            },
+          ],
+        }),
+    }),
   }),
   graphql(upsertPicture, {
-    props: ({ mutate, ownProps }) => ({ 
+    props: ({ mutate, ownProps }) => ({
       picturesub: () =>
         ownProps.client.subscribe({
           query: picturesub,
-          fetchPolicy: "network-only",
+          fetchPolicy: 'network-only',
           variables: {
-            mutation_in: ["CREATED", "UPDATED", "DELETED"]
-          }
+            mutation_in: ['CREATED', 'UPDATED', 'DELETED'],
+          },
         }),
       picture: ({ id }) =>
         ownProps.client.query({
           query: picture,
-          fetchPolicy: "network-only",
-          variables: { id }
+          fetchPolicy: 'network-only',
+          variables: { id },
         }),
       upsertPicture: ({ id, file }) =>
         mutate({
           variables: {
             id,
-            file
+            file,
           },
           refetchQueries: [
             {
-              query: pictures
-            }
-          ]
-        })
-    })
+              query: pictures,
+            },
+          ],
+        }),
+    }),
   }),
   loader
-)(Comp);
+)(Comp)
 
-export default PictureOut;
+export default PictureOut

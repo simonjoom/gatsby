@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 //import { StatusBar } from 'react-native';
 
-import FirstStep from './steps/FirstStep';
+import FirstStep from './steps/FirstStep'
 //import SecondStep from './steps/SecondStep';
 /*import ThirdStep from './steps/ThirdStep';
 import FourthStep from './steps/FourthStep';
 import FinalStep from './steps/FinalStep';*/
 
-import KeyboardAwareCenteredView from 'src/components/layout/KeyboardAwareCenteredView';
+import KeyboardAwareCenteredView from 'src/components/layout/KeyboardAwareCenteredView'
 
 class SignUp extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       step: 1,
@@ -21,21 +21,21 @@ class SignUp extends Component {
       selectedShopId: '',
       email: '',
       password: '',
-    };
+    }
 
-    this.previousStep = this.previousStep.bind(this);
-    this.nextStep = this.nextStep.bind(this);
+    this.previousStep = this.previousStep.bind(this)
+    this.nextStep = this.nextStep.bind(this)
   }
 
   nextStep(data) {
     this.setState({
       step: this.state.step + 1,
       ...data,
-    });
+    })
   }
 
   previousStep() {
-    this.setState({ step: this.state.step - 1 });
+    this.setState({ step: this.state.step - 1 })
   }
 
   renderCurrentStep() {
@@ -47,10 +47,10 @@ class SignUp extends Component {
             previousStep={this.previousStep}
             nextStep={this.nextStep}
           />
-        );
+        )
       //case 2:
-        //return <SecondStep previousStep={this.previousStep} nextStep={this.nextStep} />;
-     /* case 2:
+      //return <SecondStep previousStep={this.previousStep} nextStep={this.nextStep} />;
+      /* case 2:
         return <ThirdStep previousStep={this.previousStep} nextStep={this.nextStep} />;
       case 3:
         return <FourthStep previousStep={this.previousStep} nextStep={this.nextStep} />;
@@ -64,11 +64,11 @@ class SignUp extends Component {
       <KeyboardAwareCenteredView>
         {this.renderCurrentStep()}
       </KeyboardAwareCenteredView>
-    );
+    )
   }
 }
 
-SignUp.propTypes = {};
-SignUp.defaultProps = {};
+SignUp.propTypes = {}
+SignUp.defaultProps = {}
 
-export default SignUp;
+export default SignUp

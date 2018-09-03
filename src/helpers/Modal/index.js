@@ -21,7 +21,7 @@ export default class Modal extends Component {
     ariaHideApp: true,
     appElement: null,
   }
-/* 
+  /* 
   constructor(props) {
     super(props)
 

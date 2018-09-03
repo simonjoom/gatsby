@@ -1,10 +1,10 @@
-import { graphql, compose, withApollo } from "react-apollo";
-import { upsertStage, deleteStage, stage, stages, stagesub } from "./query.gql";
-import Comp from "./index";
-import { loader } from "../loader";
+import { graphql, compose, withApollo } from 'react-apollo'
+import { upsertStage, deleteStage, stage, stages, stagesub } from './query.gql'
+import Comp from './index'
+import { loader } from '../loader'
 //import ResortComp from "../resort/ResortContainer";
 
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator } from 'react-navigation'
 //TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
 const StageOut = compose(
@@ -17,34 +17,34 @@ const StageOut = compose(
           variables: { name },
           refetchQueries: [
             {
-              query: stages
-            }
-          ]
-        })
-    })
+              query: stages,
+            },
+          ],
+        }),
+    }),
   }),
   graphql(upsertStage, {
     props: ({ mutate, ownProps }) => ({
       stagesub: () =>
         ownProps.client.subscribe({
           query: stagesub,
-          fetchPolicy: "network-only",
+          fetchPolicy: 'network-only',
           variables: {
-            mutation_in: ["CREATED", "UPDATED", "DELETED"]
-          }
+            mutation_in: ['CREATED', 'UPDATED', 'DELETED'],
+          },
         }),
       stage: ({ name }) =>
         ownProps.client.query({
           query: stage,
-          fetchPolicy: "network-only",
-          variables: { name }
+          fetchPolicy: 'network-only',
+          variables: { name },
         }),
       upsertStage: ({
         name,
         namewhere,
         pipeline,
         order_nr,
-        deal_probability
+        deal_probability,
       }) =>
         mutate({
           variables: {
@@ -52,17 +52,17 @@ const StageOut = compose(
             namewhere,
             pipeline,
             order_nr,
-            deal_probability
+            deal_probability,
           },
           refetchQueries: [
             {
-              query: stages
-            }
-          ]
-        })
-    })
+              query: stages,
+            },
+          ],
+        }),
+    }),
   }),
   loader
-)(Comp);
+)(Comp)
 
-export default StageOut;
+export default StageOut

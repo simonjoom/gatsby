@@ -1,4 +1,4 @@
-import {StyleSheet } from 'react-native-web';
+import { StyleSheet } from 'react-native-web'
 
 export default StyleSheet.create({
   baseStyle: {
@@ -21,4 +21,4 @@ export default StyleSheet.create({
   visible: {
     display: 'flex',
   },
-});
+})

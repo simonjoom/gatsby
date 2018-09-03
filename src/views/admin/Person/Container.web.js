@@ -1,16 +1,16 @@
-import { graphql, compose, withApollo } from "react-apollo";
+import { graphql, compose, withApollo } from 'react-apollo'
 import {
   upsertPerson,
   person,
   personsub,
   deletePerson,
-  persons
-} from "./query.gql";
-import Comp from "./index";
-import {loader} from "../loader";
+  persons,
+} from './query.gql'
+import Comp from './index'
+import { loader } from '../loader'
 //import ResortComp from "../resort/ResortContainer";
 
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator } from 'react-navigation'
 //TODO: Faster mutation by invalidating cache instead of using refetchQueries
 
 const PersonOut = compose(
@@ -23,27 +23,27 @@ const PersonOut = compose(
           variables: { name },
           refetchQueries: [
             {
-              query: persons
-            }
-          ]
-        })
-    })
+              query: persons,
+            },
+          ],
+        }),
+    }),
   }),
   graphql(upsertPerson, {
     props: ({ mutate, ownProps }) => ({
       personsub: () =>
         ownProps.client.subscribe({
           query: personsub,
-          fetchPolicy: "network-only",
+          fetchPolicy: 'network-only',
           variables: {
-            mutation_in: ["CREATED", "UPDATED", "DELETED"]
-          }
+            mutation_in: ['CREATED', 'UPDATED', 'DELETED'],
+          },
         }),
       person: ({ name }) =>
         ownProps.client.query({
           query: person,
-          fetchPolicy: "network-only",
-          variables: { name }
+          fetchPolicy: 'network-only',
+          variables: { name },
         }),
       upsertPerson: ({
         namewhere,
@@ -53,7 +53,7 @@ const PersonOut = compose(
         phone,
         pictures,
         products,
-        deals
+        deals,
       }) =>
         mutate({
           variables: {
@@ -64,17 +64,17 @@ const PersonOut = compose(
             phone,
             pictures,
             products,
-            deals
+            deals,
           },
           refetchQueries: [
             {
-              query: persons
-            }
-          ]
-        })
-    })
+              query: persons,
+            },
+          ],
+        }),
+    }),
   }),
   loader
-)(Comp);
+)(Comp)
 
-export default PersonOut;
+export default PersonOut

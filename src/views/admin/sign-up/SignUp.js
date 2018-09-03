@@ -1,44 +1,42 @@
-import React, { Component } from "react";
-import {  TouchableHighlight, Modal, View, Text } from "react-native";
-import Colors from "src/statics/colors";
-import Title from "src/components/title/Title";
-import FirstStep from "./steps/FirstStep";
-import SecondStep from "./steps/SecondStep";
-import FinalStep from "./steps/FinalStep";
-import { translate } from "src/i18n";
+import React, { Component } from 'react'
+import { TouchableHighlight, Modal, View, Text } from 'react-native'
+import Colors from 'src/statics/colors'
+import Title from 'src/components/title/Title'
+import FirstStep from './steps/FirstStep'
+import SecondStep from './steps/SecondStep'
+import FinalStep from './steps/FinalStep'
+import { translate } from 'src/i18n'
 
-import KeyboardAwareCenteredView from "src/components/layout/KeyboardAwareCenteredView";
- 
+import KeyboardAwareCenteredView from 'src/components/layout/KeyboardAwareCenteredView'
 
-class SignUp extends Component { 
-
+class SignUp extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       step: 1,
-      firstName: "",
-      lastName: "",
+      firstName: '',
+      lastName: '',
       isMajor: false,
-      selectedShopId: "",
-      email: "",
-      password: ""
-    };
-    this.previousStep = this.previousStep.bind(this);
-    this.nextStep = this.nextStep.bind(this);
+      selectedShopId: '',
+      email: '',
+      password: '',
+    }
+    this.previousStep = this.previousStep.bind(this)
+    this.nextStep = this.nextStep.bind(this)
   }
 
   nextStep(data) {
     this.setState({
       step: this.state.step + 1,
-      ...data
-    });
+      ...data,
+    })
   }
 
   previousStep() {
-    this.setState({ step: this.state.step - 1 });
+    this.setState({ step: this.state.step - 1 })
   }
-  
+
   renderCurrentStep() {
     switch (this.state.step) {
       case 1:
@@ -48,14 +46,14 @@ class SignUp extends Component {
             previousStep={this.previousStep}
             nextStep={this.nextStep}
           />
-        );
+        )
       case 2:
         return (
           <SecondStep
             previousStep={this.previousStep}
             nextStep={this.nextStep}
           />
-        );
+        )
       case 3:
         return (
           <FinalStep
@@ -63,17 +61,17 @@ class SignUp extends Component {
             signUp={this.props.signUp}
             navigation={this.props.navigation}
           />
-        );
+        )
     }
   }
 
   render() {
-    const { data, loading } = this.props;
-    console.log("signup", this.props);
+    const { data, loading } = this.props
+    console.log('signup', this.props)
     if (data && loading) {
-      return null;
+      return null
     }
-    const error = data ? data.error : null;
+    const error = data ? data.error : null
 
     return (
       <KeyboardAwareCenteredView>
@@ -81,7 +79,7 @@ class SignUp extends Component {
           {error &&
             error.graphQLErrors && (
               <Text>
-                Bad:{" "}
+                Bad:{' '}
                 {error.graphQLErrors.map(({ message }, i) => (
                   <Text key={i}>{message}</Text>
                 ))}
@@ -90,11 +88,11 @@ class SignUp extends Component {
         </View>
         {this.renderCurrentStep()}
       </KeyboardAwareCenteredView>
-    );
+    )
   }
 }
 //
-SignUp.propTypes = {};
-SignUp.defaultProps = {};
+SignUp.propTypes = {}
+SignUp.defaultProps = {}
 
-export default SignUp;
+export default SignUp

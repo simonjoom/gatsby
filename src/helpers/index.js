@@ -1,2 +1,2 @@
-import dismissableStackNavigator from "./DismissableStackNavigator";
-export default dismissableStackNavigator;
+import dismissableStackNavigator from './DismissableStackNavigator'
+export default dismissableStackNavigator

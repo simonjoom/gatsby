@@ -1,10 +1,10 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react-native';
-import { text, number, select, color } from '@storybook/addon-knobs';
+import React from 'react'
+import { storiesOf } from '@storybook/react-native'
+import { text, number, select, color } from '@storybook/addon-knobs'
 
-import Title from './Title';
+import Title from './Title'
 
-const options = [100, 200, 300, 400, 500, 600, 700, 800, 900];
+const options = [100, 200, 300, 400, 500, 600, 700, 800, 900]
 
 storiesOf('Title', module).add('default', () => (
   <Title
@@ -14,4 +14,4 @@ storiesOf('Title', module).add('default', () => (
   >
     {text('Label', 'Title')}
   </Title>
-));
+))

@@ -1,26 +1,26 @@
-import React, { Component } from "react"; 
+import React, { Component } from 'react'
 
-import Helper from "../helper/helper";
+import Helper from '../helper/helper'
 
 class Stage extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.initfetch = [
       {
-        id: "",
-        name: "",
+        id: '',
+        name: '',
         pipeline: null,
-        order_nr: "",
-        deal_probability: "ENABLE"
-      }
-    ];
+        order_nr: '',
+        deal_probability: 'ENABLE',
+      },
+    ]
     this.initplaceholder = {
-      id: "ID",
-      name: "String",
-      pipeline: "Pipeline",
-      order_nr: "String",
-      deal_probability: "Enum:ENABLE,DISABLE"
-    };
+      id: 'ID',
+      name: 'String',
+      pipeline: 'Pipeline',
+      order_nr: 'String',
+      deal_probability: 'Enum:ENABLE,DISABLE',
+    }
   }
 
   render() {
@@ -32,16 +32,16 @@ class Stage extends Component {
       upsertStage,
       navigation,
       parentId,
-      screenProps
-    } = this.props;
+      screenProps,
+    } = this.props
     //const selected = this.state.selected;
-    console.log("updateStage", data.stages, this.props);
+    console.log('updateStage', data.stages, this.props)
     //  const stages = (!!this.state.fetched_list.length) ? this.state.fetched_list : data.allStages;
     const passProps = {
       ...this.props.navigation.state.params,
-    };
-    let datas = data.stages;
-    if (!(datas && datas.length > 0)) datas = this.initfetch;
+    }
+    let datas = data.stages
+    if (!(datas && datas.length > 0)) datas = this.initfetch
     return (
       <Helper
         tofetch={datas}
@@ -58,15 +58,15 @@ class Stage extends Component {
         passProps={passProps}
         screenProps={screenProps}
       />
-    );
+    )
   }
 }
 //
-Stage.propTypes = {};
+Stage.propTypes = {}
 Stage.defaultProps = {
-  parent: "",
+  parent: '',
   parentId: 0,
-  selectedId: false
-};
+  selectedId: false,
+}
 
-export default Stage;
+export default Stage

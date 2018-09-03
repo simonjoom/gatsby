@@ -1,40 +1,40 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent } from 'react'
 //import {allShops} from '../query.gql';
 
-import { graphql } from 'react-apollo';
+import { graphql } from 'react-apollo'
 //import Banner from 'src/components/banner/Banner';
-import { View } from 'react-native';
-import styles from '../SignUp.styles';
-import Colors from 'src/statics/colors';
-import Title from 'src/components/title/Title';
-import Input from 'src/components/input/Input';
+import { View } from 'react-native'
+import styles from '../SignUp.styles'
+import Colors from 'src/statics/colors'
+import Title from 'src/components/title/Title'
+import Input from 'src/components/input/Input'
 //import Button from 'src/components/button/Button';
-import NavigationButton from 'src/components/navigation-button/NavigationButton';
-import { translate } from 'src/i18n';
+import NavigationButton from 'src/components/navigation-button/NavigationButton'
+import { translate } from 'src/i18n'
 
 class SecondStep extends PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       selectedShopId: null,
-    };
+    }
 
-    this.onBannerSelected = this.onBannerSelected.bind(this);
+    this.onBannerSelected = this.onBannerSelected.bind(this)
   }
 
   onBannerSelected({ shopId }) {
-    this.setState({ selectedShopId: shopId });
+    this.setState({ selectedShopId: shopId })
   }
 
   validateFields() {
-    return !!this.state.selectedShopId;
+    return !!this.state.selectedShopId
   }
 
   render() {
     if (this.props.data.loading) {
-      return null;
-    } 
+      return null
+    }
     return (
       <View>
         <View style={{ marginLeft: 20 }}>
@@ -61,19 +61,19 @@ class SecondStep extends PureComponent {
         <View style={styles.nextButton}>
           <NavigationButton
             enabled={this.validateFields()}
-            onPress={() => this.validateFields() && this.props.nextStep(this.state)}
+            onPress={() =>
+              this.validateFields() && this.props.nextStep(this.state)
+            }
           />
         </View>
-        
       </View>
-    );
+    )
   }
 }
 
-SecondStep.propTypes = {};
-SecondStep.defaultProps = {};
-export default SecondStep;
- 
+SecondStep.propTypes = {}
+SecondStep.defaultProps = {}
+export default SecondStep
 
 /*
 {

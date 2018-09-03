@@ -13,12 +13,12 @@
  * https://github.com/rayandrews/react-native-web-modal
  */
 
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 export const canUseDOM = !!(
   typeof window !== 'undefined' &&
   window.document &&
   window.document.createElement
-);
+)
 
-export const SafeHTMLElement = canUseDOM ? HTMLElement : PropTypes.any;
+export const SafeHTMLElement = canUseDOM ? HTMLElement : PropTypes.any
