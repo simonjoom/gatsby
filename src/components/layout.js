@@ -86,14 +86,14 @@ class Template extends React.Component {
           path: '',
           screen: MainStackAdmin({
             screen: Vomp({ header: header('h2'), children, location }),
-            title: title,
+            title: title?title:"notitle",
           }),
         },
         Main: {
           path: 'sent',
           screen: MainStackAdmin({
             screen: Vomp({ header: header('h2'), children, location }),
-            title: title,
+            title: title?title:"notitle",
           }),
         },
       },

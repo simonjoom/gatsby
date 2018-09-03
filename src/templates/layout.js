@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import  {View} from "react-native"
 import Helmet from 'react-helmet'
 import MDXRenderer from 'gatsby-mdx/mdx-renderer'
 import { Link, graphql } from 'gatsby'
@@ -14,6 +15,10 @@ export const pageQuery = graphql`
       id
       fields {
         slug
+      }
+      code {
+        scope
+        body
       }
       excerpt
       frontmatter {
@@ -34,10 +39,11 @@ export default class MDXRuntimeTest extends Component {
       tableOfContents,
       pageContext,
     } = this.props
+    console.log(children,data)
     const post = data.mdx
     const { previous, next } = pageContext
     return (
-      <Layout location={location} title={post.frontmatter.title}>
+      <Layout location={location} title={post.frontmatter&&post.frontmatter.title}>
         <h1>{post.frontmatter.title}</h1>
         <p
           style={{
@@ -48,8 +54,10 @@ export default class MDXRuntimeTest extends Component {
           }}
         >
           {post.frontmatter.date}
-        </p>
-        <div>{children}</div>
+        </p> 
+            <MDXRenderer tableOfContents={tableOfContents}>
+              {post.code.body}
+            </MDXRenderer>
         <hr
           style={{
             marginBottom: rhythm(1),
@@ -86,4 +94,13 @@ export default class MDXRuntimeTest extends Component {
     )
   }
 }
+
+
+
+/*
+            <MDXRenderer tableOfContents={tableOfContents}>
+              {data.mdx.code.body}
+            </MDXRenderer>
+            
+            */
 //export default BlogPostTemplate
