@@ -6,38 +6,35 @@ module.exports = {
     siteUrl: 'https://gatsbyjs.github.io/gatsby-starter-blog/',
   },
   pathPrefix: '/gatsby-starter-blog',
-  plugins: ["gatsby-plugin-react-native-web",
+  plugins: [
+    'gatsby-plugin-sharp',  
+    {
+      resolve: `gatsby-mdx`,
+      options: {
+          root: __dirname, 
+        extensions: ['.mdx', '.md'],
+        defaultLayouts:{posts:`${__dirname}/src/templates/layout.js`}, 
+        mdPlugins: [require('remark-toc')],
+        gatsbyRemarkPlugins: [
+          {
+            resolve: 'gatsby-remark-images',
+            options: {
+              maxWidth: 1035,
+              sizeByPixelDensity: true,
+            },
+          },
+         { resolve: 'gatsby-remark-autolink-headers' }
+        ],
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `${__dirname}/src/pages`,
-        name: 'pages',
+        name: 'posts',
       },
     },
-    {
-      resolve: `gatsby-transformer-remark`,
-      options: {
-        plugins: [
-          {
-            resolve: `gatsby-remark-images`,
-            options: {
-              maxWidth: 590,
-            },
-          },
-          {
-            resolve: `gatsby-remark-responsive-iframe`,
-            options: {
-              wrapperStyle: `margin-bottom: 1.0725rem`,
-            },
-          },
-          'gatsby-remark-prismjs',
-          'gatsby-remark-copy-linked-files',
-          'gatsby-remark-smartypants',
-        ],
-      },
-    },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
+    'gatsby-plugin-react-native-web',
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
@@ -67,3 +64,37 @@ module.exports = {
     },
   ],
 }
+
+
+/*
+        transformers: {
+          ContentfulBlogPost: ({ node, getNode }) => {
+            const { title } = node
+            const mdxContent = getNode(node.mdxContent___NODE)
+            return { meta: { title }, content: mdxContent.mdxContent }
+          },
+        },
+         /*{
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 590,
+            },
+          },
+          {
+            resolve: `gatsby-remark-responsive-iframe`,
+            options: {
+              wrapperStyle: `margin-bottom: 1.0725rem`,
+            },
+          },
+          'gatsby-remark-prismjs',
+          'gatsby-remark-copy-linked-files',
+          'gatsby-remark-smartypants',
+        ],
+      },
+    }, */
+    //  `gatsby-transformer-sharp`,
+ 

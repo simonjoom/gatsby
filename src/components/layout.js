@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'gatsby'
 
-import { withNavigation } from 'react-navigation';
+import { withNavigation } from 'react-navigation'
 import LoginAdmin from 'views/admin/login/Login'
 import { rhythm, scale } from '../utils/typography'
 import { MainStack, MainStackAdmin } from './config'
@@ -17,26 +17,33 @@ const HOST = process.env.__DEV__
   ? 'http://localhost:3000'
   : 'http://ns327841.ip-37-187-112.eu/'
 
-const Vomp = ({ header, children, navigation, screenProps }) =>
-  withNavigation(class Vomp extends Component {
-    render() { 
-      return (
-        <View
-          style={{    alignItems: "center",
-            alignSelf: "center", 
-            flex:1,
-            flexGrow:1,
-            maxWidth: rhythm(24),
-            padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
-          }}
-        >
-          {header}
-          {children}
-          <LoginAdmin navigation={this.props.navigation} />
-        </View>
-      )
+const Vomp = ({ header, children, navigation, location }) => {
+  console.log('locationVomp', location)
+  return withNavigation(
+    class Vomp extends Component {
+      render() {
+        console.log('location', location)
+        return (
+          <View
+            style={{
+              alignItems: 'center',
+              alignSelf: 'center',
+              flex: 1,
+              flexGrow: 1,
+              maxWidth: rhythm(24),
+              padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
+            }}
+          >
+            {header}
+            {children}
+            <LoginAdmin navigation={this.props.navigation} />
+          </View>
+        )
+      }
     }
-  })
+  )
+}
+
 class Template extends React.Component {
   render() {
     // const HistoryNavigator = withBrowserHistory(Drawer)
@@ -91,15 +98,15 @@ class Template extends React.Component {
       {
         Inbox: {
           path: '',
-          screen:  MainStackAdmin({
-            screen: Vomp({ header: header('h2'), children }),
+          screen: MainStackAdmin({
+            screen: Vomp({ header: header('h2'), children, location }),
             title: header('h1'),
-          })
+          }),
         },
         Main: {
           path: 'sent',
           screen: MainStackAdmin({
-            screen: Vomp({ header: header('h2'), children }),
+            screen: Vomp({ header: header('h2'), children, location }),
             title: header('h1'),
           }),
         },
@@ -112,7 +119,8 @@ class Template extends React.Component {
         useNativeAnimations: false,
       }
     )
-    return <Drawer />
+    console.log("render Drawer")
+    return <Drawer location={location}/>
   }
 }
 

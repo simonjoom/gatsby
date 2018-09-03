@@ -1,10 +1,181 @@
 const _ = require('lodash')
 const Promise = require('bluebird')
-const path = require('path')
- 
-const eslintFormatter = require('react-dev-utils/eslintFormatter')
+const path = require('path') 
+const fs = require("fs-extra");
 const { createFilePath } = require('gatsby-source-filesystem')
-const paths = require('./paths')  
+const componentWithMDXScope = require('gatsby-mdx/component-with-mdx-scope')
+const eslintFormatter = require('react-dev-utils/eslintFormatter') 
+const paths = require('./paths')
+const escapeStringRegexp = require("escape-string-regexp");
+const defaultOptions = require("./utils/default-options");
+const extractExports = require("./utils/extract-exports");
+const mdx = require("./utils/mdx.js");
+
+
+/**
+ * Add frontmatter as page context for MDX pages
+ */
+
+
+exports.createPages = ({ graphql, actions }) => {
+  const { createPage } = actions;
+  return new Promise((resolve, reject) => { 
+    return  graphql(
+        `
+          {
+            allMdx(
+              sort: { fields: [frontmatter___date], order: DESC }
+              limit: 1000
+            ) {
+              edges {
+                node {
+                  id 
+                  tableOfContents
+                  code {
+                    scope
+                  }
+                  
+                  frontmatter {
+                    title
+                  } 
+                  fields {
+                    slug
+                  }
+                  parent {
+                    ... on File {
+                      absolutePath
+                      relativePath
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `
+      ).then(result => {
+        if (result.errors) {
+          console.log(result.errors); // eslint-disable-line no-console
+          reject(result.errors);
+        }
+        const posts = result.data.allMdx.edges
+
+        _.each(posts, (post, index) => {
+          const previous =
+            index === posts.length - 1 ? null : posts[index + 1].node
+          const next = index === 0 ? null : posts[index - 1].node
+
+          createPage({
+            path: post.node.fields.slug,
+            component: post.node.parent.absolutePath,
+            context: { absPath: post.node.parent.absolutePath,previous,
+              next,
+              tableOfContents: post.node.tableOfContents }
+            
+          })
+        })
+  resolve() 
+      })
+  });
+};
+
+   
+/**
+ * Add frontmatter as page context for MDX pages
+  allContentfulBlogPostMdx {
+              edges {
+                node {
+                  id
+                  code {
+                    scope
+                  }
+                  meta {
+                    title
+                  }
+                }
+              }
+            }
+ */
+
+/*
+exports.createPages = ({ graphql, actions }) => {
+  const { createPage } = actions
+
+  return new Promise((resolve, reject) => {
+    const blogPost = path.resolve('./src/templates/blog-post.js')
+    resolve(
+      graphql(
+        `
+          {
+           
+            allMdx(
+              sort: { fields: [frontmatter___date], order: DESC }
+              limit: 1000
+            ) {
+              edges {
+                node {
+                  code {
+                    scope
+                  }
+                  fields {
+                    slug
+                  }
+                  frontmatter {
+                    title
+                  }
+                }
+              }
+            }
+          }
+        `
+      ).then(result => {
+        if (result.errors) {
+          console.log(result.errors) // eslint-disable-line no-console
+          reject(result.errors)
+        }
+
+        // Create blog posts pages.
+        const posts = result.data.allMdx.edges
+
+        _.each(posts, (post, index) => {
+          const previous =
+            index === posts.length - 1 ? null : posts[index + 1].node
+          const next = index === 0 ? null : posts[index - 1].node
+
+          createPage({
+            path: post.node.fields.slug,
+            component: componentWithMDXScope(
+              blogPost,
+              post.node.code.scope,
+              __dirname
+            ),
+            context: {
+              slug: post.node.fields.slug,
+              previous,
+              next,
+            },
+          })
+        })
+        result.data.allContentfulBlogPostMdx.edges.forEach(({ node }) => {
+          createPage({
+            path: `/contentful/${slugify(node.meta.title, { lower: true })}`,
+            component: componentWithMDXScope(
+              path.resolve('./src/templates/contentful-post.js'),
+              node.code.scope,
+              __dirname
+            ),
+            context: { id: node.id },
+          })
+        })
+      })
+    )
+  })
+}
+
+*/
+/**
+ * Add frontmatter as page context for MDX pages
+  
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
@@ -61,11 +232,15 @@ exports.createPages = ({ graphql, actions }) => {
   })
 }
 
-exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
 
-  if (node.internal.type === `MarkdownRemark`) {
+*/ 
+ 
+ 
+exports.onCreateNode = async ({ node, actions, getNode }) => {
+  const { createNodeField } = actions 
+  if (node.internal.type === `Mdx`) {
     const value = createFilePath({ node, getNode })
+
     createNodeField({
       name: `slug`,
       node,
@@ -73,19 +248,31 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     })
   }
 }
-
+ 
 exports.onCreateWebpackConfig = ({
   stage,
   rules,
   loaders,
   plugins,
-  actions,
-}) => {
+  actions, getNodes
+}, pluginOptions) => {
+  const options = defaultOptions(pluginOptions);
+  const testPattern = new RegExp(
+    options.extensions.map(ext => `${escapeStringRegexp(ext)}$`).join("|")
+  );
+  const mdxTestPattern = new RegExp(
+    options.extensions
+      .concat(".deck-mdx")
+      .map(ext => `${escapeStringRegexp(ext)}$`)
+      .join("|")
+  ); 
+  const decks = options.decks.map(ext => `${escapeStringRegexp(ext)}`);
+
   actions.setWebpackConfig({
     module: {
       rules: [
         {
-          test: /\.mjs?$/,
+          test: /\.mjs$/,
           include: /node_modules/,
           type: 'javascript/auto',
           use: [loaders.js()],
@@ -127,8 +314,12 @@ exports.onCreateWebpackConfig = ({
         {
           test: /\.(graphql|gql)$/,
           loader: 'graphql-tag/loader',
-        },
-      ],
-    } 
+        }
+      ]
+    }
+   /* resolve: {
+      modules: [path.resolve(__dirname, "src"), "node_modules"],
+      alias: { $components: path.resolve(__dirname, "src/components") },
+      },*/ 
   })
 }

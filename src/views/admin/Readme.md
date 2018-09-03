@@ -136,12 +136,13 @@ link these property with the ones you defined in Container.web.js
 ### Container.web.js
 
 for this:
+```
 import { upsertUser,  deleteUser,user, users, usersub } from "./query.gql";
 
 can be changed to your own singulary variables:
 
 import { upsertMynode,  deleteMynode,mynode, mynodes, mynodesub } from "./query.gql";
-
+```
 I added sub to specify the subscribtion 
 
 set your variables: 
