@@ -67,9 +67,16 @@ exports.createPages = ({ graphql, actions }) => {
 
           createPage({
             path: post.node.fields.slug,
-            component: post.node.parent.absolutePath,
+           // component: post.node.parent.absolutePath, 
+            component: componentWithMDXScope(
+              path.resolve("./src/templates/layout.js"),
+              post.node.code.scope,
+              __dirname
+            ),
+            
             context: { absPath: post.node.parent.absolutePath,previous,
               next,
+               id: post.node.id,
               tableOfContents: post.node.tableOfContents }
             
           })
