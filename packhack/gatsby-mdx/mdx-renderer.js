@@ -1,5 +1,5 @@
 import { withMDXComponents } from "@mdx-js/tag/dist/mdx-provider";
-import { withMDXScope } from "./context";
+import { withMDXScope } from "gatsby-mdx/context";
 
 export default withMDXScope(
   withMDXComponents(({ scope = {}, components = {}, children, ...props }) => {

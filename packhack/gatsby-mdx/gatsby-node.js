@@ -2,9 +2,9 @@ const path = require("path");
 const fs = require("fs-extra");
 const merge = require("lodash/merge");
 const escapeStringRegexp = require("escape-string-regexp");
-const defaultOptions = require("./utils/default-options");
-const extractExports = require("./utils/extract-exports");
-const mdx = require("./utils/mdx");
+const defaultOptions = require("gatsby-mdx/utils/default-options");
+const extractExports = require("gatsby-mdx/utils/extract-exports");
+const mdx = require("gatsby-mdx/utils/mdx");
 
 /**
  * Create Mdx nodes from MDX files.

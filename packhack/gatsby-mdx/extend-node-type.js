@@ -27,10 +27,10 @@ const babel = require("@babel/core");
 const rawMDX = require("@mdx-js/mdx");
 
 const debug = require("debug")("gatsby-mdx:extend-node-type");
-const mdx = require("./utils/mdx");
-const getTableOfContents = require("./utils/get-table-of-content");
-const defaultOptions = require("./utils/default-options");
-const getSourcePluginsAsRemarkPlugins = require("./utils/get-source-plugins-as-remark-plugins");
+const mdx = require("gatsby-mdx/utils/mdx");
+const getTableOfContents = require("gatsby-mdx/utils/get-table-of-content");
+const defaultOptions = require("gatsby-mdx/utils/default-options");
+const getSourcePluginsAsRemarkPlugins = require("gatsby-mdx/utils/get-source-plugins-as-remark-plugins");
 
 const stripFrontmatter = source => grayMatter(source).content;
 /* 

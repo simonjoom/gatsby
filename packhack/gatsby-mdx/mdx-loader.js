@@ -16,11 +16,11 @@ const {
 const toMDAST = require("remark-parse");
 const squeeze = require("remark-squeeze-paragraphs");
 
-const mdx = require("./utils/mdx");
-const getSourcePluginsAsRemarkPlugins = require("./utils/get-source-plugins-as-remark-plugins");
-const withDefaultOptions = require("./utils/default-options");
-const createMDXNode = require("./utils/create-mdx-node");
-const { createFileNode } = require("./utils/create-fake-file-node");
+const mdx = require("gatsby-mdx/utils/mdx");
+const getSourcePluginsAsRemarkPlugins = require("gatsby-mdx/utils/get-source-plugins-as-remark-plugins");
+const withDefaultOptions = require("gatsby-mdx/utils/default-options");
+const createMDXNode = require("gatsby-mdx/utils/create-mdx-node");
+const { createFileNode } = require("gatsby-mdx/utils/create-fake-file-node");
 const debug = require("debug")("gatsby-mdx:mdx-loader");
 
 const DEFAULT_OPTIONS = {

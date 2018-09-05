@@ -29,7 +29,7 @@ module.exports = {
         ],
         gatsbyRemarkPlugins: [
           {
-            resolve: `${__dirname}/gatsby-remark-images` ,
+            resolve: `${__dirname}/packhack/gatsby-remark-images` ,
             options: {
               maxWidth: 55,
               sizeByPixelDensity: true,

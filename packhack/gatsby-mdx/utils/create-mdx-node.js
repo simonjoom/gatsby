@@ -2,7 +2,7 @@ const crypto = require("crypto");
 const debug = require("debug")("gatsby-mdx:utils/create-mdx-node");
 
 const mdx = require("./mdx");
-const extractExports = require("./extract-exports");
+const extractExports = require("gatsby-mdx/utils/extract-exports");
 
 module.exports = async (
   { node, transform, loadNodeContent, getNode, createNodeId },
