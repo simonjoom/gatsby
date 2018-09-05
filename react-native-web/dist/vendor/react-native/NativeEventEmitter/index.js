@@ -9,60 +9,72 @@
  */
 'use strict';
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-import EventEmitter from '../emitter/EventEmitter';
-import Platform from '../../../exports/Platform';
+var _EventEmitter2 = _interopRequireDefault(require("../emitter/EventEmitter"));
 
-import invariant from 'fbjs/lib/invariant';
+var _Platform = _interopRequireDefault(require("../../../exports/Platform"));
+
+var _invariant = _interopRequireDefault(require("fbjs/lib/invariant"));
 
 /**
  * Abstract base class for implementing event-emitting modules. This implements
  * a subset of the standard EventEmitter node module API.
  */
-var NativeEventEmitter = function (_EventEmitter) {
-  _inherits(NativeEventEmitter, _EventEmitter);
+var NativeEventEmitter =
+/*#__PURE__*/
+function (_EventEmitter) {
+  (0, _inheritsLoose2.default)(NativeEventEmitter, _EventEmitter);
 
   function NativeEventEmitter(nativeModule) {
-    _classCallCheck(this, NativeEventEmitter);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, _EventEmitter.call(this));
+    _this = _EventEmitter.call(this) || this;
 
-    if (Platform.OS === 'ios') {
-      invariant(nativeModule, 'Native module cannot be null.');
+    if (_Platform.default.OS === 'ios') {
+      (0, _invariant.default)(nativeModule, 'Native module cannot be null.');
       _this._nativeModule = nativeModule;
     }
+
     return _this;
   }
 
-  NativeEventEmitter.prototype.addListener = function addListener(eventType, listener, context) {
+  var _proto = NativeEventEmitter.prototype;
+
+  _proto.addListener = function addListener(eventType, listener, context) {
     if (this._nativeModule != null) {
       this._nativeModule.addListener(eventType);
     }
+
     return _EventEmitter.prototype.addListener.call(this, eventType, listener, context);
   };
 
-  NativeEventEmitter.prototype.removeAllListeners = function removeAllListeners(eventType) {
-    invariant(eventType, 'eventType argument is required.');
+  _proto.removeAllListeners = function removeAllListeners(eventType) {
+    (0, _invariant.default)(eventType, 'eventType argument is required.');
     var count = this.listeners(eventType).length;
+
     if (this._nativeModule != null) {
       this._nativeModule.removeListeners(count);
     }
+
     _EventEmitter.prototype.removeAllListeners.call(this, eventType);
   };
 
-  NativeEventEmitter.prototype.removeSubscription = function removeSubscription(subscription) {
+  _proto.removeSubscription = function removeSubscription(subscription) {
     if (this._nativeModule != null) {
       this._nativeModule.removeListeners(1);
     }
+
     _EventEmitter.prototype.removeSubscription.call(this, subscription);
   };
 
   return NativeEventEmitter;
-}(EventEmitter);
+}(_EventEmitter2.default);
 
-export default NativeEventEmitter;
+var _default = NativeEventEmitter;
+exports.default = _default;

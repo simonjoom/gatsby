@@ -1,4 +1,7 @@
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
 
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
@@ -9,11 +12,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  * 
  */
-
-var Clipboard = function () {
-  function Clipboard() {
-    _classCallCheck(this, Clipboard);
-  }
+var Clipboard =
+/*#__PURE__*/
+function () {
+  function Clipboard() {}
 
   Clipboard.isAvailable = function isAvailable() {
     return typeof document.queryCommandSupported === 'function' && document.queryCommandSupported('copy');
@@ -34,22 +36,20 @@ var Clipboard = function () {
       node.style.opacity = '0';
       node.style.position = 'absolute';
       node.style.whiteSpace = 'pre-wrap';
-      body.appendChild(node);
+      body.appendChild(node); // select the text
 
-      // select the text
       var selection = window.getSelection();
       selection.removeAllRanges();
       var range = document.createRange();
       range.selectNodeContents(node);
-      selection.addRange(range);
+      selection.addRange(range); // attempt to copy
 
-      // attempt to copy
       try {
         document.execCommand('copy');
         success = true;
-      } catch (e) {}
+      } catch (e) {} // remove selection and node
 
-      // remove selection and node
+
       selection.removeAllRanges();
       body.removeChild(node);
     }
@@ -60,4 +60,4 @@ var Clipboard = function () {
   return Clipboard;
 }();
 
-export default Clipboard;
+exports.default = Clipboard;

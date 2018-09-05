@@ -1,3 +1,8 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
  *
@@ -6,16 +11,15 @@
  *
  * @noflow
  */
-
 var id = 0;
 var requests = {};
-
 var ImageLoader = {
   abort: function abort(requestId) {
-    var image = requests['' + requestId];
+    var image = requests["" + requestId];
+
     if (image) {
       image.onerror = image.onload = image = null;
-      delete requests['' + requestId];
+      delete requests["" + requestId];
     }
   },
   getSize: function getSize(uri, success, failure) {
@@ -24,7 +28,8 @@ var ImageLoader = {
     var requestId = ImageLoader.load(uri, callback, errorCallback);
 
     function callback() {
-      var image = requests['' + requestId];
+      var image = requests["" + requestId];
+
       if (image) {
         var naturalHeight = image.naturalHeight,
             naturalWidth = image.naturalWidth;
@@ -34,6 +39,7 @@ var ImageLoader = {
           complete = true;
         }
       }
+
       if (complete) {
         ImageLoader.abort(requestId);
         clearInterval(interval);
@@ -44,6 +50,7 @@ var ImageLoader = {
       if (typeof failure === 'function') {
         failure();
       }
+
       ImageLoader.abort(requestId);
       clearInterval(interval);
     }
@@ -52,6 +59,7 @@ var ImageLoader = {
     id += 1;
     var image = new window.Image();
     image.onerror = onError;
+
     image.onload = function (e) {
       // avoid blocking the main thread
       if (typeof image.decode === 'function') {
@@ -64,8 +72,9 @@ var ImageLoader = {
         }, 0);
       }
     };
+
     image.src = uri;
-    requests['' + id] = image;
+    requests["" + id] = image;
     return id;
   },
   prefetch: function prefetch(uri) {
@@ -74,5 +83,5 @@ var ImageLoader = {
     });
   }
 };
-
-export default ImageLoader;
+var _default = ImageLoader;
+exports.default = _default;

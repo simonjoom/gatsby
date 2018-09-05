@@ -10,18 +10,22 @@
  */
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-import PropTypes from 'prop-types';
-import React from 'react';
-import SwipeableRow from '../SwipeableRow';
-import FlatList from '../FlatList';
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _SwipeableRow = _interopRequireDefault(require("../SwipeableRow"));
+
+var _FlatList = _interopRequireDefault(require("../FlatList"));
 
 /**
  * A container component that renders multiple SwipeableRow's in a FlatList
@@ -39,15 +43,15 @@ import FlatList from '../FlatList';
  * - Increase performance on iOS by locking list swiping when row swiping is occurring
  * - More to come
  */
-
-var SwipeableFlatList = function (_React$Component) {
-  _inherits(SwipeableFlatList, _React$Component);
+var SwipeableFlatList =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inheritsLoose2.default)(SwipeableFlatList, _React$Component);
 
   function SwipeableFlatList(props, context) {
-    _classCallCheck(this, SwipeableFlatList);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, _React$Component.call(this, props, context));
-
+    _this = _React$Component.call(this, props, context) || this;
     _this._flatListRef = null;
     _this._shouldBounceFirstRowOnMount = false;
 
@@ -64,36 +68,35 @@ var SwipeableFlatList = function (_React$Component) {
 
     _this._renderItem = function (info) {
       var slideoutView = _this.props.renderQuickActions(info);
-      var key = _this.props.keyExtractor(info.item, info.index);
 
-      // If renderQuickActions is unspecified or returns falsey, don't allow swipe
+      var key = _this.props.keyExtractor(info.item, info.index); // If renderQuickActions is unspecified or returns falsey, don't allow swipe
+
+
       if (!slideoutView) {
         return _this.props.renderItem(info);
       }
 
       var shouldBounceOnMount = false;
+
       if (_this._shouldBounceFirstRowOnMount) {
         _this._shouldBounceFirstRowOnMount = false;
         shouldBounceOnMount = true;
       }
 
-      return React.createElement(
-        SwipeableRow,
-        {
-          slideoutView: slideoutView,
-          isOpen: key === _this.state.openRowKey,
-          maxSwipeDistance: _this._getMaxSwipeDistance(info),
-          onOpen: function onOpen() {
-            return _this._onOpen(key);
-          },
-          onClose: function onClose() {
-            return _this._onClose(key);
-          },
-          shouldBounceOnMount: shouldBounceOnMount,
-          onSwipeEnd: _this._setListViewScrollable,
-          onSwipeStart: _this._setListViewNotScrollable },
-        _this.props.renderItem(info)
-      );
+      return _react.default.createElement(_SwipeableRow.default, {
+        slideoutView: slideoutView,
+        isOpen: key === _this.state.openRowKey,
+        maxSwipeDistance: _this._getMaxSwipeDistance(info),
+        onOpen: function onOpen() {
+          return _this._onOpen(key);
+        },
+        onClose: function onClose() {
+          return _this._onClose(key);
+        },
+        shouldBounceOnMount: shouldBounceOnMount,
+        onSwipeEnd: _this._setListViewScrollable,
+        onSwipeStart: _this._setListViewNotScrollable
+      }, _this.props.renderItem(info));
     };
 
     _this._setListViewScrollable = function () {
@@ -107,15 +110,16 @@ var SwipeableFlatList = function (_React$Component) {
     _this.state = {
       openRowKey: null
     };
-
     _this._shouldBounceFirstRowOnMount = _this.props.bounceFirstRowOnMount;
     return _this;
   }
 
-  SwipeableFlatList.prototype.render = function render() {
+  var _proto = SwipeableFlatList.prototype;
+
+  _proto.render = function render() {
     var _this2 = this;
 
-    return React.createElement(FlatList, _extends({}, this.props, {
+    return _react.default.createElement(_FlatList.default, (0, _extends2.default)({}, this.props, {
       ref: function ref(_ref) {
         _this2._flatListRef = _ref;
       },
@@ -125,7 +129,7 @@ var SwipeableFlatList = function (_React$Component) {
   };
 
   // This enables rows having variable width slideoutView.
-  SwipeableFlatList.prototype._getMaxSwipeDistance = function _getMaxSwipeDistance(info) {
+  _proto._getMaxSwipeDistance = function _getMaxSwipeDistance(info) {
     if (typeof this.props.maxSwipeDistance === 'function') {
       return this.props.maxSwipeDistance(info);
     }
@@ -133,7 +137,7 @@ var SwipeableFlatList = function (_React$Component) {
     return this.props.maxSwipeDistance;
   };
 
-  SwipeableFlatList.prototype._setListViewScrollableTo = function _setListViewScrollableTo(value) {
+  _proto._setListViewScrollableTo = function _setListViewScrollableTo(value) {
     if (this._flatListRef) {
       this._flatListRef.setNativeProps({
         scrollEnabled: value
@@ -141,41 +145,37 @@ var SwipeableFlatList = function (_React$Component) {
     }
   };
 
-  SwipeableFlatList.prototype._onOpen = function _onOpen(key) {
+  _proto._onOpen = function _onOpen(key) {
     this.setState({
       openRowKey: key
     });
   };
 
-  SwipeableFlatList.prototype._onClose = function _onClose(key) {
+  _proto._onClose = function _onClose(key) {
     this.setState({
       openRowKey: null
     });
   };
 
   return SwipeableFlatList;
-}(React.Component);
+}(_react.default.Component);
 
-SwipeableFlatList.defaultProps = Object.assign({}, FlatList.defaultProps, {
+SwipeableFlatList.propTypes = (0, _extends2.default)({}, _FlatList.default.propTypes, {
+  /**
+   * To alert the user that swiping is possible, the first row can bounce
+   * on component mount.
+   */
+  bounceFirstRowOnMount: _propTypes.default.bool.isRequired,
+  // Maximum distance to open to after a swipe
+  maxSwipeDistance: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.func]).isRequired,
+  // Callback method to render the view that will be unveiled on swipe
+  renderQuickActions: _propTypes.default.func.isRequired
+});
+SwipeableFlatList.defaultProps = (0, _extends2.default)({}, _FlatList.default.defaultProps, {
   bounceFirstRowOnMount: true,
   renderQuickActions: function renderQuickActions() {
     return null;
   }
 });
-SwipeableFlatList.propTypes = process.env.NODE_ENV !== "production" ? Object.assign({}, FlatList.propTypes, {
-
-  /**
-   * To alert the user that swiping is possible, the first row can bounce
-   * on component mount.
-   */
-  bounceFirstRowOnMount: PropTypes.bool.isRequired,
-
-  // Maximum distance to open to after a swipe
-  maxSwipeDistance: PropTypes.oneOfType([PropTypes.number, PropTypes.func]).isRequired,
-
-  // Callback method to render the view that will be unveiled on swipe
-  renderQuickActions: PropTypes.func.isRequired
-}) : {};
-
-
-export default SwipeableFlatList;
+var _default = SwipeableFlatList;
+exports.default = _default;

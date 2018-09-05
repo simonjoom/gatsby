@@ -1,12 +1,37 @@
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+"use strict";
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _applyNativeMethods = _interopRequireDefault(require("../../modules/applyNativeMethods"));
+
+var _ColorPropType = _interopRequireDefault(require("../ColorPropType"));
+
+var _createElement = _interopRequireDefault(require("../createElement"));
+
+var _multiplyStyleLengthValue = _interopRequireDefault(require("../../modules/multiplyStyleLengthValue"));
+
+var _StyleSheet = _interopRequireDefault(require("../StyleSheet"));
+
+var _UIManager = _interopRequireDefault(require("../UIManager"));
+
+var _View = _interopRequireDefault(require("../View"));
+
+var _ViewPropTypes = _interopRequireDefault(require("../ViewPropTypes"));
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _propTypes = require("prop-types");
 
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
@@ -16,101 +41,104 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-
-import applyNativeMethods from '../../modules/applyNativeMethods';
-import ColorPropType from '../ColorPropType';
-import createElement from '../createElement';
-import multiplyStyleLengthValue from '../../modules/multiplyStyleLengthValue';
-import StyleSheet from '../StyleSheet';
-import UIManager from '../UIManager';
-import View from '../View';
-import ViewPropTypes from '../ViewPropTypes';
-import React, { Component } from 'react';
-import { bool, func } from 'prop-types';
-
 var emptyObject = {};
 var thumbDefaultBoxShadow = '0px 1px 3px rgba(0,0,0,0.5)';
-var thumbFocusedBoxShadow = thumbDefaultBoxShadow + ', 0 0 0 10px rgba(0,0,0,0.1)';
+var thumbFocusedBoxShadow = thumbDefaultBoxShadow + ", 0 0 0 10px rgba(0,0,0,0.1)";
 
-var Switch = function (_Component) {
-  _inherits(Switch, _Component);
+var Switch =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(Switch, _Component);
 
   function Switch() {
-    var _temp, _this, _ret;
+    var _this;
 
-    _classCallCheck(this, Switch);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this._handleChange = function (event) {
-      var onValueChange = _this.props.onValueChange;
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
 
+    _this._handleChange = function (event) {
+      var onValueChange = _this.props.onValueChange;
       onValueChange && onValueChange(event.nativeEvent.target.checked);
-    }, _this._handleFocusState = function (event) {
+    };
+
+    _this._handleFocusState = function (event) {
       var isFocused = event.nativeEvent.type === 'focus';
       var boxShadow = isFocused ? thumbFocusedBoxShadow : thumbDefaultBoxShadow;
+
       if (_this._thumbElement) {
-        _this._thumbElement.setNativeProps({ style: { boxShadow: boxShadow } });
+        _this._thumbElement.setNativeProps({
+          style: {
+            boxShadow: boxShadow
+          }
+        });
       }
-    }, _this._setCheckboxRef = function (element) {
+    };
+
+    _this._setCheckboxRef = function (element) {
       _this._checkboxElement = element;
-    }, _this._setThumbRef = function (element) {
+    };
+
+    _this._setThumbRef = function (element) {
       _this._thumbElement = element;
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    return _this;
   }
 
-  Switch.prototype.blur = function blur() {
-    UIManager.blur(this._checkboxElement);
+  var _proto = Switch.prototype;
+
+  _proto.blur = function blur() {
+    _UIManager.default.blur(this._checkboxElement);
   };
 
-  Switch.prototype.focus = function focus() {
-    UIManager.focus(this._checkboxElement);
+  _proto.focus = function focus() {
+    _UIManager.default.focus(this._checkboxElement);
   };
 
-  Switch.prototype.render = function render() {
-    var _props = this.props,
-        activeThumbColor = _props.activeThumbColor,
-        activeTrackColor = _props.activeTrackColor,
-        disabled = _props.disabled,
-        onValueChange = _props.onValueChange,
-        style = _props.style,
-        thumbColor = _props.thumbColor,
-        trackColor = _props.trackColor,
-        value = _props.value,
-        onTintColor = _props.onTintColor,
-        thumbTintColor = _props.thumbTintColor,
-        tintColor = _props.tintColor,
-        other = _objectWithoutProperties(_props, ['activeThumbColor', 'activeTrackColor', 'disabled', 'onValueChange', 'style', 'thumbColor', 'trackColor', 'value', 'onTintColor', 'thumbTintColor', 'tintColor']);
+  _proto.render = function render() {
+    var _this$props = this.props,
+        activeThumbColor = _this$props.activeThumbColor,
+        activeTrackColor = _this$props.activeTrackColor,
+        disabled = _this$props.disabled,
+        onValueChange = _this$props.onValueChange,
+        style = _this$props.style,
+        thumbColor = _this$props.thumbColor,
+        trackColor = _this$props.trackColor,
+        value = _this$props.value,
+        onTintColor = _this$props.onTintColor,
+        thumbTintColor = _this$props.thumbTintColor,
+        tintColor = _this$props.tintColor,
+        other = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["activeThumbColor", "activeTrackColor", "disabled", "onValueChange", "style", "thumbColor", "trackColor", "value", "onTintColor", "thumbTintColor", "tintColor"]);
 
-    var _StyleSheet$flatten = StyleSheet.flatten(style),
+    var _StyleSheet$flatten = _StyleSheet.default.flatten(style),
         styleHeight = _StyleSheet$flatten.height,
         styleWidth = _StyleSheet$flatten.width;
 
     var height = styleHeight || 20;
-    var minWidth = multiplyStyleLengthValue(height, 2);
+    var minWidth = (0, _multiplyStyleLengthValue.default)(height, 2);
     var width = styleWidth > minWidth ? styleWidth : minWidth;
-    var trackBorderRadius = multiplyStyleLengthValue(height, 0.5);
+    var trackBorderRadius = (0, _multiplyStyleLengthValue.default)(height, 0.5);
     var trackCurrentColor = value ? onTintColor || activeTrackColor : tintColor || trackColor;
     var thumbCurrentColor = value ? activeThumbColor : thumbTintColor || thumbColor;
     var thumbHeight = height;
     var thumbWidth = thumbHeight;
-
-    var rootStyle = [styles.root, style, { height: height, width: width }, disabled && styles.cursorDefault];
-
+    var rootStyle = [styles.root, style, {
+      height: height,
+      width: width
+    }, disabled && styles.cursorDefault];
     var trackStyle = [styles.track, {
       backgroundColor: trackCurrentColor,
       borderRadius: trackBorderRadius
     }, disabled && styles.disabledTrack];
-
     var thumbStyle = [styles.thumb, {
       backgroundColor: thumbCurrentColor,
       height: thumbHeight,
       width: thumbWidth
     }, disabled && styles.disabledThumb];
-
-    var nativeControl = createElement('input', {
+    var nativeControl = (0, _createElement.default)('input', {
       checked: value,
       disabled: disabled,
       onBlur: this._handleFocusState,
@@ -120,25 +148,39 @@ var Switch = function (_Component) {
       style: [styles.nativeControl, styles.cursorInherit],
       type: 'checkbox'
     });
-
-    return React.createElement(
-      View,
-      _extends({}, other, { style: rootStyle }),
-      React.createElement(View, { style: trackStyle }),
-      React.createElement(View, {
-        ref: this._setThumbRef,
-        style: [thumbStyle, value && styles.thumbOn, {
-          marginStart: value ? multiplyStyleLengthValue(thumbWidth, -1) : 0
-        }]
-      }),
-      nativeControl
-    );
+    return _react.default.createElement(_View.default, (0, _extends2.default)({}, other, {
+      style: rootStyle
+    }), _react.default.createElement(_View.default, {
+      style: trackStyle
+    }), _react.default.createElement(_View.default, {
+      ref: this._setThumbRef,
+      style: [thumbStyle, value && styles.thumbOn, {
+        marginStart: value ? (0, _multiplyStyleLengthValue.default)(thumbWidth, -1) : 0
+      }]
+    }), nativeControl);
   };
 
   return Switch;
-}(Component);
+}(_react.Component);
 
 Switch.displayName = 'Switch';
+Switch.propTypes = (0, _extends2.default)({}, _ViewPropTypes.default, {
+  activeThumbColor: _ColorPropType.default,
+  activeTrackColor: _ColorPropType.default,
+  disabled: _propTypes.bool,
+  onValueChange: _propTypes.func,
+  thumbColor: _ColorPropType.default,
+  trackColor: _ColorPropType.default,
+  value: _propTypes.bool,
+
+  /* eslint-disable react/sort-prop-types */
+  // Equivalent of 'activeTrackColor'
+  onTintColor: _ColorPropType.default,
+  // Equivalent of 'thumbColor'
+  thumbTintColor: _ColorPropType.default,
+  // Equivalent of 'trackColor'
+  tintColor: _ColorPropType.default
+});
 Switch.defaultProps = {
   activeThumbColor: '#009688',
   activeTrackColor: '#A3D3CF',
@@ -148,26 +190,8 @@ Switch.defaultProps = {
   trackColor: '#939393',
   value: false
 };
-Switch.propTypes = process.env.NODE_ENV !== "production" ? Object.assign({}, ViewPropTypes, {
-  activeThumbColor: ColorPropType,
-  activeTrackColor: ColorPropType,
-  disabled: bool,
-  onValueChange: func,
-  thumbColor: ColorPropType,
-  trackColor: ColorPropType,
-  value: bool,
 
-  /* eslint-disable react/sort-prop-types */
-  // Equivalent of 'activeTrackColor'
-  onTintColor: ColorPropType,
-  // Equivalent of 'thumbColor'
-  thumbTintColor: ColorPropType,
-  // Equivalent of 'trackColor'
-  tintColor: ColorPropType
-}) : {};
-
-
-var styles = StyleSheet.create({
+var styles = _StyleSheet.default.create({
   root: {
     cursor: 'pointer',
     userSelect: 'none'
@@ -178,7 +202,7 @@ var styles = StyleSheet.create({
   cursorInherit: {
     cursor: 'inherit'
   },
-  track: Object.assign({}, StyleSheet.absoluteFillObject, {
+  track: (0, _extends2.default)({}, _StyleSheet.default.absoluteFillObject, {
     height: '70%',
     margin: 'auto',
     transitionDuration: '0.1s',
@@ -192,7 +216,9 @@ var styles = StyleSheet.create({
     borderRadius: '100%',
     boxShadow: thumbDefaultBoxShadow,
     start: '0%',
-    transform: [{ translateZ: 0 }],
+    transform: [{
+      translateZ: 0
+    }],
     transitionDuration: '0.1s'
   },
   thumbOn: {
@@ -201,7 +227,7 @@ var styles = StyleSheet.create({
   disabledThumb: {
     backgroundColor: '#BDBDBD'
   },
-  nativeControl: Object.assign({}, StyleSheet.absoluteFillObject, {
+  nativeControl: (0, _extends2.default)({}, _StyleSheet.default.absoluteFillObject, {
     height: '100%',
     margin: 0,
     opacity: 0,
@@ -210,4 +236,6 @@ var styles = StyleSheet.create({
   })
 });
 
-export default applyNativeMethods(Switch);
+var _default = (0, _applyNativeMethods.default)(Switch);
+
+exports.default = _default;

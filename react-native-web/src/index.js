@@ -46,7 +46,7 @@ import Image from './exports/Image';
 import ImageBackground from './exports/ImageBackground';
 import KeyboardAvoidingView from './exports/KeyboardAvoidingView';
 import ListView from './exports/ListView';
-// import Modal from './exports/Modal';
+import Modal from './exports/Modal';
 import Picker from './exports/Picker';
 import ProgressBar from './exports/ProgressBar';
 import RefreshControl from './exports/RefreshControl';
@@ -155,7 +155,7 @@ export {
   ImageBackground,
   KeyboardAvoidingView,
   ListView,
-  // Modal,
+   Modal,
   Picker,
   ProgressBar,
   RefreshControl,
@@ -262,7 +262,7 @@ const ReactNative = {
   ImageBackground,
   KeyboardAvoidingView,
   ListView,
-  // Modal,
+  Modal,
   Picker,
   ProgressBar,
   RefreshControl,

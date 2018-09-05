@@ -1,3 +1,30 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _AccessibilityUtil = _interopRequireDefault(require("../../modules/AccessibilityUtil"));
+
+var _BoundingDimensions = _interopRequireDefault(require("./BoundingDimensions"));
+
+var _findNodeHandle = _interopRequireDefault(require("../findNodeHandle"));
+
+var _normalizeCssColor = _interopRequireDefault(require("normalize-css-color"));
+
+var _Position = _interopRequireDefault(require("./Position"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _TouchEventUtils = _interopRequireDefault(require("fbjs/lib/TouchEventUtils"));
+
+var _UIManager = _interopRequireDefault(require("../UIManager"));
+
+var _View = _interopRequireDefault(require("../View"));
+
 /* eslint-disable react/prop-types */
 
 /**
@@ -9,16 +36,6 @@
  *
  * 
  */
-
-import AccessibilityUtil from '../../modules/AccessibilityUtil';
-import BoundingDimensions from './BoundingDimensions';
-import findNodeHandle from '../findNodeHandle';
-import normalizeColor from 'normalize-css-color';
-import Position from './Position';
-import React from 'react';
-import TouchEventUtils from 'fbjs/lib/TouchEventUtils';
-import UIManager from '../UIManager';
-import View from '../View';
 
 /**
  * `Touchable`: Taps done right.
@@ -109,41 +126,47 @@ import View from '../View';
  * Touchable states.
  */
 var States = {
-  NOT_RESPONDER: 'NOT_RESPONDER', // Not the responder
-  RESPONDER_INACTIVE_PRESS_IN: 'RESPONDER_INACTIVE_PRESS_IN', // Responder, inactive, in the `PressRect`
-  RESPONDER_INACTIVE_PRESS_OUT: 'RESPONDER_INACTIVE_PRESS_OUT', // Responder, inactive, out of `PressRect`
-  RESPONDER_ACTIVE_PRESS_IN: 'RESPONDER_ACTIVE_PRESS_IN', // Responder, active, in the `PressRect`
-  RESPONDER_ACTIVE_PRESS_OUT: 'RESPONDER_ACTIVE_PRESS_OUT', // Responder, active, out of `PressRect`
-  RESPONDER_ACTIVE_LONG_PRESS_IN: 'RESPONDER_ACTIVE_LONG_PRESS_IN', // Responder, active, in the `PressRect`, after long press threshold
-  RESPONDER_ACTIVE_LONG_PRESS_OUT: 'RESPONDER_ACTIVE_LONG_PRESS_OUT', // Responder, active, out of `PressRect`, after long press threshold
+  NOT_RESPONDER: 'NOT_RESPONDER',
+  // Not the responder
+  RESPONDER_INACTIVE_PRESS_IN: 'RESPONDER_INACTIVE_PRESS_IN',
+  // Responder, inactive, in the `PressRect`
+  RESPONDER_INACTIVE_PRESS_OUT: 'RESPONDER_INACTIVE_PRESS_OUT',
+  // Responder, inactive, out of `PressRect`
+  RESPONDER_ACTIVE_PRESS_IN: 'RESPONDER_ACTIVE_PRESS_IN',
+  // Responder, active, in the `PressRect`
+  RESPONDER_ACTIVE_PRESS_OUT: 'RESPONDER_ACTIVE_PRESS_OUT',
+  // Responder, active, out of `PressRect`
+  RESPONDER_ACTIVE_LONG_PRESS_IN: 'RESPONDER_ACTIVE_LONG_PRESS_IN',
+  // Responder, active, in the `PressRect`, after long press threshold
+  RESPONDER_ACTIVE_LONG_PRESS_OUT: 'RESPONDER_ACTIVE_LONG_PRESS_OUT',
+  // Responder, active, out of `PressRect`, after long press threshold
   ERROR: 'ERROR'
 };
-
 /**
  * Quick lookup map for states that are considered to be "active"
  */
+
 var IsActive = {
   RESPONDER_ACTIVE_PRESS_OUT: true,
   RESPONDER_ACTIVE_PRESS_IN: true
 };
-
 /**
  * Quick lookup for states that are considered to be "pressing" and are
  * therefore eligible to result in a "selection" if the press stops.
  */
+
 var IsPressingIn = {
   RESPONDER_INACTIVE_PRESS_IN: true,
   RESPONDER_ACTIVE_PRESS_IN: true,
   RESPONDER_ACTIVE_LONG_PRESS_IN: true
 };
-
 var IsLongPressingIn = {
   RESPONDER_ACTIVE_LONG_PRESS_IN: true
 };
-
 /**
  * Inputs to the state machine.
  */
+
 var Signals = {
   DELAY: 'DELAY',
   RESPONDER_GRANT: 'RESPONDER_GRANT',
@@ -153,10 +176,10 @@ var Signals = {
   LEAVE_PRESS_RECT: 'LEAVE_PRESS_RECT',
   LONG_PRESS_DETECTED: 'LONG_PRESS_DETECTED'
 };
-
 /**
  * Mapping from States x Signals => States
  */
+
 var Transitions = {
   NOT_RESPONDER: {
     DELAY: States.ERROR,
@@ -230,22 +253,15 @@ var Transitions = {
     LEAVE_PRESS_RECT: States.NOT_RESPONDER,
     LONG_PRESS_DETECTED: States.NOT_RESPONDER
   }
-};
-
-// ==== Typical Constants for integrating into UI components ====
+}; // ==== Typical Constants for integrating into UI components ====
 // var HIT_EXPAND_PX = 20;
 // var HIT_VERT_OFFSET_PX = 10;
+
 var HIGHLIGHT_DELAY_MS = 130;
-
 var PRESS_EXPAND_PX = 20;
-
 var LONG_PRESS_THRESHOLD = 500;
-
 var LONG_PRESS_DELAY_MS = LONG_PRESS_THRESHOLD - HIGHLIGHT_DELAY_MS;
-
-var LONG_PRESS_ALLOWED_MOVEMENT = 10;
-
-// Default amount "active" region protrudes beyond box
+var LONG_PRESS_ALLOWED_MOVEMENT = 10; // Default amount "active" region protrudes beyond box
 
 /**
  * By convention, methods prefixed with underscores are meant to be @private,
@@ -311,21 +327,27 @@ var LONG_PRESS_ALLOWED_MOVEMENT = 10;
  *
  * @lends Touchable.prototype
  */
+
 var TouchableMixin = {
   // HACK (part 1): basic support for touchable interactions using a keyboard
   componentDidMount: function componentDidMount() {
     var _this = this;
 
-    this._touchableNode = findNodeHandle(this);
+    this._touchableNode = (0, _findNodeHandle.default)(this);
+
     if (this._touchableNode && this._touchableNode.addEventListener) {
       this._touchableBlurListener = function (e) {
         if (_this._isTouchableKeyboardActive) {
           if (_this.state.touchable.touchState && _this.state.touchable.touchState !== States.NOT_RESPONDER) {
-            _this.touchableHandleResponderTerminate({ nativeEvent: e });
+            _this.touchableHandleResponderTerminate({
+              nativeEvent: e
+            });
           }
+
           _this._isTouchableKeyboardActive = false;
         }
       };
+
       this._touchableNode.addEventListener('blur', this._touchableBlurListener);
     }
   },
@@ -337,6 +359,7 @@ var TouchableMixin = {
     if (this._touchableNode && this._touchableNode.addEventListener) {
       this._touchableNode.removeEventListener('blur', this._touchableBlurListener);
     }
+
     this.touchableDelayTimeout && clearTimeout(this.touchableDelayTimeout);
     this.longPressDelayTimeout && clearTimeout(this.longPressDelayTimeout);
     this.pressOutDelayTimeout && clearTimeout(this.pressOutDelayTimeout);
@@ -351,11 +374,14 @@ var TouchableMixin = {
    */
   touchableGetInitialState: function touchableGetInitialState() {
     return {
-      touchable: { touchState: undefined, responderID: null }
+      touchable: {
+        touchState: undefined,
+        responderID: null
+      }
     };
   },
-
   // ==== Hooks to Gesture Responder system ====
+
   /**
    * Must return true if embedded in a native platform scroll view.
    */
@@ -381,23 +407,26 @@ var TouchableMixin = {
    * Place as callback for a DOM element's `onResponderGrant` event.
    */
   touchableHandleResponderGrant: function touchableHandleResponderGrant(e) {
-    var dispatchID = e.currentTarget;
-    // Since e is used in a callback invoked on another event loop
+    var dispatchID = e.currentTarget; // Since e is used in a callback invoked on another event loop
     // (as in setTimeout etc), we need to call e.persist() on the
     // event to make sure it doesn't get reused in the event object pool.
+
     e.persist();
     this.pressOutDelayTimeout && clearTimeout(this.pressOutDelayTimeout);
     this.pressOutDelayTimeout = null;
-
     this.state.touchable.touchState = States.NOT_RESPONDER;
     this.state.touchable.responderID = dispatchID;
+
     this._receiveSignal(Signals.RESPONDER_GRANT, e);
+
     var delayMS = this.touchableGetHighlightDelayMS !== undefined ? Math.max(this.touchableGetHighlightDelayMS(), 0) : HIGHLIGHT_DELAY_MS;
     delayMS = isNaN(delayMS) ? HIGHLIGHT_DELAY_MS : delayMS;
+
     if (delayMS !== 0) {
       this.touchableDelayTimeout = setTimeout(this._handleDelay.bind(this, e), delayMS);
     } else {
       this.state.touchable.positionOnActivate = null;
+
       this._handleDelay(e);
     }
 
@@ -428,9 +457,9 @@ var TouchableMixin = {
     // this is just a perf optimization.
     if (this.state.touchable.touchState === States.RESPONDER_INACTIVE_PRESS_IN) {
       return;
-    }
+    } // Measurement may not have returned yet.
 
-    // Measurement may not have returned yet.
+
     if (!this.state.touchable.positionOnActivate) {
       return;
     }
@@ -443,12 +472,10 @@ var TouchableMixin = {
       top: PRESS_EXPAND_PX,
       bottom: PRESS_EXPAND_PX
     };
-
     var pressExpandLeft = pressRectOffset.left;
     var pressExpandTop = pressRectOffset.top;
     var pressExpandRight = pressRectOffset.right;
     var pressExpandBottom = pressRectOffset.bottom;
-
     var hitSlop = this.touchableGetHitSlop ? this.touchableGetHitSlop() : null;
 
     if (hitSlop) {
@@ -458,31 +485,36 @@ var TouchableMixin = {
       pressExpandBottom += hitSlop.bottom;
     }
 
-    var touch = TouchEventUtils.extractSingleTouch(e.nativeEvent);
+    var touch = _TouchEventUtils.default.extractSingleTouch(e.nativeEvent);
+
     var pageX = touch && touch.pageX;
     var pageY = touch && touch.pageY;
 
     if (this.pressInLocation) {
       var movedDistance = this._getDistanceBetweenPoints(pageX, pageY, this.pressInLocation.pageX, this.pressInLocation.pageY);
+
       if (movedDistance > LONG_PRESS_ALLOWED_MOVEMENT) {
         this._cancelLongPressDelayTimeout();
       }
     }
 
     var isTouchWithinActive = pageX > positionOnActivate.left - pressExpandLeft && pageY > positionOnActivate.top - pressExpandTop && pageX < positionOnActivate.left + dimensionsOnActivate.width + pressExpandRight && pageY < positionOnActivate.top + dimensionsOnActivate.height + pressExpandBottom;
+
     if (isTouchWithinActive) {
       this._receiveSignal(Signals.ENTER_PRESS_RECT, e);
+
       var curState = this.state.touchable.touchState;
+
       if (curState === States.RESPONDER_INACTIVE_PRESS_IN) {
         // fix for t7967420
         this._cancelLongPressDelayTimeout();
       }
     } else {
       this._cancelLongPressDelayTimeout();
+
       this._receiveSignal(Signals.LEAVE_PRESS_RECT, e);
     }
   },
-
   // ==== Abstract Application Callbacks ====
 
   /**
@@ -544,7 +576,6 @@ var TouchableMixin = {
    * @abstract
    * touchableGetPressRectOffset: function
    */
-
   // ==== Internal Logic ====
 
   /**
@@ -561,35 +592,35 @@ var TouchableMixin = {
    */
   _remeasureMetricsOnActivation: function _remeasureMetricsOnActivation() {
     var tag = this.state.touchable.responderID;
+
     if (tag == null) {
       return;
     }
 
-    UIManager.measure(tag, this._handleQueryLayout);
+    _UIManager.default.measure(tag, this._handleQueryLayout);
   },
-
   _handleQueryLayout: function _handleQueryLayout(x, y, width, height, globalX, globalY) {
     // don't do anything if UIManager failed to measure node
     if (!x && !y && !width && !height && !globalX && !globalY) {
       return;
     }
-    this.state.touchable.positionOnActivate && Position.release(this.state.touchable.positionOnActivate);
-    this.state.touchable.dimensionsOnActivate &&
-    // $FlowFixMe
-    BoundingDimensions.release(this.state.touchable.dimensionsOnActivate);
-    this.state.touchable.positionOnActivate = Position.getPooled(globalX, globalY);
-    // $FlowFixMe
-    this.state.touchable.dimensionsOnActivate = BoundingDimensions.getPooled(width, height);
-  },
 
+    this.state.touchable.positionOnActivate && _Position.default.release(this.state.touchable.positionOnActivate);
+    this.state.touchable.dimensionsOnActivate && // $FlowFixMe
+    _BoundingDimensions.default.release(this.state.touchable.dimensionsOnActivate);
+    this.state.touchable.positionOnActivate = _Position.default.getPooled(globalX, globalY); // $FlowFixMe
+
+    this.state.touchable.dimensionsOnActivate = _BoundingDimensions.default.getPooled(width, height);
+  },
   _handleDelay: function _handleDelay(e) {
     this.touchableDelayTimeout = null;
+
     this._receiveSignal(Signals.DELAY, e);
   },
-
   _handleLongDelay: function _handleLongDelay(e) {
     this.longPressDelayTimeout = null;
     var curState = this.state.touchable.touchState;
+
     if (curState !== States.RESPONDER_ACTIVE_PRESS_IN && curState !== States.RESPONDER_ACTIVE_LONG_PRESS_IN) {
       console.error('Attempted to transition from state `' + curState + '` to `' + States.RESPONDER_ACTIVE_LONG_PRESS_IN + '`, which is not supported. This is ' + 'most likely due to `Touchable.longPressDelayTimeout` not being cancelled.');
     } else {
@@ -609,39 +640,46 @@ var TouchableMixin = {
     var responderID = this.state.touchable.responderID;
     var curState = this.state.touchable.touchState;
     var nextState = Transitions[curState] && Transitions[curState][signal];
+
     if (!responderID && signal === Signals.RESPONDER_RELEASE) {
       return;
     }
+
     if (!nextState) {
       throw new Error('Unrecognized signal `' + signal + '` or state `' + curState + '` for Touchable responder `' + responderID + '`');
     }
+
     if (nextState === States.ERROR) {
       throw new Error('Touchable cannot transition from `' + curState + '` to `' + signal + '` for responder `' + responderID + '`');
     }
+
     if (curState !== nextState) {
       this._performSideEffectsForTransition(curState, nextState, signal, e);
+
       this.state.touchable.touchState = nextState;
     }
   },
-
   _cancelLongPressDelayTimeout: function _cancelLongPressDelayTimeout() {
     this.longPressDelayTimeout && clearTimeout(this.longPressDelayTimeout);
     this.longPressDelayTimeout = null;
   },
-
   _isHighlight: function _isHighlight(state) {
     return state === States.RESPONDER_ACTIVE_PRESS_IN || state === States.RESPONDER_ACTIVE_LONG_PRESS_IN;
   },
-
   _savePressInLocation: function _savePressInLocation(e) {
-    var touch = TouchEventUtils.extractSingleTouch(e.nativeEvent);
+    var touch = _TouchEventUtils.default.extractSingleTouch(e.nativeEvent);
+
     var pageX = touch && touch.pageX;
     var pageY = touch && touch.pageY;
     var locationX = touch && touch.locationX;
     var locationY = touch && touch.locationY;
-    this.pressInLocation = { pageX: pageX, pageY: pageY, locationX: locationX, locationY: locationY };
+    this.pressInLocation = {
+      pageX: pageX,
+      pageY: pageY,
+      locationX: locationX,
+      locationY: locationY
+    };
   },
-
   _getDistanceBetweenPoints: function _getDistanceBetweenPoints(aX, aY, bX, bY) {
     var deltaX = aX - bX;
     var deltaY = aY - bY;
@@ -661,6 +699,7 @@ var TouchableMixin = {
    */
   _performSideEffectsForTransition: function _performSideEffectsForTransition(curState, nextState, signal, e) {
     var curIsHighlight = this._isHighlight(curState);
+
     var newIsHighlight = this._isHighlight(nextState);
 
     var isFinalSignal = signal === Signals.RESPONDER_TERMINATED || signal === Signals.RESPONDER_RELEASE;
@@ -690,12 +729,15 @@ var TouchableMixin = {
       !this.touchableLongPressCancelsPress()); // or we're told to ignore it.
 
       var shouldInvokePress = !IsLongPressingIn[curState] || pressIsLongButStillCallOnPress;
+
       if (shouldInvokePress && this.touchableHandlePress) {
         if (!newIsHighlight && !curIsHighlight) {
           // we never highlighted because of delay, but we should highlight now
           this._startHighlight(e);
+
           this._endHighlight(e);
         }
+
         this.touchableHandlePress(e);
       }
     }
@@ -703,12 +745,11 @@ var TouchableMixin = {
     this.touchableDelayTimeout && clearTimeout(this.touchableDelayTimeout);
     this.touchableDelayTimeout = null;
   },
-
   _startHighlight: function _startHighlight(e) {
     this._savePressInLocation(e);
+
     this.touchableHandleActivePressIn && this.touchableHandleActivePressIn(e);
   },
-
   _endHighlight: function _endHighlight(e) {
     var _this2 = this;
 
@@ -722,7 +763,6 @@ var TouchableMixin = {
       }
     }
   },
-
   // HACK (part 2): basic support for touchable interactions using a keyboard (including
   // delays and longPress)
   touchableHandleKeyEvent: function touchableHandleKeyEvent(e) {
@@ -747,19 +787,21 @@ var TouchableMixin = {
           }
         }
       }
-      e.stopPropagation();
-      // prevent the default behaviour unless the Touchable functions as a link
+
+      e.stopPropagation(); // prevent the default behaviour unless the Touchable functions as a link
       // and Enter is pressed
-      if (!(which === ENTER && AccessibilityUtil.propsToAriaRole(this.props) === 'link')) {
+
+      if (!(which === ENTER && _AccessibilityUtil.default.propsToAriaRole(this.props) === 'link')) {
         e.preventDefault();
       }
     }
   }
 };
-
 var Touchable = {
   Mixin: TouchableMixin,
-  TOUCH_TARGET_DEBUG: false, // Highlights all touchable targets. Toggle with Inspector.
+  TOUCH_TARGET_DEBUG: false,
+  // Highlights all touchable targets. Toggle with Inspector.
+
   /**
    * Renders a debugging overlay to visualize touch target with hitSlop (might not work on Android).
    */
@@ -771,23 +813,33 @@ var Touchable = {
       if (!Touchable.TOUCH_TARGET_DEBUG) {
         return null;
       }
+
       var debugHitSlopStyle = {};
-      hitSlop = hitSlop || { top: 0, bottom: 0, left: 0, right: 0 };
+      hitSlop = hitSlop || {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+      };
+
       for (var key in hitSlop) {
         debugHitSlopStyle[key] = -hitSlop[key];
       }
-      var hexColor = '#' + ('00000000' + normalizeColor(color).toString(16)).substr(-8);
-      return React.createElement(View, {
-        pointerEvents: 'none',
-        style: Object.assign({
+
+      var hexColor = '#' + ('00000000' + (0, _normalizeCssColor.default)(color).toString(16)).substr(-8);
+      return _react.default.createElement(_View.default, {
+        pointerEvents: "none",
+        style: (0, _extends2.default)({
           position: 'absolute',
-          borderColor: hexColor.slice(0, -2) + '55', // More opaque
+          borderColor: hexColor.slice(0, -2) + '55',
+          // More opaque
           borderWidth: 1,
           borderStyle: 'dashed',
-          backgroundColor: hexColor.slice(0, -2) + '0F' }, debugHitSlopStyle)
+          backgroundColor: hexColor.slice(0, -2) + '0F'
+        }, debugHitSlopStyle)
       });
     }
   }
 };
-
-export default Touchable;
+var _default = Touchable;
+exports.default = _default;

@@ -1,3 +1,14 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _createStrictShapeTypeChecker = _interopRequireDefault(require("../../modules/createStrictShapeTypeChecker"));
+
+var _propTypes = require("prop-types");
+
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  *
@@ -6,13 +17,9 @@
  *
  * 
  */
-
-import createStrictShapeTypeChecker from '../../modules/createStrictShapeTypeChecker';
-import { number } from 'prop-types';
-
-var PointPropType = createStrictShapeTypeChecker({
-  x: number,
-  y: number
+var PointPropType = (0, _createStrictShapeTypeChecker.default)({
+  x: _propTypes.number,
+  y: _propTypes.number
 });
-
-export default PointPropType;
+var _default = PointPropType;
+exports.default = _default;

@@ -9,18 +9,20 @@
  */
 'use strict';
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-import invariant from 'fbjs/lib/invariant';
+exports.__esModule = true;
+exports.default = void 0;
 
-var EventHolder = function () {
+var _invariant = _interopRequireDefault(require("fbjs/lib/invariant"));
+
+var EventHolder =
+/*#__PURE__*/
+function () {
   function EventHolder() {
-    _classCallCheck(this, EventHolder);
-
     this._heldEvents = {};
     this._currentEventKey = null;
   }
-
   /**
    * Holds a given event for processing later.
    *
@@ -44,7 +46,9 @@ var EventHolder = function () {
    */
 
 
-  EventHolder.prototype.holdEvent = function holdEvent(eventType) {
+  var _proto = EventHolder.prototype;
+
+  _proto.holdEvent = function holdEvent(eventType) {
     this._heldEvents[eventType] = this._heldEvents[eventType] || [];
     var eventsOfType = this._heldEvents[eventType];
     var key = {
@@ -52,14 +56,13 @@ var EventHolder = function () {
       index: eventsOfType.length
     };
 
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
 
     eventsOfType.push(args);
     return key;
   };
-
   /**
    * Emits the held events of the specified type to the given listener.
    *
@@ -70,18 +73,25 @@ var EventHolder = function () {
    */
 
 
-  EventHolder.prototype.emitToListener = function emitToListener(eventType, listener, context) {
+  _proto.emitToListener = function emitToListener(eventType, listener, context) {
     var _this = this;
 
     var eventsOfType = this._heldEvents[eventType];
+
     if (!eventsOfType) {
       return;
     }
+
     var origEventKey = this._currentEventKey;
-    eventsOfType.forEach(function ( /*?array*/eventHeld, /*number*/index) {
+    eventsOfType.forEach(function (
+    /*?array*/
+    eventHeld,
+    /*number*/
+    index) {
       if (!eventHeld) {
         return;
       }
+
       _this._currentEventKey = {
         eventType: eventType,
         index: index
@@ -90,7 +100,6 @@ var EventHolder = function () {
     });
     this._currentEventKey = origEventKey;
   };
-
   /**
    * Provides an API that can be called during an eventing cycle to release
    * the last event that was invoked, so that it is no longer "held".
@@ -101,11 +110,10 @@ var EventHolder = function () {
    */
 
 
-  EventHolder.prototype.releaseCurrentEvent = function releaseCurrentEvent() {
-    invariant(this._currentEventKey !== null, 'Not in an emitting cycle; there is no current event');
+  _proto.releaseCurrentEvent = function releaseCurrentEvent() {
+    (0, _invariant.default)(this._currentEventKey !== null, 'Not in an emitting cycle; there is no current event');
     this._currentEventKey && this.releaseEvent(this._currentEventKey);
   };
-
   /**
    * Releases the event corresponding to the handle that was returned when the
    * event was first held.
@@ -114,10 +122,9 @@ var EventHolder = function () {
    */
 
 
-  EventHolder.prototype.releaseEvent = function releaseEvent(token) {
+  _proto.releaseEvent = function releaseEvent(token) {
     delete this._heldEvents[token.eventType][token.index];
   };
-
   /**
    * Releases all events of a certain type.
    *
@@ -125,11 +132,12 @@ var EventHolder = function () {
    */
 
 
-  EventHolder.prototype.releaseEventType = function releaseEventType(type) {
+  _proto.releaseEventType = function releaseEventType(type) {
     this._heldEvents[type] = [];
   };
 
   return EventHolder;
 }();
 
-export default EventHolder;
+var _default = EventHolder;
+exports.default = _default;

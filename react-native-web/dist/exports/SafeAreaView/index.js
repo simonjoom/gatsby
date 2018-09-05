@@ -1,12 +1,23 @@
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+"use strict";
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _StyleSheet = _interopRequireDefault(require("../StyleSheet"));
+
+var _View = _interopRequireDefault(require("../View"));
+
+var _ViewPropTypes = _interopRequireDefault(require("../ViewPropTypes"));
 
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,37 +27,33 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-
-import React from 'react';
-import StyleSheet from '../StyleSheet';
-import View from '../View';
-import ViewPropTypes from '../ViewPropTypes';
-
-var SafeAreaView = function (_React$Component) {
-  _inherits(SafeAreaView, _React$Component);
+var SafeAreaView =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inheritsLoose2.default)(SafeAreaView, _React$Component);
 
   function SafeAreaView() {
-    _classCallCheck(this, SafeAreaView);
-
-    return _possibleConstructorReturn(this, _React$Component.apply(this, arguments));
+    return _React$Component.apply(this, arguments) || this;
   }
 
-  SafeAreaView.prototype.render = function render() {
-    var _props = this.props,
-        style = _props.style,
-        rest = _objectWithoutProperties(_props, ['style']);
+  var _proto = SafeAreaView.prototype;
 
-    return React.createElement(View, _extends({}, rest, { style: StyleSheet.compose(styles.root, style) }));
+  _proto.render = function render() {
+    var _this$props = this.props,
+        style = _this$props.style,
+        rest = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["style"]);
+    return _react.default.createElement(_View.default, (0, _extends2.default)({}, rest, {
+      style: _StyleSheet.default.compose(styles.root, style)
+    }));
   };
 
   return SafeAreaView;
-}(React.Component);
+}(_react.default.Component);
 
 SafeAreaView.displayName = 'SafeAreaView';
-SafeAreaView.propTypes = process.env.NODE_ENV !== "production" ? Object.assign({}, ViewPropTypes) : {};
+SafeAreaView.propTypes = (0, _extends2.default)({}, _ViewPropTypes.default);
 
-
-var styles = StyleSheet.create({
+var styles = _StyleSheet.default.create({
   root: {
     paddingTop: 'env(safe-area-inset-top)',
     paddingRight: 'env(safe-area-inset-right)',
@@ -55,4 +62,5 @@ var styles = StyleSheet.create({
   }
 });
 
-export default SafeAreaView;
+var _default = SafeAreaView;
+exports.default = _default;

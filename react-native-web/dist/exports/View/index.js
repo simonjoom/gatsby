@@ -1,8 +1,33 @@
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+"use strict";
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _applyLayout = _interopRequireDefault(require("../../modules/applyLayout"));
+
+var _applyNativeMethods = _interopRequireDefault(require("../../modules/applyNativeMethods"));
+
+var _propTypes = require("prop-types");
+
+var _createElement = _interopRequireDefault(require("../createElement"));
+
+var _filterSupportedProps = _interopRequireDefault(require("./filterSupportedProps"));
+
+var _invariant = _interopRequireDefault(require("fbjs/lib/invariant"));
+
+var _StyleSheet = _interopRequireDefault(require("../StyleSheet"));
+
+var _ViewPropTypes = _interopRequireDefault(require("./ViewPropTypes"));
+
+var _react = _interopRequireWildcard(require("react"));
 
 /**
  * Copyright (c) 2015-present, Nicolas Gallagher.
@@ -11,72 +36,64 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-
-import applyLayout from '../../modules/applyLayout';
-import applyNativeMethods from '../../modules/applyNativeMethods';
-import { bool } from 'prop-types';
-import createElement from '../createElement';
-import filterSupportedProps from './filterSupportedProps';
-import invariant from 'fbjs/lib/invariant';
-import StyleSheet from '../StyleSheet';
-import ViewPropTypes from './ViewPropTypes';
-import React, { Component } from 'react';
-
 var calculateHitSlopStyle = function calculateHitSlopStyle(hitSlop) {
   var hitStyle = {};
+
   for (var prop in hitSlop) {
     if (hitSlop.hasOwnProperty(prop)) {
       var value = hitSlop[prop];
       hitStyle[prop] = value > 0 ? -1 * value : 0;
     }
   }
+
   return hitStyle;
 };
 
-var View = function (_Component) {
-  _inherits(View, _Component);
+var View =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(View, _Component);
 
   function View() {
-    _classCallCheck(this, View);
-
-    return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    return _Component.apply(this, arguments) || this;
   }
 
-  View.prototype.render = function render() {
+  var _proto = View.prototype;
+
+  _proto.render = function render() {
     var hitSlop = this.props.hitSlop;
-    var supportedProps = filterSupportedProps(this.props);
+    var supportedProps = (0, _filterSupportedProps.default)(this.props);
 
     if (process.env.NODE_ENV !== 'production') {
-      React.Children.toArray(this.props.children).forEach(function (item) {
-        invariant(typeof item !== 'string', 'Unexpected text node: ' + item + '. A text node cannot be a child of a <View>.');
+      _react.default.Children.toArray(this.props.children).forEach(function (item) {
+        (0, _invariant.default)(typeof item !== 'string', "Unexpected text node: " + item + ". A text node cannot be a child of a <View>.");
       });
     }
 
     var isInAParentText = this.context.isInAParentText;
-
-
-    supportedProps.style = StyleSheet.compose(styles.initial, StyleSheet.compose(isInAParentText && styles.inline, this.props.style));
+    supportedProps.style = _StyleSheet.default.compose(styles.initial, _StyleSheet.default.compose(isInAParentText && styles.inline, this.props.style));
 
     if (hitSlop) {
       var hitSlopStyle = calculateHitSlopStyle(hitSlop);
-      var hitSlopChild = createElement('span', { style: [styles.hitSlop, hitSlopStyle] });
-      supportedProps.children = React.Children.toArray([hitSlopChild, supportedProps.children]);
+      var hitSlopChild = (0, _createElement.default)('span', {
+        style: [styles.hitSlop, hitSlopStyle]
+      });
+      supportedProps.children = _react.default.Children.toArray([hitSlopChild, supportedProps.children]);
     }
 
-    return createElement('div', supportedProps);
+    return (0, _createElement.default)('div', supportedProps);
   };
 
   return View;
-}(Component);
+}(_react.Component);
 
 View.displayName = 'View';
 View.contextTypes = {
-  isInAParentText: bool
+  isInAParentText: _propTypes.bool
 };
-View.propTypes = process.env.NODE_ENV !== "production" ? ViewPropTypes : {};
+View.propTypes = _ViewPropTypes.default;
 
-
-var styles = StyleSheet.create({
+var styles = _StyleSheet.default.create({
   // https://github.com/facebook/css-layout#default-values
   initial: {
     alignItems: 'stretch',
@@ -98,9 +115,11 @@ var styles = StyleSheet.create({
   },
   // this zIndex-ordering positions the hitSlop above the View but behind
   // its children
-  hitSlop: Object.assign({}, StyleSheet.absoluteFillObject, {
+  hitSlop: (0, _extends2.default)({}, _StyleSheet.default.absoluteFillObject, {
     zIndex: -1
   })
 });
 
-export default applyLayout(applyNativeMethods(View));
+var _default = (0, _applyLayout.default)((0, _applyNativeMethods.default)(View));
+
+exports.default = _default;

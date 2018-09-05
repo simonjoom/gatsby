@@ -1,3 +1,12 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _PooledClass = _interopRequireDefault(require("../../vendor/react-native/PooledClass"));
+
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  *
@@ -6,10 +15,7 @@
  *
  * @noflow
  */
-
-import PooledClass from '../../vendor/react-native/PooledClass';
-
-var twoArgumentPooler = PooledClass.twoArgumentPooler;
+var twoArgumentPooler = _PooledClass.default.twoArgumentPooler;
 
 function Position(left, top) {
   this.left = left;
@@ -21,6 +27,7 @@ Position.prototype.destructor = function () {
   this.top = null;
 };
 
-PooledClass.addPoolingTo(Position, twoArgumentPooler);
+_PooledClass.default.addPoolingTo(Position, twoArgumentPooler);
 
-export default Position;
+var _default = Position;
+exports.default = _default;

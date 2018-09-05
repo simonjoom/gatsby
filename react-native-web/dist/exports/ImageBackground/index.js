@@ -1,12 +1,29 @@
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+"use strict";
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _ensureComponentIsNative = _interopRequireDefault(require("../../modules/ensureComponentIsNative"));
+
+var _Image = _interopRequireDefault(require("../Image"));
+
+var _StyleSheet = _interopRequireDefault(require("../StyleSheet"));
+
+var _View = _interopRequireDefault(require("../View"));
+
+var _ViewPropTypes = _interopRequireDefault(require("../ViewPropTypes"));
+
+var _react = _interopRequireWildcard(require("react"));
 
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -16,85 +33,81 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-import ensureComponentIsNative from '../../modules/ensureComponentIsNative';
-import Image from '../Image';
-import StyleSheet from '../StyleSheet';
-import View from '../View';
-import ViewPropTypes from '../ViewPropTypes';
-import React, { Component } from 'react';
-
 var emptyObject = {};
-
 /**
  * Very simple drop-in replacement for <Image> which supports nesting views.
  */
 
-var ImageBackground = function (_Component) {
-  _inherits(ImageBackground, _Component);
+var ImageBackground =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(ImageBackground, _Component);
 
   function ImageBackground() {
-    var _temp, _this, _ret;
+    var _this;
 
-    _classCallCheck(this, ImageBackground);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this._viewRef = null, _this._captureRef = function (ref) {
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+    _this._viewRef = null;
+
+    _this._captureRef = function (ref) {
       _this._viewRef = ref;
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    return _this;
   }
 
-  ImageBackground.prototype.setNativeProps = function setNativeProps(props) {
+  var _proto = ImageBackground.prototype;
+
+  _proto.setNativeProps = function setNativeProps(props) {
     // Work-around flow
     var viewRef = this._viewRef;
+
     if (viewRef) {
-      ensureComponentIsNative(viewRef);
+      (0, _ensureComponentIsNative.default)(viewRef);
       viewRef.setNativeProps(props);
     }
   };
 
-  ImageBackground.prototype.render = function render() {
-    var _props = this.props,
-        children = _props.children,
-        style = _props.style,
-        imageStyle = _props.imageStyle,
-        imageRef = _props.imageRef,
-        props = _objectWithoutProperties(_props, ['children', 'style', 'imageStyle', 'imageRef']);
-
-    return React.createElement(
-      View,
-      { ref: this._captureRef, style: style },
-      React.createElement(Image, _extends({}, props, {
-        ref: imageRef,
-        style: [StyleSheet.absoluteFill, {
-          // Temporary Workaround:
-          // Current (imperfect yet) implementation of <Image> overwrites width and height styles
-          // (which is not quite correct), and these styles conflict with explicitly set styles
-          // of <ImageBackground> and with our internal layout model here.
-          // So, we have to proxy/reapply these styles explicitly for actual <Image> component.
-          // This workaround should be removed after implementing proper support of
-          // intrinsic content size of the <Image>.
-          width: style.width,
-          height: style.height,
-          zIndex: -1
-        }, imageStyle]
-      })),
-      children
-    );
+  _proto.render = function render() {
+    var _this$props = this.props,
+        children = _this$props.children,
+        style = _this$props.style,
+        imageStyle = _this$props.imageStyle,
+        imageRef = _this$props.imageRef,
+        props = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["children", "style", "imageStyle", "imageRef"]);
+    return _react.default.createElement(_View.default, {
+      ref: this._captureRef,
+      style: style
+    }, _react.default.createElement(_Image.default, (0, _extends2.default)({}, props, {
+      ref: imageRef,
+      style: [_StyleSheet.default.absoluteFill, {
+        // Temporary Workaround:
+        // Current (imperfect yet) implementation of <Image> overwrites width and height styles
+        // (which is not quite correct), and these styles conflict with explicitly set styles
+        // of <ImageBackground> and with our internal layout model here.
+        // So, we have to proxy/reapply these styles explicitly for actual <Image> component.
+        // This workaround should be removed after implementing proper support of
+        // intrinsic content size of the <Image>.
+        width: style.width,
+        height: style.height,
+        zIndex: -1
+      }, imageStyle]
+    })), children);
   };
 
   return ImageBackground;
-}(Component);
+}(_react.Component);
 
+ImageBackground.propTypes = (0, _extends2.default)({}, _Image.default.propTypes, {
+  imageStyle: _Image.default.propTypes.style,
+  style: _ViewPropTypes.default.style
+});
 ImageBackground.defaultProps = {
   style: emptyObject
 };
-ImageBackground.propTypes = process.env.NODE_ENV !== "production" ? Object.assign({}, Image.propTypes, {
-  imageStyle: Image.propTypes.style,
-  style: ViewPropTypes.style
-}) : {};
-
-
-export default ImageBackground;
+var _default = ImageBackground;
+exports.default = _default;

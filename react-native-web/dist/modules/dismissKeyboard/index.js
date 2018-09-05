@@ -1,3 +1,12 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _TextInputState = _interopRequireDefault(require("../TextInputState"));
+
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
  *
@@ -6,11 +15,9 @@
  *
  * 
  */
-
-import TextInputState from '../TextInputState';
-
 var dismissKeyboard = function dismissKeyboard() {
-  TextInputState.blurTextInput(TextInputState.currentlyFocusedField());
+  _TextInputState.default.blurTextInput(_TextInputState.default.currentlyFocusedField());
 };
 
-export default dismissKeyboard;
+var _default = dismissKeyboard;
+exports.default = _default;

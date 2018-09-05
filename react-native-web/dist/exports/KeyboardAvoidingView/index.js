@@ -1,12 +1,25 @@
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+"use strict";
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _View = _interopRequireDefault(require("../View"));
+
+var _propTypes = require("prop-types");
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _ViewPropTypes = _interopRequireDefault(require("../ViewPropTypes"));
 
 /**
  * Copyright (c) 2017-present, Nicolas Gallagher.
@@ -17,61 +30,64 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-
-import View from '../View';
-import { number, oneOf } from 'prop-types';
-import React, { Component } from 'react';
-import ViewPropTypes from '../ViewPropTypes';
-
-var KeyboardAvoidingView = function (_Component) {
-  _inherits(KeyboardAvoidingView, _Component);
+var KeyboardAvoidingView =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(KeyboardAvoidingView, _Component);
 
   function KeyboardAvoidingView() {
-    var _temp, _this, _ret;
+    var _this;
 
-    _classCallCheck(this, KeyboardAvoidingView);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.frame = null, _this.onLayout = function (event) {
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+    _this.frame = null;
+
+    _this.onLayout = function (event) {
       _this.frame = event.nativeEvent.layout;
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    return _this;
   }
 
-  KeyboardAvoidingView.prototype.relativeKeyboardHeight = function relativeKeyboardHeight(keyboardFrame) {
+  var _proto = KeyboardAvoidingView.prototype;
+
+  _proto.relativeKeyboardHeight = function relativeKeyboardHeight(keyboardFrame) {
     var frame = this.frame;
+
     if (!frame || !keyboardFrame) {
       return 0;
     }
+
     var keyboardY = keyboardFrame.screenY - this.props.keyboardVerticalOffset;
     return Math.max(frame.y + frame.height - keyboardY, 0);
   };
 
-  KeyboardAvoidingView.prototype.onKeyboardChange = function onKeyboardChange(event) {};
+  _proto.onKeyboardChange = function onKeyboardChange(event) {};
 
-  KeyboardAvoidingView.prototype.render = function render() {
-    var _props = this.props,
-        behavior = _props.behavior,
-        contentContainerStyle = _props.contentContainerStyle,
-        keyboardVerticalOffset = _props.keyboardVerticalOffset,
-        rest = _objectWithoutProperties(_props, ['behavior', 'contentContainerStyle', 'keyboardVerticalOffset']);
-
-    return React.createElement(View, _extends({ onLayout: this.onLayout }, rest));
+  _proto.render = function render() {
+    var _this$props = this.props,
+        behavior = _this$props.behavior,
+        contentContainerStyle = _this$props.contentContainerStyle,
+        keyboardVerticalOffset = _this$props.keyboardVerticalOffset,
+        rest = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["behavior", "contentContainerStyle", "keyboardVerticalOffset"]);
+    return _react.default.createElement(_View.default, (0, _extends2.default)({
+      onLayout: this.onLayout
+    }, rest));
   };
 
   return KeyboardAvoidingView;
-}(Component);
+}(_react.Component);
 
+KeyboardAvoidingView.propTypes = (0, _extends2.default)({}, _ViewPropTypes.default, {
+  behavior: (0, _propTypes.oneOf)(['height', 'padding', 'position']),
+  contentContainerStyle: _ViewPropTypes.default.style,
+  keyboardVerticalOffset: _propTypes.number.isRequired
+});
 KeyboardAvoidingView.defaultProps = {
   keyboardVerticalOffset: 0
 };
-KeyboardAvoidingView.propTypes = process.env.NODE_ENV !== "production" ? Object.assign({}, ViewPropTypes, {
-  behavior: oneOf(['height', 'padding', 'position']),
-  contentContainerStyle: ViewPropTypes.style,
-  keyboardVerticalOffset: number.isRequired
-}) : {};
-
-
-export default KeyboardAvoidingView;
+var _default = KeyboardAvoidingView;
+exports.default = _default;

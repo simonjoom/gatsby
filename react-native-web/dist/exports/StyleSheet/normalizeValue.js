@@ -1,3 +1,12 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _unitlessNumbers = _interopRequireDefault(require("../../modules/unitlessNumbers"));
+
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
  *
@@ -6,14 +15,13 @@
  *
  * @noflow
  */
-
-import unitlessNumbers from '../../modules/unitlessNumbers';
-
 var normalizeValue = function normalizeValue(property, value) {
-  if (!unitlessNumbers[property] && typeof value === 'number') {
-    value = value + 'px';
+  if (!_unitlessNumbers.default[property] && typeof value === 'number') {
+    value = value + "px";
   }
+
   return value;
 };
 
-export default normalizeValue;
+var _default = normalizeValue;
+exports.default = _default;

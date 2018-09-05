@@ -1,12 +1,31 @@
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+"use strict";
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _applyNativeMethods = _interopRequireDefault(require("../../modules/applyNativeMethods"));
+
+var _ColorPropType = _interopRequireDefault(require("../ColorPropType"));
+
+var _StyleSheet = _interopRequireDefault(require("../StyleSheet"));
+
+var _View = _interopRequireDefault(require("../View"));
+
+var _ViewPropTypes = _interopRequireDefault(require("../ViewPropTypes"));
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _propTypes = require("prop-types");
 
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
@@ -16,98 +35,96 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-
-import applyNativeMethods from '../../modules/applyNativeMethods';
-import ColorPropType from '../ColorPropType';
-import StyleSheet from '../StyleSheet';
-import View from '../View';
-import ViewPropTypes from '../ViewPropTypes';
-import React, { Component } from 'react';
-import { bool, number } from 'prop-types';
-
-var ProgressBar = function (_Component) {
-  _inherits(ProgressBar, _Component);
+var ProgressBar =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(ProgressBar, _Component);
 
   function ProgressBar() {
-    var _temp, _this, _ret;
+    var _this;
 
-    _classCallCheck(this, ProgressBar);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this._setProgressRef = function (element) {
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+    _this._setProgressRef = function (element) {
       _this._progressElement = element;
-    }, _this._updateProgressWidth = function () {
+    };
+
+    _this._updateProgressWidth = function () {
       var _this$props = _this.props,
           indeterminate = _this$props.indeterminate,
           progress = _this$props.progress;
-
       var percentageProgress = indeterminate ? 50 : progress * 100;
-      var width = indeterminate ? '25%' : percentageProgress + '%';
+      var width = indeterminate ? '25%' : percentageProgress + "%";
+
       if (_this._progressElement) {
         _this._progressElement.setNativeProps({
-          style: { width: width }
+          style: {
+            width: width
+          }
         });
       }
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    return _this;
   }
 
-  ProgressBar.prototype.componentDidMount = function componentDidMount() {
+  var _proto = ProgressBar.prototype;
+
+  _proto.componentDidMount = function componentDidMount() {
     this._updateProgressWidth();
   };
 
-  ProgressBar.prototype.componentDidUpdate = function componentDidUpdate() {
+  _proto.componentDidUpdate = function componentDidUpdate() {
     this._updateProgressWidth();
   };
 
-  ProgressBar.prototype.render = function render() {
-    var _props = this.props,
-        color = _props.color,
-        indeterminate = _props.indeterminate,
-        progress = _props.progress,
-        trackColor = _props.trackColor,
-        style = _props.style,
-        other = _objectWithoutProperties(_props, ['color', 'indeterminate', 'progress', 'trackColor', 'style']);
-
+  _proto.render = function render() {
+    var _this$props2 = this.props,
+        color = _this$props2.color,
+        indeterminate = _this$props2.indeterminate,
+        progress = _this$props2.progress,
+        trackColor = _this$props2.trackColor,
+        style = _this$props2.style,
+        other = (0, _objectWithoutPropertiesLoose2.default)(_this$props2, ["color", "indeterminate", "progress", "trackColor", "style"]);
     var percentageProgress = progress * 100;
-
-    return React.createElement(
-      View,
-      _extends({}, other, {
-        accessibilityRole: 'progressbar',
-        'aria-valuemax': '100',
-        'aria-valuemin': '0',
-        'aria-valuenow': indeterminate ? null : percentageProgress,
-        style: [styles.track, style, { backgroundColor: trackColor }]
-      }),
-      React.createElement(View, {
-        ref: this._setProgressRef,
-        style: [styles.progress, indeterminate && styles.animation, { backgroundColor: color }]
-      })
-    );
+    return _react.default.createElement(_View.default, (0, _extends2.default)({}, other, {
+      accessibilityRole: "progressbar",
+      "aria-valuemax": "100",
+      "aria-valuemin": "0",
+      "aria-valuenow": indeterminate ? null : percentageProgress,
+      style: [styles.track, style, {
+        backgroundColor: trackColor
+      }]
+    }), _react.default.createElement(_View.default, {
+      ref: this._setProgressRef,
+      style: [styles.progress, indeterminate && styles.animation, {
+        backgroundColor: color
+      }]
+    }));
   };
 
   return ProgressBar;
-}(Component);
+}(_react.Component);
 
 ProgressBar.displayName = 'ProgressBar';
+ProgressBar.propTypes = (0, _extends2.default)({}, _ViewPropTypes.default, {
+  color: _ColorPropType.default,
+  indeterminate: _propTypes.bool,
+  progress: _propTypes.number,
+  trackColor: _ColorPropType.default
+});
 ProgressBar.defaultProps = {
   color: '#1976D2',
   indeterminate: false,
   progress: 0,
   trackColor: 'transparent'
 };
-ProgressBar.propTypes = process.env.NODE_ENV !== "production" ? Object.assign({}, ViewPropTypes, {
-  color: ColorPropType,
-  indeterminate: bool,
-  progress: number,
-  trackColor: ColorPropType
-}) : {};
 
-
-var styles = StyleSheet.create({
+var styles = _StyleSheet.default.create({
   track: {
     height: 5,
     overflow: 'hidden',
@@ -121,12 +138,22 @@ var styles = StyleSheet.create({
   animation: {
     animationDuration: '1s',
     animationName: [{
-      '0%': { transform: [{ translateX: '-100%' }] },
-      '100%': { transform: [{ translateX: '400%' }] }
+      '0%': {
+        transform: [{
+          translateX: '-100%'
+        }]
+      },
+      '100%': {
+        transform: [{
+          translateX: '400%'
+        }]
+      }
     }],
     animationTimingFunction: 'linear',
     animationIterationCount: 'infinite'
   }
 });
 
-export default applyNativeMethods(ProgressBar);
+var _default = (0, _applyNativeMethods.default)(ProgressBar);
+
+exports.default = _default;

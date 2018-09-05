@@ -1,3 +1,28 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _AnimationPropTypes = _interopRequireDefault(require("../../modules/AnimationPropTypes"));
+
+var _BorderPropTypes = _interopRequireDefault(require("../../modules/BorderPropTypes"));
+
+var _ColorPropType = _interopRequireDefault(require("../ColorPropType"));
+
+var _InteractionPropTypes = _interopRequireDefault(require("../../modules/InteractionPropTypes"));
+
+var _LayoutPropTypes = _interopRequireDefault(require("../../modules/LayoutPropTypes"));
+
+var _ShadowPropTypes = _interopRequireDefault(require("../../modules/ShadowPropTypes"));
+
+var _TransformPropTypes = _interopRequireDefault(require("../../modules/TransformPropTypes"));
+
+var _propTypes = require("prop-types");
+
 /**
  * Copyright (c) 2015-present, Nicolas Gallagher.
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -7,46 +32,37 @@
  *
  * 
  */
+var overscrollBehaviorType = (0, _propTypes.oneOf)(['auto', 'contain', 'none']);
+var ViewStylePropTypes = (0, _extends2.default)({}, _AnimationPropTypes.default, _BorderPropTypes.default, _InteractionPropTypes.default, _LayoutPropTypes.default, _ShadowPropTypes.default, _TransformPropTypes.default, {
+  backgroundColor: _ColorPropType.default,
+  opacity: _propTypes.number,
 
-import AnimationPropTypes from '../../modules/AnimationPropTypes';
-import BorderPropTypes from '../../modules/BorderPropTypes';
-import ColorPropType from '../ColorPropType';
-import InteractionPropTypes from '../../modules/InteractionPropTypes';
-import LayoutPropTypes from '../../modules/LayoutPropTypes';
-import ShadowPropTypes from '../../modules/ShadowPropTypes';
-import TransformPropTypes from '../../modules/TransformPropTypes';
-import { number, oneOf, string } from 'prop-types';
-
-var overscrollBehaviorType = oneOf(['auto', 'contain', 'none']);
-
-var ViewStylePropTypes = Object.assign({}, AnimationPropTypes, BorderPropTypes, InteractionPropTypes, LayoutPropTypes, ShadowPropTypes, TransformPropTypes, {
-  backgroundColor: ColorPropType,
-  opacity: number,
   /**
    * @platform unsupported
    */
-  elevation: number,
+  elevation: _propTypes.number,
+
   /**
    * @platform web
    */
-  backgroundAttachment: string,
-  backgroundBlendMode: string,
-  backgroundClip: string,
-  backgroundImage: string,
-  backgroundOrigin: oneOf(['border-box', 'content-box', 'padding-box']),
-  backgroundPosition: string,
-  backgroundRepeat: string,
-  backgroundSize: string,
-  boxShadow: string,
-  clip: string,
-  filter: string,
-  outline: string,
-  outlineColor: ColorPropType,
+  backgroundAttachment: _propTypes.string,
+  backgroundBlendMode: _propTypes.string,
+  backgroundClip: _propTypes.string,
+  backgroundImage: _propTypes.string,
+  backgroundOrigin: (0, _propTypes.oneOf)(['border-box', 'content-box', 'padding-box']),
+  backgroundPosition: _propTypes.string,
+  backgroundRepeat: _propTypes.string,
+  backgroundSize: _propTypes.string,
+  boxShadow: _propTypes.string,
+  clip: _propTypes.string,
+  filter: _propTypes.string,
+  outline: _propTypes.string,
+  outlineColor: _ColorPropType.default,
   overscrollBehavior: overscrollBehaviorType,
   overscrollBehaviorX: overscrollBehaviorType,
   overscrollBehaviorY: overscrollBehaviorType,
-  WebkitMaskImage: string,
-  WebkitOverflowScrolling: oneOf(['auto', 'touch'])
+  WebkitMaskImage: _propTypes.string,
+  WebkitOverflowScrolling: (0, _propTypes.oneOf)(['auto', 'touch'])
 });
-
-export default ViewStylePropTypes;
+var _default = ViewStylePropTypes;
+exports.default = _default;

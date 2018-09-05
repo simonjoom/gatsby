@@ -1,3 +1,8 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
 /**
  * Copyright (c) 2017-present, Nicolas Gallagher.
  *
@@ -6,9 +11,9 @@
  *
  * 
  */
-
 var isDisabled = function isDisabled(props) {
   return props.disabled || props['aria-disabled'];
 };
 
-export default isDisabled;
+var _default = isDisabled;
+exports.default = _default;

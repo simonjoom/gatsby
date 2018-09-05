@@ -1,3 +1,8 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  *
@@ -6,7 +11,6 @@
  *
  * 
  */
-
 function emptyFunction() {}
 
 var AccessibilityInfo = {
@@ -48,5 +52,5 @@ var AccessibilityInfo = {
     return;
   }
 };
-
-export default AccessibilityInfo;
+var _default = AccessibilityInfo;
+exports.default = _default;

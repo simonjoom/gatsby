@@ -1,12 +1,35 @@
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+"use strict";
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _applyNativeMethods = _interopRequireDefault(require("../../modules/applyNativeMethods"));
+
+var _ColorPropType = _interopRequireDefault(require("../ColorPropType"));
+
+var _createElement = _interopRequireDefault(require("../createElement"));
+
+var _StyleSheet = _interopRequireDefault(require("../StyleSheet"));
+
+var _UIManager = _interopRequireDefault(require("../UIManager"));
+
+var _View = _interopRequireDefault(require("../View"));
+
+var _ViewPropTypes = _interopRequireDefault(require("../ViewPropTypes"));
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _propTypes = require("prop-types");
 
 /**
  * Copyright (c) 2017-present, Nicolas Gallagher.
@@ -17,68 +40,66 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-
-import applyNativeMethods from '../../modules/applyNativeMethods';
-import ColorPropType from '../ColorPropType';
-import createElement from '../createElement';
-import StyleSheet from '../StyleSheet';
-import UIManager from '../UIManager';
-import View from '../View';
-import ViewPropTypes from '../ViewPropTypes';
-import React, { Component } from 'react';
-import { bool, func } from 'prop-types';
-
-var CheckBox = function (_Component) {
-  _inherits(CheckBox, _Component);
+var CheckBox =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(CheckBox, _Component);
 
   function CheckBox() {
-    var _temp, _this, _ret;
+    var _this;
 
-    _classCallCheck(this, CheckBox);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this._handleChange = function (event) {
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+
+    _this._handleChange = function (event) {
       var _this$props = _this.props,
           onChange = _this$props.onChange,
           onValueChange = _this$props.onValueChange;
-
       var value = event.nativeEvent.target.checked;
       event.nativeEvent.value = value;
       onChange && onChange(event);
       onValueChange && onValueChange(value);
-    }, _this._setCheckboxRef = function (element) {
+    };
+
+    _this._setCheckboxRef = function (element) {
       _this._checkboxElement = element;
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    return _this;
   }
 
-  CheckBox.prototype.blur = function blur() {
-    UIManager.blur(this._checkboxElement);
+  var _proto = CheckBox.prototype;
+
+  _proto.blur = function blur() {
+    _UIManager.default.blur(this._checkboxElement);
   };
 
-  CheckBox.prototype.focus = function focus() {
-    UIManager.focus(this._checkboxElement);
+  _proto.focus = function focus() {
+    _UIManager.default.focus(this._checkboxElement);
   };
 
-  CheckBox.prototype.render = function render() {
-    var _props = this.props,
-        color = _props.color,
-        disabled = _props.disabled,
-        onChange = _props.onChange,
-        onValueChange = _props.onValueChange,
-        style = _props.style,
-        value = _props.value,
-        other = _objectWithoutProperties(_props, ['color', 'disabled', 'onChange', 'onValueChange', 'style', 'value']);
+  _proto.render = function render() {
+    var _this$props2 = this.props,
+        color = _this$props2.color,
+        disabled = _this$props2.disabled,
+        onChange = _this$props2.onChange,
+        onValueChange = _this$props2.onValueChange,
+        style = _this$props2.style,
+        value = _this$props2.value,
+        other = (0, _objectWithoutPropertiesLoose2.default)(_this$props2, ["color", "disabled", "onChange", "onValueChange", "style", "value"]);
 
-    var fakeControl = React.createElement(View, {
-      style: [styles.fakeControl, value && styles.fakeControlChecked,
-      // custom color
-      value && color && { backgroundColor: color, borderColor: color }, disabled && styles.fakeControlDisabled, value && disabled && styles.fakeControlCheckedAndDisabled]
+    var fakeControl = _react.default.createElement(_View.default, {
+      style: [styles.fakeControl, value && styles.fakeControlChecked, // custom color
+      value && color && {
+        backgroundColor: color,
+        borderColor: color
+      }, disabled && styles.fakeControlDisabled, value && disabled && styles.fakeControlCheckedAndDisabled]
     });
 
-    var nativeControl = createElement('input', {
+    var nativeControl = (0, _createElement.default)('input', {
       checked: value,
       disabled: disabled,
       onChange: this._handleChange,
@@ -86,33 +107,28 @@ var CheckBox = function (_Component) {
       style: [styles.nativeControl, styles.cursorInherit],
       type: 'checkbox'
     });
-
-    return React.createElement(
-      View,
-      _extends({}, other, { style: [styles.root, style, disabled && styles.cursorDefault] }),
-      fakeControl,
-      nativeControl
-    );
+    return _react.default.createElement(_View.default, (0, _extends2.default)({}, other, {
+      style: [styles.root, style, disabled && styles.cursorDefault]
+    }), fakeControl, nativeControl);
   };
 
   return CheckBox;
-}(Component);
+}(_react.Component);
 
 CheckBox.displayName = 'CheckBox';
+CheckBox.propTypes = (0, _extends2.default)({}, _ViewPropTypes.default, {
+  color: _ColorPropType.default,
+  disabled: _propTypes.bool,
+  onChange: _propTypes.func,
+  onValueChange: _propTypes.func,
+  value: _propTypes.bool
+});
 CheckBox.defaultProps = {
   disabled: false,
   value: false
 };
-CheckBox.propTypes = process.env.NODE_ENV !== "production" ? Object.assign({}, ViewPropTypes, {
-  color: ColorPropType,
-  disabled: bool,
-  onChange: func,
-  onValueChange: func,
-  value: bool
-}) : {};
 
-
-var styles = StyleSheet.create({
+var styles = _StyleSheet.default.create({
   root: {
     cursor: 'pointer',
     height: 16,
@@ -149,7 +165,7 @@ var styles = StyleSheet.create({
     backgroundColor: '#AAB8C2',
     borderColor: '#AAB8C2'
   },
-  nativeControl: Object.assign({}, StyleSheet.absoluteFillObject, {
+  nativeControl: (0, _extends2.default)({}, _StyleSheet.default.absoluteFillObject, {
     height: '100%',
     margin: 0,
     opacity: 0,
@@ -158,4 +174,6 @@ var styles = StyleSheet.create({
   })
 });
 
-export default applyNativeMethods(CheckBox);
+var _default = (0, _applyNativeMethods.default)(CheckBox);
+
+exports.default = _default;

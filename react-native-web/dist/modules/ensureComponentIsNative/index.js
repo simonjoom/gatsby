@@ -1,3 +1,12 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _invariant = _interopRequireDefault(require("fbjs/lib/invariant"));
+
 /**
  * Copyright (c) 2015-present, Nicolas Gallagher.
  *
@@ -6,11 +15,9 @@
  *
  * 
  */
-
-import invariant from 'fbjs/lib/invariant';
-
 var ensureComponentIsNative = function ensureComponentIsNative(component) {
-  invariant(component && typeof component.setNativeProps === 'function', 'Touchable child must either be native or forward setNativeProps to a native component');
+  (0, _invariant.default)(component && typeof component.setNativeProps === 'function', 'Touchable child must either be native or forward setNativeProps to a native component');
 };
 
-export default ensureComponentIsNative;
+var _default = ensureComponentIsNative;
+exports.default = _default;

@@ -1,6 +1,31 @@
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+"use strict";
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _applyNativeMethods = _interopRequireDefault(require("../../modules/applyNativeMethods"));
+
+var _createReactClass = _interopRequireDefault(require("create-react-class"));
+
+var _ensurePositiveDelayProps = _interopRequireDefault(require("../Touchable/ensurePositiveDelayProps"));
+
+var _propTypes = require("prop-types");
+
+var _react = _interopRequireDefault(require("react"));
+
+var _StyleSheet = _interopRequireDefault(require("../StyleSheet"));
+
+var _Touchable = _interopRequireDefault(require("../Touchable"));
+
+var _TouchableWithoutFeedback = _interopRequireDefault(require("../TouchableWithoutFeedback"));
+
+var _View = _interopRequireDefault(require("../View"));
 
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
@@ -11,21 +36,13 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
  *
  * @noflow
  */
-
-import applyNativeMethods from '../../modules/applyNativeMethods';
-import createReactClass from 'create-react-class';
-import ensurePositiveDelayProps from '../Touchable/ensurePositiveDelayProps';
-import { number } from 'prop-types';
-import React from 'react';
-import StyleSheet from '../StyleSheet';
-import Touchable from '../Touchable';
-import TouchableWithoutFeedback from '../TouchableWithoutFeedback';
-import View from '../View';
-
-var flattenStyle = StyleSheet.flatten;
-
-var PRESS_RETENTION_OFFSET = { top: 20, left: 20, right: 20, bottom: 30 };
-
+var flattenStyle = _StyleSheet.default.flatten;
+var PRESS_RETENTION_OFFSET = {
+  top: 20,
+  left: 20,
+  right: 20,
+  bottom: 30
+};
 /**
  * A wrapper for making views respond properly to touches.
  * On press down, the opacity of the wrapped view is decreased, dimming it.
@@ -50,36 +67,32 @@ var PRESS_RETENTION_OFFSET = { top: 20, left: 20, right: 20, bottom: 30 };
  */
 
 /* eslint-disable react/prefer-es6-class */
-var TouchableOpacity = createReactClass({
-  displayName: 'TouchableOpacity',
-  mixins: [Touchable.Mixin],
 
-  propTypes: Object.assign({}, TouchableWithoutFeedback.propTypes, {
+var TouchableOpacity = (0, _createReactClass.default)({
+  displayName: 'TouchableOpacity',
+  mixins: [_Touchable.default.Mixin],
+  propTypes: (0, _extends2.default)({}, _TouchableWithoutFeedback.default.propTypes, {
     /**
      * Determines what the opacity of the wrapped view should be when touch is
      * active.
      */
-    activeOpacity: number,
-    focusedOpacity: number
+    activeOpacity: _propTypes.number,
+    focusedOpacity: _propTypes.number
   }),
-
   getDefaultProps: function getDefaultProps() {
     return {
       activeOpacity: 0.2,
       focusedOpacity: 0.7
     };
   },
-
   getInitialState: function getInitialState() {
     return this.touchableGetInitialState();
   },
-
   componentDidMount: function componentDidMount() {
-    ensurePositiveDelayProps(this.props);
+    (0, _ensurePositiveDelayProps.default)(this.props);
   },
-
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-    ensurePositiveDelayProps(nextProps);
+    (0, _ensurePositiveDelayProps.default)(nextProps);
   },
 
   /**
@@ -89,7 +102,7 @@ var TouchableOpacity = createReactClass({
     this.setNativeProps({
       style: {
         opacity: value,
-        transitionDuration: duration ? duration / 1000 + 's' : '0s'
+        transitionDuration: duration ? duration / 1000 + "s" : '0s'
       }
     });
   },
@@ -104,94 +117,80 @@ var TouchableOpacity = createReactClass({
     } else {
       this._opacityActive(150);
     }
+
     this.props.onPressIn && this.props.onPressIn(e);
   },
-
   touchableHandleActivePressOut: function touchableHandleActivePressOut(e) {
     this._opacityInactive(250);
+
     this.props.onPressOut && this.props.onPressOut(e);
   },
-
   touchableHandlePress: function touchableHandlePress(e) {
     this.props.onPress && this.props.onPress(e);
   },
-
   touchableHandleLongPress: function touchableHandleLongPress(e) {
     this.props.onLongPress && this.props.onLongPress(e);
   },
-
   touchableGetPressRectOffset: function touchableGetPressRectOffset() {
     return this.props.pressRetentionOffset || PRESS_RETENTION_OFFSET;
   },
-
   touchableGetHitSlop: function touchableGetHitSlop() {
     return this.props.hitSlop;
   },
-
   touchableGetHighlightDelayMS: function touchableGetHighlightDelayMS() {
     return this.props.delayPressIn || 0;
   },
-
   touchableGetLongPressDelayMS: function touchableGetLongPressDelayMS() {
     return this.props.delayLongPress === 0 ? 0 : this.props.delayLongPress || 500;
   },
-
   touchableGetPressOutDelayMS: function touchableGetPressOutDelayMS() {
     return this.props.delayPressOut;
   },
-
   _opacityActive: function _opacityActive(duration) {
     this.setOpacityTo(this.props.activeOpacity, duration);
   },
-
   _opacityInactive: function _opacityInactive(duration) {
     this.setOpacityTo(this._getChildStyleOpacityWithDefault(), duration);
   },
-
   _opacityFocused: function _opacityFocused() {
     this.setOpacityTo(this.props.focusedOpacity);
   },
-
   _getChildStyleOpacityWithDefault: function _getChildStyleOpacityWithDefault() {
     var childStyle = flattenStyle(this.props.style) || {};
     return childStyle.opacity === undefined ? 1 : childStyle.opacity;
   },
-
   render: function render() {
-    var _props = this.props,
-        activeOpacity = _props.activeOpacity,
-        focusedOpacity = _props.focusedOpacity,
-        delayLongPress = _props.delayLongPress,
-        delayPressIn = _props.delayPressIn,
-        delayPressOut = _props.delayPressOut,
-        onLongPress = _props.onLongPress,
-        onPress = _props.onPress,
-        onPressIn = _props.onPressIn,
-        onPressOut = _props.onPressOut,
-        pressRetentionOffset = _props.pressRetentionOffset,
-        other = _objectWithoutProperties(_props, ['activeOpacity', 'focusedOpacity', 'delayLongPress', 'delayPressIn', 'delayPressOut', 'onLongPress', 'onPress', 'onPressIn', 'onPressOut', 'pressRetentionOffset']);
-
-    return React.createElement(
-      View,
-      _extends({}, other, {
-        accessible: this.props.accessible !== false,
-        onKeyDown: this.touchableHandleKeyEvent,
-        onKeyUp: this.touchableHandleKeyEvent,
-        onResponderGrant: this.touchableHandleResponderGrant,
-        onResponderMove: this.touchableHandleResponderMove,
-        onResponderRelease: this.touchableHandleResponderRelease,
-        onResponderTerminate: this.touchableHandleResponderTerminate,
-        onResponderTerminationRequest: this.touchableHandleResponderTerminationRequest,
-        onStartShouldSetResponder: this.touchableHandleStartShouldSetResponder,
-        style: [styles.root, !this.props.disabled && styles.actionable, this.props.style]
-      }),
-      this.props.children,
-      Touchable.renderDebugView({ color: 'blue', hitSlop: this.props.hitSlop })
-    );
+    var _this$props = this.props,
+        activeOpacity = _this$props.activeOpacity,
+        focusedOpacity = _this$props.focusedOpacity,
+        delayLongPress = _this$props.delayLongPress,
+        delayPressIn = _this$props.delayPressIn,
+        delayPressOut = _this$props.delayPressOut,
+        onLongPress = _this$props.onLongPress,
+        onPress = _this$props.onPress,
+        onPressIn = _this$props.onPressIn,
+        onPressOut = _this$props.onPressOut,
+        pressRetentionOffset = _this$props.pressRetentionOffset,
+        other = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["activeOpacity", "focusedOpacity", "delayLongPress", "delayPressIn", "delayPressOut", "onLongPress", "onPress", "onPressIn", "onPressOut", "pressRetentionOffset"]);
+    return _react.default.createElement(_View.default, (0, _extends2.default)({}, other, {
+      accessible: this.props.accessible !== false,
+      onKeyDown: this.touchableHandleKeyEvent,
+      onKeyUp: this.touchableHandleKeyEvent,
+      onResponderGrant: this.touchableHandleResponderGrant,
+      onResponderMove: this.touchableHandleResponderMove,
+      onResponderRelease: this.touchableHandleResponderRelease,
+      onResponderTerminate: this.touchableHandleResponderTerminate,
+      onResponderTerminationRequest: this.touchableHandleResponderTerminationRequest,
+      onStartShouldSetResponder: this.touchableHandleStartShouldSetResponder,
+      style: [styles.root, !this.props.disabled && styles.actionable, this.props.style]
+    }), this.props.children, _Touchable.default.renderDebugView({
+      color: 'blue',
+      hitSlop: this.props.hitSlop
+    }));
   }
 });
 
-var styles = StyleSheet.create({
+var styles = _StyleSheet.default.create({
   root: {
     transitionProperty: 'opacity',
     transitionDuration: '0.15s',
@@ -203,4 +202,6 @@ var styles = StyleSheet.create({
   }
 });
 
-export default applyNativeMethods(TouchableOpacity);
+var _default = (0, _applyNativeMethods.default)(TouchableOpacity);
+
+exports.default = _default;

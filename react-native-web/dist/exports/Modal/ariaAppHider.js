@@ -1,3 +1,20 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.assertNodeList = assertNodeList;
+exports.setElement = setElement;
+exports.validateElement = validateElement;
+exports.hide = hide;
+exports.show = show;
+exports.documentNotReadyOrSSRTesting = documentNotReadyOrSSRTesting;
+exports.resetForTesting = resetForTesting;
+
+var _warning = _interopRequireDefault(require("warning"));
+
+var _utils = require("./utils");
+
 /**
  * MIT License
  * Copyright (c) 2017 Ryan Florence
@@ -12,66 +29,52 @@
  * Copyright (c) 2018 Ray Andrew
  * https://github.com/rayandrews/react-native-web-modal
  */
+var globalElement = null;
 
-import warning from 'warning';
-import { canUseDOM } from './utils';
-
-let globalElement = null;
-
-export function assertNodeList(nodeList, selector) {
+function assertNodeList(nodeList, selector) {
   if (!nodeList || !nodeList.length) {
-    throw new Error(
-      `modal-react-native-web: No elements were found for selector ${selector}.`
-    );
+    throw new Error("modal-react-native-web: No elements were found for selector " + selector + ".");
   }
 }
 
-export function setElement(element) {
-  let useElement = element;
-  if (typeof useElement === 'string' && canUseDOM) {
-    const el = document.querySelectorAll(useElement);
+function setElement(element) {
+  var useElement = element;
+
+  if (typeof useElement === 'string' && _utils.canUseDOM) {
+    var el = document.querySelectorAll(useElement);
     assertNodeList(el, useElement);
     useElement = 'length' in el ? el[0] : el;
   }
+
   globalElement = useElement || globalElement;
   return globalElement;
 }
 
-export function validateElement(appElement) {
+function validateElement(appElement) {
   if (!appElement && !globalElement) {
-    warning(
-      false,
-      [
-        'modal-react-native-web: App element is not defined.',
-        'Please use `Modal.setAppElement(el)` or set `appElement={el}`.',
-        "This is needed so screen readers don't see main content",
-        'when modal is opened. It is not recommended, but you can opt-out',
-        'by setting `ariaHideApp={false}`.',
-      ].join(' ')
-    );
-
+    (0, _warning.default)(false, ['modal-react-native-web: App element is not defined.', 'Please use `Modal.setAppElement(el)` or set `appElement={el}`.', "This is needed so screen readers don't see main content", 'when modal is opened. It is not recommended, but you can opt-out', 'by setting `ariaHideApp={false}`.'].join(' '));
     return false;
   }
 
   return true;
 }
 
-export function hide(appElement) {
+function hide(appElement) {
   if (validateElement(appElement)) {
     (appElement || globalElement).setAttribute('aria-hidden', 'true');
   }
 }
 
-export function show(appElement) {
+function show(appElement) {
   if (validateElement(appElement)) {
     (appElement || globalElement).removeAttribute('aria-hidden');
   }
 }
 
-export function documentNotReadyOrSSRTesting() {
+function documentNotReadyOrSSRTesting() {
   globalElement = null;
 }
 
-export function resetForTesting() {
+function resetForTesting() {
   globalElement = null;
 }

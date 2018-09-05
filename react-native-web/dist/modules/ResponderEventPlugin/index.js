@@ -1,12 +1,17 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _normalizeNativeEvent = _interopRequireDefault(require("../normalizeNativeEvent"));
+
+var _unstableNativeDependencies = _interopRequireDefault(require("react-dom/unstable-native-dependencies"));
+
 // based on https://github.com/facebook/react/pull/4303/files
-
-import normalizeNativeEvent from '../normalizeNativeEvent';
-import ReactDOMUnstableNativeDependencies from 'react-dom/unstable-native-dependencies';
-
-var ResponderEventPlugin = ReactDOMUnstableNativeDependencies.ResponderEventPlugin,
-    ResponderTouchHistoryStore = ReactDOMUnstableNativeDependencies.ResponderTouchHistoryStore;
-
-// On older versions of React (< 16.4) we have to inject the dependencies in
+var ResponderEventPlugin = _unstableNativeDependencies.default.ResponderEventPlugin,
+    ResponderTouchHistoryStore = _unstableNativeDependencies.default.ResponderTouchHistoryStore; // On older versions of React (< 16.4) we have to inject the dependencies in
 // order for the plugin to work properly in the browser. This version still
 // uses `top*` strings to identify the internal event names.
 // https://github.com/facebook/react/pull/12629
@@ -21,14 +26,13 @@ if (!ResponderEventPlugin.eventTypes.responderMove.dependencies) {
   var topTouchEnd = 'topTouchEnd';
   var topTouchMove = 'topTouchMove';
   var topTouchStart = 'topTouchStart';
-
   var endDependencies = [topTouchCancel, topTouchEnd, topMouseUp];
   var moveDependencies = [topTouchMove, topMouseMove];
   var startDependencies = [topTouchStart, topMouseDown];
-
   /**
    * Setup ResponderEventPlugin dependencies
    */
+
   ResponderEventPlugin.eventTypes.responderMove.dependencies = moveDependencies;
   ResponderEventPlugin.eventTypes.responderEnd.dependencies = endDependencies;
   ResponderEventPlugin.eventTypes.responderStart.dependencies = startDependencies;
@@ -44,13 +48,13 @@ if (!ResponderEventPlugin.eventTypes.responderMove.dependencies) {
 }
 
 var lastActiveTouchTimestamp = null;
-
 var originalExtractEvents = ResponderEventPlugin.extractEvents;
+
 ResponderEventPlugin.extractEvents = function (topLevelType, targetInst, nativeEvent, nativeEventTarget) {
   var hasActiveTouches = ResponderTouchHistoryStore.touchHistory.numberActiveTouches > 0;
   var eventType = nativeEvent.type;
-
   var shouldSkipMouseAfterTouch = false;
+
   if (eventType.indexOf('touch') > -1) {
     lastActiveTouchTimestamp = Date.now();
   } else if (lastActiveTouchTimestamp && eventType.indexOf('mouse') > -1) {
@@ -58,21 +62,18 @@ ResponderEventPlugin.extractEvents = function (topLevelType, targetInst, nativeE
     shouldSkipMouseAfterTouch = now - lastActiveTouchTimestamp < 250;
   }
 
-  if (
-  // Filter out mousemove and mouseup events when a touch hasn't started yet
-  (eventType === 'mousemove' || eventType === 'mouseup') && !hasActiveTouches ||
-  // Filter out events from wheel/middle and right click.
-  nativeEvent.button === 1 || nativeEvent.button === 2 ||
-  // Filter out mouse events that browsers dispatch immediately after touch events end
+  if ( // Filter out mousemove and mouseup events when a touch hasn't started yet
+  (eventType === 'mousemove' || eventType === 'mouseup') && !hasActiveTouches || // Filter out events from wheel/middle and right click.
+  nativeEvent.button === 1 || nativeEvent.button === 2 || // Filter out mouse events that browsers dispatch immediately after touch events end
   // Prevents the REP from calling handlers twice for touch interactions.
   // See #802 and #932.
   shouldSkipMouseAfterTouch) {
     return;
   }
 
-  var normalizedEvent = normalizeNativeEvent(nativeEvent);
-
+  var normalizedEvent = (0, _normalizeNativeEvent.default)(nativeEvent);
   return originalExtractEvents.call(ResponderEventPlugin, topLevelType, targetInst, normalizedEvent, nativeEventTarget);
 };
 
-export default ResponderEventPlugin;
+var _default = ResponderEventPlugin;
+exports.default = _default;

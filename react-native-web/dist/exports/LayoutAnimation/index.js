@@ -1,3 +1,12 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _LayoutAnimation = _interopRequireDefault(require("../../vendor/react-native/LayoutAnimation"));
+
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
  *
@@ -6,6 +15,5 @@
  *
  * 
  */
-
-import LayoutAnimation from '../../vendor/react-native/LayoutAnimation';
-export default LayoutAnimation;
+var _default = _LayoutAnimation.default;
+exports.default = _default;

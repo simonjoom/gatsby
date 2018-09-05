@@ -1,3 +1,24 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _Dimensions = _interopRequireDefault(require("../../exports/Dimensions"));
+
+var _findNodeHandle = _interopRequireDefault(require("../../exports/findNodeHandle"));
+
+var _invariant = _interopRequireDefault(require("fbjs/lib/invariant"));
+
+var _Platform = _interopRequireDefault(require("../../exports/Platform"));
+
+var _TextInputState = _interopRequireDefault(require("../TextInputState"));
+
+var _UIManager = _interopRequireDefault(require("../../exports/UIManager"));
+
+var _warning = _interopRequireDefault(require("fbjs/lib/warning"));
+
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -7,14 +28,6 @@
  *
  * 
  */
-
-import Dimensions from '../../exports/Dimensions';
-import findNodeHandle from '../../exports/findNodeHandle';
-import invariant from 'fbjs/lib/invariant';
-import Platform from '../../exports/Platform';
-import TextInputState from '../TextInputState';
-import UIManager from '../../exports/UIManager';
-import warning from 'fbjs/lib/warning';
 
 /**
  * Mixin that can be integrated in order to handle scrolling that plays well
@@ -93,11 +106,8 @@ import warning from 'fbjs/lib/warning';
  *   this.props.onKeyboardWillHide
  *   this.props.onKeyboardDidHide
  */
-
 var emptyObject = {};
-
 var IS_ANIMATING_TOUCH_START_THRESHOLD_MS = 16;
-
 var ScrollResponderMixin = {
   // mixins: [Subscribable.Mixin],
   scrollResponderMixinGetInitialState: function scrollResponderMixinGetInitialState() {
@@ -105,7 +115,6 @@ var ScrollResponderMixin = {
       isTouching: false,
       lastMomentumScrollBeginTime: 0,
       lastMomentumScrollEndTime: 0,
-
       // Reset to false every time becomes responder. This is used to:
       // - Determine if the scroll view has been scrolled and therefore should
       // refuse to give up its responder lock.
@@ -185,7 +194,7 @@ var ScrollResponderMixin = {
    * a touch has already started.
    */
   scrollResponderHandleResponderReject: function scrollResponderHandleResponderReject() {
-    warning(false, "ScrollView doesn't take rejection well - scrolls anyway");
+    (0, _warning.default)(false, "ScrollView doesn't take rejection well - scrolls anyway");
   },
 
   /**
@@ -222,17 +231,17 @@ var ScrollResponderMixin = {
    * Invoke this from an `onResponderRelease` event.
    */
   scrollResponderHandleResponderRelease: function scrollResponderHandleResponderRelease(e) {
-    this.props.onResponderRelease && this.props.onResponderRelease(e);
-
-    // By default scroll views will unfocus a textField
+    this.props.onResponderRelease && this.props.onResponderRelease(e); // By default scroll views will unfocus a textField
     // if another touch occurs outside of it
-    var currentlyFocusedTextInput = TextInputState.currentlyFocusedField();
+
+    var currentlyFocusedTextInput = _TextInputState.default.currentlyFocusedField();
+
     if (!this.props.keyboardShouldPersistTaps && currentlyFocusedTextInput != null && e.target !== currentlyFocusedTextInput && !this.state.observedScrollSinceBecomingResponder && !this.state.becameResponderWhileAnimating) {
       this.props.onScrollResponderKeyboardDismissed && this.props.onScrollResponderKeyboardDismissed(e);
-      TextInputState.blurTextInput(currentlyFocusedTextInput);
+
+      _TextInputState.default.blurTextInput(currentlyFocusedTextInput);
     }
   },
-
   scrollResponderHandleScroll: function scrollResponderHandleScroll(e) {
     this.state.observedScrollSinceBecomingResponder = true;
     this.props.onScroll && this.props.onScroll(e);
@@ -330,7 +339,7 @@ var ScrollResponderMixin = {
    * function otherwise `this` is used.
    */
   scrollResponderGetScrollableNode: function scrollResponderGetScrollableNode() {
-    return this.getScrollableNode ? this.getScrollableNode() : findNodeHandle(this);
+    return this.getScrollableNode ? this.getScrollableNode() : (0, _findNodeHandle.default)(this);
   },
 
   /**
@@ -354,8 +363,15 @@ var ScrollResponderMixin = {
       y = _ref.y;
       animated = _ref.animated;
     }
+
     var node = this.scrollResponderGetScrollableNode();
-    UIManager.updateView(node, { style: { scrollBehavior: !animated ? 'auto' : 'smooth' } }, this);
+
+    _UIManager.default.updateView(node, {
+      style: {
+        scrollBehavior: !animated ? 'auto' : 'smooth'
+      }
+    }, this);
+
     node.scrollLeft = x || 0;
     node.scrollTop = y || 0;
   },
@@ -365,7 +381,11 @@ var ScrollResponderMixin = {
    */
   scrollResponderScrollWithoutAnimationTo: function scrollResponderScrollWithoutAnimationTo(offsetX, offsetY) {
     console.warn('`scrollResponderScrollWithoutAnimationTo` is deprecated. Use `scrollResponderScrollTo` instead');
-    this.scrollResponderScrollTo({ x: offsetX, y: offsetY, animated: false });
+    this.scrollResponderScrollTo({
+      x: offsetX,
+      y: offsetY,
+      animated: false
+    });
   },
 
   /**
@@ -376,8 +396,8 @@ var ScrollResponderMixin = {
    */
   scrollResponderZoomTo: function scrollResponderZoomTo(rect, animated // deprecated, put this inside the rect argument instead
   ) {
-    if (Platform.OS !== 'ios') {
-      invariant('zoomToRect is not implemented');
+    if (_Platform.default.OS !== 'ios') {
+      (0, _invariant.default)('zoomToRect is not implemented');
     }
   },
 
@@ -399,7 +419,8 @@ var ScrollResponderMixin = {
   scrollResponderScrollNativeHandleToKeyboard: function scrollResponderScrollNativeHandleToKeyboard(nodeHandle, additionalOffset, preventNegativeScrollOffset) {
     this.additionalScrollOffset = additionalOffset || 0;
     this.preventNegativeScrollOffset = !!preventNegativeScrollOffset;
-    UIManager.measureLayout(nodeHandle, findNodeHandle(this.getInnerViewNode()), this.scrollResponderTextInputFocusError, this.scrollResponderInputMeasureAndScrollToKeyboard);
+
+    _UIManager.default.measureLayout(nodeHandle, (0, _findNodeHandle.default)(this.getInnerViewNode()), this.scrollResponderTextInputFocusError, this.scrollResponderInputMeasureAndScrollToKeyboard);
   },
 
   /**
@@ -413,25 +434,29 @@ var ScrollResponderMixin = {
    * @param {number} height Height of the text input.
    */
   scrollResponderInputMeasureAndScrollToKeyboard: function scrollResponderInputMeasureAndScrollToKeyboard(left, top, width, height) {
-    var keyboardScreenY = Dimensions.get('window').height;
+    var keyboardScreenY = _Dimensions.default.get('window').height;
+
     if (this.keyboardWillOpenTo) {
       keyboardScreenY = this.keyboardWillOpenTo.endCoordinates.screenY;
     }
-    var scrollOffsetY = top - keyboardScreenY + height + this.additionalScrollOffset;
 
-    // By default, this can scroll with negative offset, pulling the content
+    var scrollOffsetY = top - keyboardScreenY + height + this.additionalScrollOffset; // By default, this can scroll with negative offset, pulling the content
     // down so that the target component's bottom meets the keyboard's top.
     // If requested otherwise, cap the offset at 0 minimum to avoid content
     // shifting down.
+
     if (this.preventNegativeScrollOffset) {
       scrollOffsetY = Math.max(0, scrollOffsetY);
     }
-    this.scrollResponderScrollTo({ x: 0, y: scrollOffsetY, animated: true });
 
+    this.scrollResponderScrollTo({
+      x: 0,
+      y: scrollOffsetY,
+      animated: true
+    });
     this.additionalOffset = 0;
     this.preventNegativeScrollOffset = false;
   },
-
   scrollResponderTextInputFocusError: function scrollResponderTextInputFocusError(e) {
     console.error('Error measuring text field: ', e);
   },
@@ -444,8 +469,7 @@ var ScrollResponderMixin = {
    */
   componentWillMount: function componentWillMount() {
     this.keyboardWillOpenTo = null;
-    this.additionalScrollOffset = 0;
-    // this.addListenerOn(RCTDeviceEventEmitter, 'keyboardWillShow', this.scrollResponderKeyboardWillShow);
+    this.additionalScrollOffset = 0; // this.addListenerOn(RCTDeviceEventEmitter, 'keyboardWillShow', this.scrollResponderKeyboardWillShow);
     // this.addListenerOn(RCTDeviceEventEmitter, 'keyboardWillHide', this.scrollResponderKeyboardWillHide);
     // this.addListenerOn(RCTDeviceEventEmitter, 'keyboardDidShow', this.scrollResponderKeyboardDidShow);
     // this.addListenerOn(RCTDeviceEventEmitter, 'keyboardDidHide', this.scrollResponderKeyboardDidHide);
@@ -483,29 +507,26 @@ var ScrollResponderMixin = {
     this.keyboardWillOpenTo = e;
     this.props.onKeyboardWillShow && this.props.onKeyboardWillShow(e);
   },
-
   scrollResponderKeyboardWillHide: function scrollResponderKeyboardWillHide(e) {
     this.keyboardWillOpenTo = null;
     this.props.onKeyboardWillHide && this.props.onKeyboardWillHide(e);
   },
-
   scrollResponderKeyboardDidShow: function scrollResponderKeyboardDidShow(e) {
     // TODO(7693961): The event for DidShow is not available on iOS yet.
     // Use the one from WillShow and do not assign.
     if (e) {
       this.keyboardWillOpenTo = e;
     }
+
     this.props.onKeyboardDidShow && this.props.onKeyboardDidShow(e);
   },
-
   scrollResponderKeyboardDidHide: function scrollResponderKeyboardDidHide(e) {
     this.keyboardWillOpenTo = null;
     this.props.onKeyboardDidHide && this.props.onKeyboardDidHide(e);
   }
 };
-
 var ScrollResponder = {
   Mixin: ScrollResponderMixin
 };
-
-export default ScrollResponder;
+var _default = ScrollResponder;
+exports.default = _default;

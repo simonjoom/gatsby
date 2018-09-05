@@ -1,3 +1,14 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _UIManager = _interopRequireDefault(require("../../../exports/UIManager"));
+
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  *
@@ -7,14 +18,9 @@
  * @noflow
  * @format
  */
-
-import PropTypes from 'prop-types';
-import UIManager from '../../../exports/UIManager';
-
 var __DEV__ = process.env.NODE !== 'production';
-var checkPropTypes = PropTypes.checkPropTypes;
 
-
+var checkPropTypes = _propTypes.default.checkPropTypes;
 var Types = {
   spring: 'spring',
   linear: 'linear',
@@ -23,7 +29,6 @@ var Types = {
   easeOut: 'easeOut',
   keyboard: 'keyboard'
 };
-
 var Properties = {
   opacity: 'opacity',
   scaleX: 'scaleX',
@@ -31,33 +36,37 @@ var Properties = {
   scaleXY: 'scaleXY'
 };
 
-var animType = PropTypes.shape({
-  duration: PropTypes.number,
-  delay: PropTypes.number,
-  springDamping: PropTypes.number,
-  initialVelocity: PropTypes.number,
-  type: PropTypes.oneOf(Object.keys(Types)).isRequired,
-  property: PropTypes.oneOf(
-  // Only applies to create/delete
+var animType = _propTypes.default.shape({
+  duration: _propTypes.default.number,
+  delay: _propTypes.default.number,
+  springDamping: _propTypes.default.number,
+  initialVelocity: _propTypes.default.number,
+  type: _propTypes.default.oneOf(Object.keys(Types)).isRequired,
+  property: _propTypes.default.oneOf( // Only applies to create/delete
   Object.keys(Properties))
 });
 
-var configType = PropTypes.shape({
-  duration: PropTypes.number.isRequired,
+var configType = _propTypes.default.shape({
+  duration: _propTypes.default.number.isRequired,
   create: animType,
   update: animType,
   delete: animType
 });
 
 function checkConfig(config, location, name) {
-  checkPropTypes({ config: configType }, { config: config }, location, name);
+  checkPropTypes({
+    config: configType
+  }, {
+    config: config
+  }, location, name);
 }
 
 function configureNext(config, onAnimationDidEnd) {
   if (__DEV__) {
     checkConfig(config, 'config', 'LayoutAnimation.configureNext');
   }
-  UIManager.configureNextLayoutAnimation(config, onAnimationDidEnd || function () {}, function () {
+
+  _UIManager.default.configureNextLayoutAnimation(config, onAnimationDidEnd || function () {}, function () {
     /* unused */
   });
 }
@@ -98,7 +107,6 @@ var Presets = {
     }
   }
 };
-
 /**
  * Automatically animates views to their new positions when the
  * next layout happens.
@@ -109,6 +117,7 @@ var Presets = {
  *
  *     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
  */
+
 var LayoutAnimation = {
   /**
    * Schedules an animation to happen on the next layout.
@@ -125,6 +134,7 @@ var LayoutAnimation = {
    * @param onError Called on error. Only supported on iOS.
    */
   configureNext: configureNext,
+
   /**
    * Helper for creating a config for `configureNext`.
    */
@@ -137,5 +147,5 @@ var LayoutAnimation = {
   linear: configureNext.bind(null, Presets.linear),
   spring: configureNext.bind(null, Presets.spring)
 };
-
-export default LayoutAnimation;
+var _default = LayoutAnimation;
+exports.default = _default;

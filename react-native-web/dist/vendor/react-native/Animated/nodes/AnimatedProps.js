@@ -9,142 +9,176 @@
  */
 'use strict';
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-import { AnimatedEvent } from '../AnimatedEvent';
-import AnimatedNode from './AnimatedNode';
-import AnimatedStyle from './AnimatedStyle';
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
-import findNodeHandle from '../../../../exports/findNodeHandle';
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-import invariant from 'fbjs/lib/invariant';
+var _AnimatedEvent = require("../AnimatedEvent");
 
-var AnimatedProps = function (_AnimatedNode) {
-  _inherits(AnimatedProps, _AnimatedNode);
+var _AnimatedNode2 = _interopRequireDefault(require("./AnimatedNode"));
+
+var _AnimatedStyle = _interopRequireDefault(require("./AnimatedStyle"));
+
+var _NativeAnimatedHelper = _interopRequireDefault(require("../NativeAnimatedHelper"));
+
+var _findNodeHandle = _interopRequireDefault(require("../../../../exports/findNodeHandle"));
+
+var _invariant = _interopRequireDefault(require("fbjs/lib/invariant"));
+
+var AnimatedProps =
+/*#__PURE__*/
+function (_AnimatedNode) {
+  (0, _inheritsLoose2.default)(AnimatedProps, _AnimatedNode);
 
   function AnimatedProps(props, callback) {
-    _classCallCheck(this, AnimatedProps);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, _AnimatedNode.call(this));
+    _this = _AnimatedNode.call(this) || this;
 
     if (props.style) {
-      props = Object.assign({}, props, {
-        style: new AnimatedStyle(props.style)
+      props = (0, _extends2.default)({}, props, {
+        style: new _AnimatedStyle.default(props.style)
       });
     }
+
     _this._props = props;
     _this._callback = callback;
+
     _this.__attach();
+
     return _this;
   }
 
-  AnimatedProps.prototype.__getValue = function __getValue() {
+  var _proto = AnimatedProps.prototype;
+
+  _proto.__getValue = function __getValue() {
     var props = {};
+
     for (var key in this._props) {
       var value = this._props[key];
-      if (value instanceof AnimatedNode) {
-        if (!value.__isNative || value instanceof AnimatedStyle) {
+
+      if (value instanceof _AnimatedNode2.default) {
+        if (!value.__isNative || value instanceof _AnimatedStyle.default) {
           // We cannot use value of natively driven nodes this way as the value we have access from
           // JS may not be up to date.
           props[key] = value.__getValue();
         }
-      } else if (value instanceof AnimatedEvent) {
+      } else if (value instanceof _AnimatedEvent.AnimatedEvent) {
         props[key] = value.__getHandler();
       } else {
         props[key] = value;
       }
     }
+
     return props;
   };
 
-  AnimatedProps.prototype.__getAnimatedValue = function __getAnimatedValue() {
+  _proto.__getAnimatedValue = function __getAnimatedValue() {
     var props = {};
+
     for (var key in this._props) {
       var value = this._props[key];
-      if (value instanceof AnimatedNode) {
+
+      if (value instanceof _AnimatedNode2.default) {
         props[key] = value.__getAnimatedValue();
       }
     }
+
     return props;
   };
 
-  AnimatedProps.prototype.__attach = function __attach() {
+  _proto.__attach = function __attach() {
     for (var key in this._props) {
       var value = this._props[key];
-      if (value instanceof AnimatedNode) {
+
+      if (value instanceof _AnimatedNode2.default) {
         value.__addChild(this);
       }
     }
   };
 
-  AnimatedProps.prototype.__detach = function __detach() {
+  _proto.__detach = function __detach() {
     if (this.__isNative && this._animatedView) {
       this.__disconnectAnimatedView();
     }
+
     for (var key in this._props) {
       var value = this._props[key];
-      if (value instanceof AnimatedNode) {
+
+      if (value instanceof _AnimatedNode2.default) {
         value.__removeChild(this);
       }
     }
+
     _AnimatedNode.prototype.__detach.call(this);
   };
 
-  AnimatedProps.prototype.update = function update() {
+  _proto.update = function update() {
     this._callback();
   };
 
-  AnimatedProps.prototype.__makeNative = function __makeNative() {
+  _proto.__makeNative = function __makeNative() {
     if (!this.__isNative) {
       this.__isNative = true;
+
       for (var key in this._props) {
         var value = this._props[key];
-        if (value instanceof AnimatedNode) {
+
+        if (value instanceof _AnimatedNode2.default) {
           value.__makeNative();
         }
       }
+
       if (this._animatedView) {
         this.__connectAnimatedView();
       }
     }
   };
 
-  AnimatedProps.prototype.setNativeView = function setNativeView(animatedView) {
+  _proto.setNativeView = function setNativeView(animatedView) {
     if (this._animatedView === animatedView) {
       return;
     }
+
     this._animatedView = animatedView;
+
     if (this.__isNative) {
       this.__connectAnimatedView();
     }
   };
 
-  AnimatedProps.prototype.__connectAnimatedView = function __connectAnimatedView() {
-    invariant(this.__isNative, 'Expected node to be marked as "native"');
-    var nativeViewTag = findNodeHandle(this._animatedView);
-    invariant(nativeViewTag != null, 'Unable to locate attached view in the native tree');
-    NativeAnimatedHelper.API.connectAnimatedNodeToView(this.__getNativeTag(), nativeViewTag);
+  _proto.__connectAnimatedView = function __connectAnimatedView() {
+    (0, _invariant.default)(this.__isNative, 'Expected node to be marked as "native"');
+    var nativeViewTag = (0, _findNodeHandle.default)(this._animatedView);
+    (0, _invariant.default)(nativeViewTag != null, 'Unable to locate attached view in the native tree');
+
+    _NativeAnimatedHelper.default.API.connectAnimatedNodeToView(this.__getNativeTag(), nativeViewTag);
   };
 
-  AnimatedProps.prototype.__disconnectAnimatedView = function __disconnectAnimatedView() {
-    invariant(this.__isNative, 'Expected node to be marked as "native"');
-    var nativeViewTag = findNodeHandle(this._animatedView);
-    invariant(nativeViewTag != null, 'Unable to locate attached view in the native tree');
-    NativeAnimatedHelper.API.disconnectAnimatedNodeFromView(this.__getNativeTag(), nativeViewTag);
+  _proto.__disconnectAnimatedView = function __disconnectAnimatedView() {
+    (0, _invariant.default)(this.__isNative, 'Expected node to be marked as "native"');
+    var nativeViewTag = (0, _findNodeHandle.default)(this._animatedView);
+    (0, _invariant.default)(nativeViewTag != null, 'Unable to locate attached view in the native tree');
+
+    _NativeAnimatedHelper.default.API.disconnectAnimatedNodeFromView(this.__getNativeTag(), nativeViewTag);
   };
 
-  AnimatedProps.prototype.__getNativeConfig = function __getNativeConfig() {
+  _proto.__getNativeConfig = function __getNativeConfig() {
     var propsConfig = {};
+
     for (var propKey in this._props) {
       var value = this._props[propKey];
-      if (value instanceof AnimatedNode) {
+
+      if (value instanceof _AnimatedNode2.default) {
         propsConfig[propKey] = value.__getNativeTag();
       }
     }
+
     return {
       type: 'props',
       props: propsConfig
@@ -152,6 +186,7 @@ var AnimatedProps = function (_AnimatedNode) {
   };
 
   return AnimatedProps;
-}(AnimatedNode);
+}(_AnimatedNode2.default);
 
-export default AnimatedProps;
+var _default = AnimatedProps;
+exports.default = _default;

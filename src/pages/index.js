@@ -44,8 +44,7 @@ class BlogIndex extends React.Component {
     const posts = get(this.props.data, 'allMdx.edges')
     //const morePosts = get(this, 'props.data.allContentfulBlogPostMdx.edges')
 
-    //const posts = get(this, 'props.data.allMarkdownRemark.edges')
-    console.log('posts', posts)
+    //const posts = get(this, 'props.data.allMarkdownRemark.edges') 
     return (
       <Layout location={this.props.location}>
         <Helmet

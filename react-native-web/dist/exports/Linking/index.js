@@ -1,3 +1,14 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _ExecutionEnvironment = require("fbjs/lib/ExecutionEnvironment");
+
+var _invariant = _interopRequireDefault(require("fbjs/lib/invariant"));
+
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -7,12 +18,7 @@
  *
  * 
  */
-
-import { canUseDOM } from 'fbjs/lib/ExecutionEnvironment';
-import invariant from 'fbjs/lib/invariant';
-
-var initialURL = canUseDOM ? window.location.href : '';
-
+var initialURL = _ExecutionEnvironment.canUseDOM ? window.location.href : '';
 var Linking = {
   addEventListener: function addEventListener() {},
   removeEventListener: function removeEventListener() {},
@@ -31,15 +37,16 @@ var Linking = {
     }
   },
   _validateURL: function _validateURL(url) {
-    invariant(typeof url === 'string', 'Invalid URL: should be a string. Was: ' + url);
-    invariant(url, 'Invalid URL: cannot be empty');
+    (0, _invariant.default)(typeof url === 'string', 'Invalid URL: should be a string. Was: ' + url);
+    (0, _invariant.default)(url, 'Invalid URL: cannot be empty');
   }
 };
 
 var open = function open(url) {
-  if (canUseDOM) {
+  if (_ExecutionEnvironment.canUseDOM) {
     window.location = new URL(url, window.location).toString();
   }
 };
 
-export default Linking;
+var _default = Linking;
+exports.default = _default;

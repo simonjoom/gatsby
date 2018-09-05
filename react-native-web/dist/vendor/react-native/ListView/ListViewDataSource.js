@@ -10,11 +10,16 @@
  */
 'use strict';
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-import invariant from 'fbjs/lib/invariant';
-import isEmpty from '../isEmpty';
-import warning from 'fbjs/lib/warning';
+exports.__esModule = true;
+exports.default = void 0;
+
+var _invariant = _interopRequireDefault(require("fbjs/lib/invariant"));
+
+var _isEmpty = _interopRequireDefault(require("../isEmpty"));
+
+var _warning = _interopRequireDefault(require("fbjs/lib/warning"));
 
 function defaultGetRowData(dataBlob, sectionID, rowID) {
   return dataBlob[sectionID][rowID];
@@ -57,8 +62,9 @@ function defaultGetSectionHeaderData(dataBlob, sectionID) {
  * }
  * ```
  */
-
-var ListViewDataSource = function () {
+var ListViewDataSource =
+/*#__PURE__*/
+function () {
   /**
    * You can provide custom extraction and `hasChanged` functions for section
    * headers and rows.  If absent, data will be extracted with the
@@ -85,25 +91,20 @@ var ListViewDataSource = function () {
    * - sectionHeaderHasChanged(prevSectionData, nextSectionData);
    */
   function ListViewDataSource(params) {
-    _classCallCheck(this, ListViewDataSource);
-
-    invariant(params && typeof params.rowHasChanged === 'function', 'Must provide a rowHasChanged function.');
+    (0, _invariant.default)(params && typeof params.rowHasChanged === 'function', 'Must provide a rowHasChanged function.');
     this._rowHasChanged = params.rowHasChanged;
     this._getRowData = params.getRowData || defaultGetRowData;
     this._sectionHeaderHasChanged = params.sectionHeaderHasChanged;
     this._getSectionHeaderData = params.getSectionHeaderData || defaultGetSectionHeaderData;
-
     this._dataBlob = null;
     this._dirtyRows = [];
     this._dirtySections = [];
-    this._cachedRowCount = 0;
-
-    // These two private variables are accessed by outsiders because ListView
+    this._cachedRowCount = 0; // These two private variables are accessed by outsiders because ListView
     // uses them to iterate over the data in this class.
+
     this.rowIdentities = [];
     this.sectionIdentities = [];
   }
-
   /**
    * Clones this `ListViewDataSource` with the specified `dataBlob` and
    * `rowIdentities`. The `dataBlob` is just an arbitrary blob of data. At
@@ -122,16 +123,21 @@ var ListViewDataSource = function () {
    */
 
 
-  ListViewDataSource.prototype.cloneWithRows = function cloneWithRows(dataBlob, rowIdentities) {
-    var rowIds = rowIdentities ? [[].concat(rowIdentities)] : null;
+  var _proto = ListViewDataSource.prototype;
+
+  _proto.cloneWithRows = function cloneWithRows(dataBlob, rowIdentities) {
+    var rowIds = rowIdentities ? [rowIdentities.concat()] : null;
+
     if (!this._sectionHeaderHasChanged) {
       this._sectionHeaderHasChanged = function () {
         return false;
       };
     }
-    return this.cloneWithRowsAndSections({ s1: dataBlob }, ['s1'], rowIds);
-  };
 
+    return this.cloneWithRowsAndSections({
+      s1: dataBlob
+    }, ['s1'], rowIds);
+  };
   /**
    * This performs the same function as the `cloneWithRows` function but here
    * you also specify what your `sectionIdentities` are. If you don't care
@@ -153,10 +159,9 @@ var ListViewDataSource = function () {
    */
 
 
-  ListViewDataSource.prototype.cloneWithRowsAndSections = function cloneWithRowsAndSections(dataBlob, sectionIdentities, rowIdentities) {
-    invariant(typeof this._sectionHeaderHasChanged === 'function', 'Must provide a sectionHeaderHasChanged function with section data.');
-    invariant(!sectionIdentities || !rowIdentities || sectionIdentities.length === rowIdentities.length, 'row and section ids lengths must be the same');
-
+  _proto.cloneWithRowsAndSections = function cloneWithRowsAndSections(dataBlob, sectionIdentities, rowIdentities) {
+    (0, _invariant.default)(typeof this._sectionHeaderHasChanged === 'function', 'Must provide a sectionHeaderHasChanged function with section data.');
+    (0, _invariant.default)(!sectionIdentities || !rowIdentities || sectionIdentities.length === rowIdentities.length, 'row and section ids lengths must be the same');
     var newSource = new ListViewDataSource({
       getRowData: this._getRowData,
       getSectionHeaderData: this._getSectionHeaderData,
@@ -164,11 +169,13 @@ var ListViewDataSource = function () {
       sectionHeaderHasChanged: this._sectionHeaderHasChanged
     });
     newSource._dataBlob = dataBlob;
+
     if (sectionIdentities) {
       newSource.sectionIdentities = sectionIdentities;
     } else {
       newSource.sectionIdentities = Object.keys(dataBlob);
     }
+
     if (rowIdentities) {
       newSource.rowIdentities = rowIdentities;
     } else {
@@ -177,13 +184,13 @@ var ListViewDataSource = function () {
         newSource.rowIdentities.push(Object.keys(dataBlob[sectionID]));
       });
     }
+
     newSource._cachedRowCount = countRows(newSource.rowIdentities);
 
     newSource._calculateDirtyArrays(this._dataBlob, this.sectionIdentities, this.rowIdentities);
 
     return newSource;
   };
-
   /**
    * Returns the total number of rows in the data source.
    *
@@ -191,10 +198,9 @@ var ListViewDataSource = function () {
    */
 
 
-  ListViewDataSource.prototype.getRowCount = function getRowCount() {
+  _proto.getRowCount = function getRowCount() {
     return this._cachedRowCount;
   };
-
   /**
    * Returns the total number of rows in the data source (see `getRowCount` for how this is calculated) plus the number of sections in the data.
    *
@@ -202,41 +208,39 @@ var ListViewDataSource = function () {
    */
 
 
-  ListViewDataSource.prototype.getRowAndSectionCount = function getRowAndSectionCount() {
+  _proto.getRowAndSectionCount = function getRowAndSectionCount() {
     return this._cachedRowCount + this.sectionIdentities.length;
   };
-
   /**
    * Returns if the row is dirtied and needs to be rerendered
    */
 
 
-  ListViewDataSource.prototype.rowShouldUpdate = function rowShouldUpdate(sectionIndex, rowIndex) {
+  _proto.rowShouldUpdate = function rowShouldUpdate(sectionIndex, rowIndex) {
     var needsUpdate = this._dirtyRows[sectionIndex][rowIndex];
-    warning(needsUpdate !== undefined, 'missing dirtyBit for section, row: ' + sectionIndex + ', ' + rowIndex);
+    (0, _warning.default)(needsUpdate !== undefined, 'missing dirtyBit for section, row: ' + sectionIndex + ', ' + rowIndex);
     return needsUpdate;
   };
-
   /**
    * Gets the data required to render the row.
    */
 
 
-  ListViewDataSource.prototype.getRowData = function getRowData(sectionIndex, rowIndex) {
+  _proto.getRowData = function getRowData(sectionIndex, rowIndex) {
     var sectionID = this.sectionIdentities[sectionIndex];
     var rowID = this.rowIdentities[sectionIndex][rowIndex];
-    warning(sectionID !== undefined && rowID !== undefined, 'rendering invalid section, row: ' + sectionIndex + ', ' + rowIndex);
+    (0, _warning.default)(sectionID !== undefined && rowID !== undefined, 'rendering invalid section, row: ' + sectionIndex + ', ' + rowIndex);
     return this._getRowData(this._dataBlob, sectionID, rowID);
   };
-
   /**
    * Gets the rowID at index provided if the dataSource arrays were flattened,
    * or null of out of range indexes.
    */
 
 
-  ListViewDataSource.prototype.getRowIDForFlatIndex = function getRowIDForFlatIndex(index) {
+  _proto.getRowIDForFlatIndex = function getRowIDForFlatIndex(index) {
     var accessIndex = index;
+
     for (var ii = 0; ii < this.sectionIdentities.length; ii++) {
       if (accessIndex >= this.rowIdentities[ii].length) {
         accessIndex -= this.rowIdentities[ii].length;
@@ -244,17 +248,18 @@ var ListViewDataSource = function () {
         return this.rowIdentities[ii][accessIndex];
       }
     }
+
     return null;
   };
-
   /**
    * Gets the sectionID at index provided if the dataSource arrays were flattened,
    * or null for out of range indexes.
    */
 
 
-  ListViewDataSource.prototype.getSectionIDForFlatIndex = function getSectionIDForFlatIndex(index) {
+  _proto.getSectionIDForFlatIndex = function getSectionIDForFlatIndex(index) {
     var accessIndex = index;
+
     for (var ii = 0; ii < this.sectionIdentities.length; ii++) {
       if (accessIndex >= this.rowIdentities[ii].length) {
         accessIndex -= this.rowIdentities[ii].length;
@@ -262,85 +267,87 @@ var ListViewDataSource = function () {
         return this.sectionIdentities[ii];
       }
     }
+
     return null;
   };
-
   /**
    * Returns an array containing the number of rows in each section
    */
 
 
-  ListViewDataSource.prototype.getSectionLengths = function getSectionLengths() {
+  _proto.getSectionLengths = function getSectionLengths() {
     var results = [];
+
     for (var ii = 0; ii < this.sectionIdentities.length; ii++) {
       results.push(this.rowIdentities[ii].length);
     }
+
     return results;
   };
-
   /**
    * Returns if the section header is dirtied and needs to be rerendered
    */
 
 
-  ListViewDataSource.prototype.sectionHeaderShouldUpdate = function sectionHeaderShouldUpdate(sectionIndex) {
+  _proto.sectionHeaderShouldUpdate = function sectionHeaderShouldUpdate(sectionIndex) {
     var needsUpdate = this._dirtySections[sectionIndex];
-    warning(needsUpdate !== undefined, 'missing dirtyBit for section: ' + sectionIndex);
+    (0, _warning.default)(needsUpdate !== undefined, 'missing dirtyBit for section: ' + sectionIndex);
     return needsUpdate;
   };
-
   /**
    * Gets the data required to render the section header
    */
 
 
-  ListViewDataSource.prototype.getSectionHeaderData = function getSectionHeaderData(sectionIndex) {
+  _proto.getSectionHeaderData = function getSectionHeaderData(sectionIndex) {
     if (!this._getSectionHeaderData) {
       return null;
     }
+
     var sectionID = this.sectionIdentities[sectionIndex];
-    warning(sectionID !== undefined, 'renderSection called on invalid section: ' + sectionIndex);
+    (0, _warning.default)(sectionID !== undefined, 'renderSection called on invalid section: ' + sectionIndex);
     return this._getSectionHeaderData(this._dataBlob, sectionID);
   };
-
   /**
    * Private members and methods.
    */
 
-  // These two 'protected' variables are accessed by ListView to iterate over
-  // the data in this class.
 
-
-  ListViewDataSource.prototype._calculateDirtyArrays = function _calculateDirtyArrays(prevDataBlob, prevSectionIDs, prevRowIDs) {
+  _proto._calculateDirtyArrays = function _calculateDirtyArrays(prevDataBlob, prevSectionIDs, prevRowIDs) {
     // construct a hashmap of the existing (old) id arrays
     var prevSectionsHash = keyedDictionaryFromArray(prevSectionIDs);
     var prevRowsHash = {};
+
     for (var ii = 0; ii < prevRowIDs.length; ii++) {
       var sectionID = prevSectionIDs[ii];
-      warning(!prevRowsHash[sectionID], 'SectionID appears more than once: ' + sectionID);
+      (0, _warning.default)(!prevRowsHash[sectionID], 'SectionID appears more than once: ' + sectionID);
       prevRowsHash[sectionID] = keyedDictionaryFromArray(prevRowIDs[ii]);
-    }
+    } // compare the 2 identity array and get the dirtied rows
 
-    // compare the 2 identity array and get the dirtied rows
+
     this._dirtySections = [];
     this._dirtyRows = [];
-
     var dirty;
+
     for (var sIndex = 0; sIndex < this.sectionIdentities.length; sIndex++) {
-      var sectionID = this.sectionIdentities[sIndex];
-      // dirty if the sectionHeader is new or _sectionHasChanged is true
+      var sectionID = this.sectionIdentities[sIndex]; // dirty if the sectionHeader is new or _sectionHasChanged is true
+
       dirty = !prevSectionsHash[sectionID];
       var sectionHeaderHasChanged = this._sectionHeaderHasChanged;
+
       if (!dirty && sectionHeaderHasChanged) {
         dirty = sectionHeaderHasChanged(this._getSectionHeaderData(prevDataBlob, sectionID), this._getSectionHeaderData(this._dataBlob, sectionID));
       }
+
       this._dirtySections.push(!!dirty);
 
       this._dirtyRows[sIndex] = [];
+
       for (var rIndex = 0; rIndex < this.rowIdentities[sIndex].length; rIndex++) {
-        var rowID = this.rowIdentities[sIndex][rIndex];
-        // dirty if the section is new, row is new or _rowHasChanged is true
+        var rowID = this.rowIdentities[sIndex][rIndex]; // dirty if the section is new, row is new or _rowHasChanged is true
+
         dirty = !prevSectionsHash[sectionID] || !prevRowsHash[sectionID][rowID] || this._rowHasChanged(this._getRowData(prevDataBlob, sectionID, rowID), this._getRowData(this._dataBlob, sectionID, rowID));
+
         this._dirtyRows[sIndex].push(!!dirty);
       }
     }
@@ -351,24 +358,30 @@ var ListViewDataSource = function () {
 
 function countRows(allRowIDs) {
   var totalRows = 0;
+
   for (var sectionIdx = 0; sectionIdx < allRowIDs.length; sectionIdx++) {
     var rowIDs = allRowIDs[sectionIdx];
     totalRows += rowIDs.length;
   }
+
   return totalRows;
 }
 
 function keyedDictionaryFromArray(arr) {
-  if (isEmpty(arr)) {
+  if ((0, _isEmpty.default)(arr)) {
     return {};
   }
+
   var result = {};
+
   for (var ii = 0; ii < arr.length; ii++) {
     var key = arr[ii];
-    warning(!result[key], 'Value appears more than once in array: ' + key);
+    (0, _warning.default)(!result[key], 'Value appears more than once in array: ' + key);
     result[key] = true;
   }
+
   return result;
 }
 
-export default ListViewDataSource;
+var _default = ListViewDataSource;
+exports.default = _default;

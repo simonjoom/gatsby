@@ -1,3 +1,12 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.SafeHTMLElement = exports.canUseDOM = void 0;
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
 /**
  * MIT License
  * Copyright (c) 2017 Ryan Florence
@@ -12,13 +21,7 @@
  * Copyright (c) 2018 Ray Andrew
  * https://github.com/rayandrews/react-native-web-modal
  */
-
-import PropTypes from 'prop-types';
-
-export const canUseDOM = !!(
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.createElement
-);
-
-export const SafeHTMLElement = canUseDOM ? HTMLElement : PropTypes.any;
+var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+exports.canUseDOM = canUseDOM;
+var SafeHTMLElement = canUseDOM ? HTMLElement : _propTypes.default.any;
+exports.SafeHTMLElement = SafeHTMLElement;

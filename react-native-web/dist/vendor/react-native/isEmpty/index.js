@@ -7,10 +7,12 @@
  * @providesModule isEmpty
  */
 'use strict';
-
 /**
  * Mimics empty from PHP.
  */
+
+exports.__esModule = true;
+exports.default = void 0;
 
 function isEmpty(obj) {
   if (Array.isArray(obj)) {
@@ -19,10 +21,12 @@ function isEmpty(obj) {
     for (var i in obj) {
       return false;
     }
+
     return true;
   } else {
     return !obj;
   }
 }
 
-export default isEmpty;
+var _default = isEmpty;
+exports.default = _default;

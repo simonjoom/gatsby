@@ -1,3 +1,22 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _AccessibilityUtil = _interopRequireDefault(require("../../modules/AccessibilityUtil"));
+
+var _createDOMProps = _interopRequireDefault(require("../../modules/createDOMProps"));
+
+var _normalizeNativeEvent = _interopRequireDefault(require("../../modules/normalizeNativeEvent"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactDom = _interopRequireDefault(require("react-dom"));
+
+var _ResponderEventPlugin = _interopRequireDefault(require("../../modules/ResponderEventPlugin"));
+
 /**
  * Copyright (c) 2015-present, Nicolas Gallagher.
  *
@@ -6,31 +25,22 @@
  *
  * @noflow
  */
-
-import AccessibilityUtil from '../../modules/AccessibilityUtil';
-import createDOMProps from '../../modules/createDOMProps';
-import normalizeNativeEvent from '../../modules/normalizeNativeEvent';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ResponderEventPlugin from '../../modules/ResponderEventPlugin';
-
-var EventPluginHub = ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.EventPluginHub;
-
-
+var EventPluginHub = _reactDom.default.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.EventPluginHub;
 EventPluginHub.injection.injectEventPluginsByName({
-  ResponderEventPlugin: ResponderEventPlugin
+  ResponderEventPlugin: _ResponderEventPlugin.default
 });
 
 var isModifiedEvent = function isModifiedEvent(event) {
   return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 };
-
 /**
  * Ensure event handlers receive an event of the expected shape. The 'button'
  * role – for accessibility reasons and functional equivalence to the native
  * button element – must also support synthetic keyboard activation of onclick,
  * and remove event handlers when disabled.
  */
+
+
 var eventHandlerNames = {
   onBlur: true,
   onClick: true,
@@ -47,49 +57,50 @@ var eventHandlerNames = {
   onTouchStart: true,
   onTouchStartCapture: true
 };
+
 var adjustProps = function adjustProps(domProps) {
   var onClick = domProps.onClick,
       onResponderRelease = domProps.onResponderRelease,
       role = domProps.role;
-
-
   var isButtonRole = role === 'button';
-  var isDisabled = AccessibilityUtil.isDisabled(domProps);
-  var isLinkRole = role === 'link';
 
+  var isDisabled = _AccessibilityUtil.default.isDisabled(domProps);
+
+  var isLinkRole = role === 'link';
   Object.keys(domProps).forEach(function (propName) {
     var prop = domProps[propName];
     var isEventHandler = typeof prop === 'function' && eventHandlerNames[propName];
+
     if (isEventHandler) {
       if (isButtonRole && isDisabled) {
         domProps[propName] = undefined;
       } else {
         // TODO: move this out of the render path
         domProps[propName] = function (e) {
-          e.nativeEvent = normalizeNativeEvent(e.nativeEvent);
+          e.nativeEvent = (0, _normalizeNativeEvent.default)(e.nativeEvent);
           return prop(e);
         };
       }
     }
-  });
-
-  // Cancel click events if the responder system is being used on a link
+  }); // Cancel click events if the responder system is being used on a link
   // element. Click events are not an expected part of the React Native API,
   // and browsers dispatch click events that cannot otherwise be cancelled from
   // preceding mouse events in the responder system.
+
   if (isLinkRole && onResponderRelease) {
     domProps.onClick = function (e) {
       if (!e.isDefaultPrevented() && !isModifiedEvent(e.nativeEvent) && !domProps.target) {
         e.preventDefault();
       }
     };
-  }
+  } // Button role should trigger 'onClick' if SPACE or ENTER keys are pressed.
 
-  // Button role should trigger 'onClick' if SPACE or ENTER keys are pressed.
+
   if (isButtonRole && !isDisabled) {
     domProps.onKeyPress = function (e) {
       if (!e.isDefaultPrevented() && (e.which === 13 || e.which === 32)) {
         e.preventDefault();
+
         if (onClick) {
           onClick(e);
         }
@@ -99,19 +110,23 @@ var adjustProps = function adjustProps(domProps) {
 };
 
 var createElement = function createElement(component, props) {
-  for (var _len = arguments.length, children = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+  // use equivalent platform elements where possible
+  var accessibilityComponent;
+
+  if (component && component.constructor === String) {
+    accessibilityComponent = _AccessibilityUtil.default.propsToAccessibilityComponent(props);
+  }
+
+  var Component = accessibilityComponent || component;
+  var domProps = (0, _createDOMProps.default)(Component, props);
+  adjustProps(domProps);
+
+  for (var _len = arguments.length, children = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
     children[_key - 2] = arguments[_key];
   }
 
-  // use equivalent platform elements where possible
-  var accessibilityComponent = void 0;
-  if (component && component.constructor === String) {
-    accessibilityComponent = AccessibilityUtil.propsToAccessibilityComponent(props);
-  }
-  var Component = accessibilityComponent || component;
-  var domProps = createDOMProps(Component, props);
-  adjustProps(domProps);
-  return React.createElement.apply(React, [Component, domProps].concat(children));
+  return _react.default.createElement.apply(_react.default, [Component, domProps].concat(children));
 };
 
-export default createElement;
+var _default = createElement;
+exports.default = _default;

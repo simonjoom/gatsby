@@ -12,3 +12,4 @@ cp -Rf ./react-native-web ./node_modules/
 cp -Rf ./react-navigation-stack ./node_modules/ 
 cp -Rf ./gatsby ./node_modules/ 
 cp -Rf ./gatsby-mdx ./node_modules/ 
+cp -Rf ./htmltojsx ./node_modules/ 

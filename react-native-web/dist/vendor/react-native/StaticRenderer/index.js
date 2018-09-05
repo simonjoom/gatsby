@@ -1,8 +1,15 @@
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+"use strict";
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+exports.__esModule = true;
+exports.default = void 0;
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _react = require("react");
+
+var _propTypes = require("prop-types");
 
 /**
  * Copyright (c) 2015-present, Nicolas Gallagher.
@@ -13,46 +20,30 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-
-import { Component } from 'react';
-import { bool, func } from 'prop-types';
-
-/**
- * Renders static content efficiently by allowing React to short-circuit the
- * reconciliation process. This component should be used when you know that a
- * subtree of components will never need to be updated.
- *
- *   const someValue = ...; // We know for certain this value will never change.
- *   return (
- *     <StaticRenderer render={() => <MyComponent value={someValue} />} />
- *   );
- *
- * Typically, you will not need to use this component and should opt for normal
- * React reconciliation.
- */
-
-var StaticRenderer = function (_Component) {
-  _inherits(StaticRenderer, _Component);
+var StaticRenderer =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(StaticRenderer, _Component);
 
   function StaticRenderer() {
-    _classCallCheck(this, StaticRenderer);
-
-    return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    return _Component.apply(this, arguments) || this;
   }
 
-  StaticRenderer.prototype.shouldComponentUpdate = function shouldComponentUpdate(nextProps) {
+  var _proto = StaticRenderer.prototype;
+
+  _proto.shouldComponentUpdate = function shouldComponentUpdate(nextProps) {
     return nextProps.shouldUpdate;
   };
 
-  StaticRenderer.prototype.render = function render() {
+  _proto.render = function render() {
     return this.props.render();
   };
 
   return StaticRenderer;
-}(Component);
+}(_react.Component);
 
-export default StaticRenderer;
-StaticRenderer.propTypes = process.env.NODE_ENV !== "production" ? {
-  render: func.isRequired,
-  shouldUpdate: bool.isRequired
-} : {};
+exports.default = StaticRenderer;
+StaticRenderer.propTypes = {
+  render: _propTypes.func.isRequired,
+  shouldUpdate: _propTypes.bool.isRequired
+};

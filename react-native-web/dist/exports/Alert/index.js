@@ -1,4 +1,7 @@
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
 
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
@@ -8,15 +11,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *
  * 
  */
-
-var Alert = function () {
-  function Alert() {
-    _classCallCheck(this, Alert);
-  }
+var Alert =
+/*#__PURE__*/
+function () {
+  function Alert() {}
 
   Alert.alert = function alert() {};
 
   return Alert;
 }();
 
-export default Alert;
+var _default = Alert;
+exports.default = _default;

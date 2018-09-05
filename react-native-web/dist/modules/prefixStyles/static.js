@@ -1,23 +1,40 @@
-import crossFade from 'inline-style-prefixer/static/plugins/crossFade';
-import cursor from 'inline-style-prefixer/static/plugins/cursor';
-import filter from 'inline-style-prefixer/static/plugins/filter';
-import flex from 'inline-style-prefixer/static/plugins/flex';
-import flexboxIE from 'inline-style-prefixer/static/plugins/flexboxIE';
-import flexboxOld from 'inline-style-prefixer/static/plugins/flexboxOld';
-import gradient from 'inline-style-prefixer/static/plugins/gradient';
-import imageSet from 'inline-style-prefixer/static/plugins/imageSet';
-import position from 'inline-style-prefixer/static/plugins/position';
-import sizing from 'inline-style-prefixer/static/plugins/sizing';
-import transition from 'inline-style-prefixer/static/plugins/transition';
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _crossFade = _interopRequireDefault(require("inline-style-prefixer/static/plugins/crossFade"));
+
+var _cursor = _interopRequireDefault(require("inline-style-prefixer/static/plugins/cursor"));
+
+var _filter = _interopRequireDefault(require("inline-style-prefixer/static/plugins/filter"));
+
+var _flex = _interopRequireDefault(require("inline-style-prefixer/static/plugins/flex"));
+
+var _flexboxIE = _interopRequireDefault(require("inline-style-prefixer/static/plugins/flexboxIE"));
+
+var _flexboxOld = _interopRequireDefault(require("inline-style-prefixer/static/plugins/flexboxOld"));
+
+var _gradient = _interopRequireDefault(require("inline-style-prefixer/static/plugins/gradient"));
+
+var _imageSet = _interopRequireDefault(require("inline-style-prefixer/static/plugins/imageSet"));
+
+var _position = _interopRequireDefault(require("inline-style-prefixer/static/plugins/position"));
+
+var _sizing = _interopRequireDefault(require("inline-style-prefixer/static/plugins/sizing"));
+
+var _transition = _interopRequireDefault(require("inline-style-prefixer/static/plugins/transition"));
+
 var w = ['Webkit'];
 var m = ['Moz'];
 var ms = ['ms'];
 var wm = ['Webkit', 'Moz'];
 var wms = ['Webkit', 'ms'];
 var wmms = ['Webkit', 'Moz', 'ms'];
-
-export default {
-  plugins: [crossFade, cursor, filter, flex, flexboxIE, flexboxOld, gradient, imageSet, position, sizing, transition],
+var _default = {
+  plugins: [_crossFade.default, _cursor.default, _filter.default, _flex.default, _flexboxIE.default, _flexboxOld.default, _gradient.default, _imageSet.default, _position.default, _sizing.default, _transition.default],
   prefixMap: {
     animation: w,
     animationDelay: w,
@@ -145,3 +162,4 @@ export default {
     transitionTimingFunction: w
   }
 };
+exports.default = _default;

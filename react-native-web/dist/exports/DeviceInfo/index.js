@@ -1,3 +1,14 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _ExecutionEnvironment = require("fbjs/lib/ExecutionEnvironment");
+
+var _Dimensions = _interopRequireDefault(require("../Dimensions"));
+
 /**
  * Copyright (c) 2015-present, Nicolas Gallagher.
  *
@@ -6,14 +17,10 @@
  *
  * 
  */
-
-import { canUseDOM } from 'fbjs/lib/ExecutionEnvironment';
-import Dimensions from '../Dimensions';
-
 var DeviceInfo = {
   Dimensions: {
     get windowPhysicalPixels() {
-      var _Dimensions$get = Dimensions.get('window'),
+      var _Dimensions$get = _Dimensions.default.get('window'),
           width = _Dimensions$get.width,
           height = _Dimensions$get.height,
           fontScale = _Dimensions$get.fontScale,
@@ -26,8 +33,9 @@ var DeviceInfo = {
         fontScale: fontScale
       };
     },
+
     get screenPhysicalPixels() {
-      var _Dimensions$get2 = Dimensions.get('screen'),
+      var _Dimensions$get2 = _Dimensions.default.get('screen'),
           width = _Dimensions$get2.width,
           height = _Dimensions$get2.height,
           fontScale = _Dimensions$get2.fontScale,
@@ -40,10 +48,11 @@ var DeviceInfo = {
         fontScale: fontScale
       };
     }
+
   },
 
   get locale() {
-    if (canUseDOM) {
+    if (_ExecutionEnvironment.canUseDOM) {
       if (window.navigator.languages) {
         return window.navigator.languages[0];
       } else {
@@ -53,12 +62,13 @@ var DeviceInfo = {
   },
 
   get totalMemory() {
-    return canUseDOM ? window.navigator.deviceMemory : undefined;
+    return _ExecutionEnvironment.canUseDOM ? window.navigator.deviceMemory : undefined;
   },
 
   get userAgent() {
-    return canUseDOM ? window.navigator.userAgent : '';
+    return _ExecutionEnvironment.canUseDOM ? window.navigator.userAgent : '';
   }
-};
 
-export default DeviceInfo;
+};
+var _default = DeviceInfo;
+exports.default = _default;

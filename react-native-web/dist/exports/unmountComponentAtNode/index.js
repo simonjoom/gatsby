@@ -1,3 +1,10 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _reactDom = require("react-dom");
+
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
  *
@@ -6,6 +13,5 @@
  *
  * @noflow
  */
-
-import { unmountComponentAtNode } from 'react-dom';
-export default unmountComponentAtNode;
+var _default = _reactDom.unmountComponentAtNode;
+exports.default = _default;

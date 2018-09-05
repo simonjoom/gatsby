@@ -2,7 +2,7 @@
   "name": "react-native-web",
   "version": "0.8.9",
   "description": "React Native for Web",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "sideEffects": false,
   "files": [
     "dist",
@@ -11,6 +11,9 @@
     "src",
     "!**/__tests__"
   ],
+  "scripts": { 
+    "build": "babel src --out-dir dist --ignore **/__tests__"
+  },
   "dependencies": {
     "array-find-index": "^1.0.2",
     "create-react-class": "^15.6.2",

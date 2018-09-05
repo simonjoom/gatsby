@@ -9,19 +9,24 @@
  */
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-import ListView from '../ListView';
-import PropTypes from 'prop-types';
-import React from 'react';
-import SwipeableListViewDataSource from './SwipeableListViewDataSource';
-import SwipeableRow from '../SwipeableRow';
+var _ListView = _interopRequireDefault(require("../ListView"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _SwipeableListViewDataSource = _interopRequireDefault(require("./SwipeableListViewDataSource"));
+
+var _SwipeableRow = _interopRequireDefault(require("../SwipeableRow"));
 
 /**
  * A container component that renders multiple SwipeableRow's in a ListView
@@ -41,11 +46,13 @@ import SwipeableRow from '../SwipeableRow';
  * - It can bounce the 1st row of the list so users know it's swipeable
  * - More to come
  */
-var SwipeableListView = function (_React$Component) {
-  _inherits(SwipeableListView, _React$Component);
+var SwipeableListView =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inheritsLoose2.default)(SwipeableListView, _React$Component);
 
   SwipeableListView.getNewDataSource = function getNewDataSource() {
-    return new SwipeableListViewDataSource({
+    return new _SwipeableListViewDataSource.default({
       getRowData: function getRowData(data, sectionID, rowID) {
         return data[sectionID][rowID];
       },
@@ -62,10 +69,9 @@ var SwipeableListView = function (_React$Component) {
   };
 
   function SwipeableListView(props, context) {
-    _classCallCheck(this, SwipeableListView);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, _React$Component.call(this, props, context));
-
+    _this = _React$Component.call(this, props, context) || this;
     _this._listViewRef = null;
     _this._shouldBounceFirstRowOnMount = false;
 
@@ -76,45 +82,44 @@ var SwipeableListView = function (_React$Component) {
           dataSource: _this.state.dataSource.setOpenRowID(null)
         });
       }
+
       _this.props.onScroll && _this.props.onScroll(e);
     };
 
     _this._renderRow = function (rowData, sectionID, rowID) {
-      var slideoutView = _this.props.renderQuickActions(rowData, sectionID, rowID);
+      var slideoutView = _this.props.renderQuickActions(rowData, sectionID, rowID); // If renderQuickActions is unspecified or returns falsey, don't allow swipe
 
-      // If renderQuickActions is unspecified or returns falsey, don't allow swipe
+
       if (!slideoutView) {
         return _this.props.renderRow(rowData, sectionID, rowID);
       }
 
       var shouldBounceOnMount = false;
+
       if (_this._shouldBounceFirstRowOnMount) {
         _this._shouldBounceFirstRowOnMount = false;
         shouldBounceOnMount = rowID === _this.props.dataSource.getFirstRowID();
       }
 
-      return React.createElement(
-        SwipeableRow,
-        {
-          slideoutView: slideoutView,
-          isOpen: rowData.id === _this.props.dataSource.getOpenRowID(),
-          maxSwipeDistance: _this._getMaxSwipeDistance(rowData, sectionID, rowID),
-          key: rowID,
-          onOpen: function onOpen() {
-            return _this._onOpen(rowData.id);
-          },
-          onClose: function onClose() {
-            return _this._onClose(rowData.id);
-          },
-          onSwipeEnd: function onSwipeEnd() {
-            return _this._setListViewScrollable(true);
-          },
-          onSwipeStart: function onSwipeStart() {
-            return _this._setListViewScrollable(false);
-          },
-          shouldBounceOnMount: shouldBounceOnMount },
-        _this.props.renderRow(rowData, sectionID, rowID)
-      );
+      return _react.default.createElement(_SwipeableRow.default, {
+        slideoutView: slideoutView,
+        isOpen: rowData.id === _this.props.dataSource.getOpenRowID(),
+        maxSwipeDistance: _this._getMaxSwipeDistance(rowData, sectionID, rowID),
+        key: rowID,
+        onOpen: function onOpen() {
+          return _this._onOpen(rowData.id);
+        },
+        onClose: function onClose() {
+          return _this._onClose(rowData.id);
+        },
+        onSwipeEnd: function onSwipeEnd() {
+          return _this._setListViewScrollable(true);
+        },
+        onSwipeStart: function onSwipeStart() {
+          return _this._setListViewScrollable(false);
+        },
+        shouldBounceOnMount: shouldBounceOnMount
+      }, _this.props.renderRow(rowData, sectionID, rowID));
     };
 
     _this._shouldBounceFirstRowOnMount = _this.props.bounceFirstRowOnMount;
@@ -124,7 +129,9 @@ var SwipeableListView = function (_React$Component) {
     return _this;
   }
 
-  SwipeableListView.prototype.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(nextProps) {
+  var _proto = SwipeableListView.prototype;
+
+  _proto.UNSAFE_componentWillReceiveProps = function UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.state.dataSource.getDataSource() !== nextProps.dataSource.getDataSource()) {
       this.setState({
         dataSource: nextProps.dataSource
@@ -132,10 +139,10 @@ var SwipeableListView = function (_React$Component) {
     }
   };
 
-  SwipeableListView.prototype.render = function render() {
+  _proto.render = function render() {
     var _this2 = this;
 
-    return React.createElement(ListView, _extends({}, this.props, {
+    return _react.default.createElement(_ListView.default, (0, _extends2.default)({}, this.props, {
       ref: function ref(_ref) {
         _this2._listViewRef = _ref;
       },
@@ -151,27 +158,23 @@ var SwipeableListView = function (_React$Component) {
    * scrolling is active allows us to significantly improve framerates
    * (from high 20s to almost consistently 60 fps)
    */
-  SwipeableListView.prototype._setListViewScrollable = function _setListViewScrollable(value) {
+  _proto._setListViewScrollable = function _setListViewScrollable(value) {
     if (this._listViewRef && typeof this._listViewRef.setNativeProps === 'function') {
       this._listViewRef.setNativeProps({
         scrollEnabled: value
       });
     }
-  };
-
-  // Passing through ListView's getScrollResponder() function
+  }; // Passing through ListView's getScrollResponder() function
 
 
-  SwipeableListView.prototype.getScrollResponder = function getScrollResponder() {
+  _proto.getScrollResponder = function getScrollResponder() {
     if (this._listViewRef && typeof this._listViewRef.getScrollResponder === 'function') {
       return this._listViewRef.getScrollResponder();
     }
-  };
-
-  // This enables rows having variable width slideoutView.
+  }; // This enables rows having variable width slideoutView.
 
 
-  SwipeableListView.prototype._getMaxSwipeDistance = function _getMaxSwipeDistance(rowData, sectionID, rowID) {
+  _proto._getMaxSwipeDistance = function _getMaxSwipeDistance(rowData, sectionID, rowID) {
     if (typeof this.props.maxSwipeDistance === 'function') {
       return this.props.maxSwipeDistance(rowData, sectionID, rowID);
     }
@@ -179,45 +182,45 @@ var SwipeableListView = function (_React$Component) {
     return this.props.maxSwipeDistance;
   };
 
-  SwipeableListView.prototype._onOpen = function _onOpen(rowID) {
+  _proto._onOpen = function _onOpen(rowID) {
     this.setState({
       dataSource: this.state.dataSource.setOpenRowID(rowID)
     });
   };
 
-  SwipeableListView.prototype._onClose = function _onClose(rowID) {
+  _proto._onClose = function _onClose(rowID) {
     this.setState({
       dataSource: this.state.dataSource.setOpenRowID(null)
     });
   };
 
   return SwipeableListView;
-}(React.Component);
+}(_react.default.Component);
 
+SwipeableListView.propTypes = {
+  /**
+   * To alert the user that swiping is possible, the first row can bounce
+   * on component mount.
+   */
+  bounceFirstRowOnMount: _propTypes.default.bool.isRequired,
+
+  /**
+   * Use `SwipeableListView.getNewDataSource()` to get a data source to use,
+   * then use it just like you would a normal ListView data source
+   */
+  dataSource: _propTypes.default.instanceOf(_SwipeableListViewDataSource.default).isRequired,
+  // Maximum distance to open to after a swipe
+  maxSwipeDistance: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.func]).isRequired,
+  // Callback method to render the swipeable view
+  renderRow: _propTypes.default.func.isRequired,
+  // Callback method to render the view that will be unveiled on swipe
+  renderQuickActions: _propTypes.default.func.isRequired
+};
 SwipeableListView.defaultProps = {
   bounceFirstRowOnMount: false,
   renderQuickActions: function renderQuickActions() {
     return null;
   }
 };
-SwipeableListView.propTypes = process.env.NODE_ENV !== "production" ? {
-  /**
-   * To alert the user that swiping is possible, the first row can bounce
-   * on component mount.
-   */
-  bounceFirstRowOnMount: PropTypes.bool.isRequired,
-  /**
-   * Use `SwipeableListView.getNewDataSource()` to get a data source to use,
-   * then use it just like you would a normal ListView data source
-   */
-  dataSource: PropTypes.instanceOf(SwipeableListViewDataSource).isRequired,
-  // Maximum distance to open to after a swipe
-  maxSwipeDistance: PropTypes.oneOfType([PropTypes.number, PropTypes.func]).isRequired,
-  // Callback method to render the swipeable view
-  renderRow: PropTypes.func.isRequired,
-  // Callback method to render the view that will be unveiled on swipe
-  renderQuickActions: PropTypes.func.isRequired
-} : {};
-
-
-export default SwipeableListView;
+var _default = SwipeableListView;
+exports.default = _default;

@@ -1,3 +1,14 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _normalizeColor = _interopRequireDefault(require("../../modules/normalizeColor"));
+
+var _normalizeValue = _interopRequireDefault(require("./normalizeValue"));
+
 /**
  * Copyright (c) 2018-present, Nicolas Gallagher.
  *
@@ -6,11 +17,10 @@
  *
  * 
  */
-
-import normalizeColor from '../../modules/normalizeColor';
-import normalizeValue from './normalizeValue';
-
-var defaultOffset = { height: 0, width: 0 };
+var defaultOffset = {
+  height: 0,
+  width: 0
+};
 
 var resolveShadowValue = function resolveShadowValue(style) {
   var shadowColor = style.shadowColor,
@@ -22,13 +32,15 @@ var resolveShadowValue = function resolveShadowValue(style) {
       height = _ref.height,
       width = _ref.width;
 
-  var offsetX = normalizeValue(null, width);
-  var offsetY = normalizeValue(null, height);
-  var blurRadius = normalizeValue(null, shadowRadius || 0);
-  var color = normalizeColor(shadowColor || 'black', shadowOpacity);
+  var offsetX = (0, _normalizeValue.default)(null, width);
+  var offsetY = (0, _normalizeValue.default)(null, height);
+  var blurRadius = (0, _normalizeValue.default)(null, shadowRadius || 0);
+  var color = (0, _normalizeColor.default)(shadowColor || 'black', shadowOpacity);
+
   if (color) {
-    return offsetX + ' ' + offsetY + ' ' + blurRadius + ' ' + color;
+    return offsetX + " " + offsetY + " " + blurRadius + " " + color;
   }
 };
 
-export default resolveShadowValue;
+var _default = resolveShadowValue;
+exports.default = _default;

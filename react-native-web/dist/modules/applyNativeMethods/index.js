@@ -1,3 +1,12 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _NativeMethodsMixin = _interopRequireDefault(require("../NativeMethodsMixin"));
+
 /**
  * Copyright (c) 2015-present, Nicolas Gallagher.
  *
@@ -6,16 +15,14 @@
  *
  * @noflow
  */
-
-import NativeMethodsMixin from '../NativeMethodsMixin';
-
 var applyNativeMethods = function applyNativeMethods(Component) {
-  Object.keys(NativeMethodsMixin).forEach(function (method) {
+  Object.keys(_NativeMethodsMixin.default).forEach(function (method) {
     if (!Component.prototype[method]) {
-      Component.prototype[method] = NativeMethodsMixin[method];
+      Component.prototype[method] = _NativeMethodsMixin.default[method];
     }
   });
   return Component;
 };
 
-export default applyNativeMethods;
+var _default = applyNativeMethods;
+exports.default = _default;

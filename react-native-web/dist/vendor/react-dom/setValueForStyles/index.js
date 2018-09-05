@@ -1,3 +1,16 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _dangerousStyleValue = _interopRequireDefault(require("../dangerousStyleValue"));
+
+var _hyphenateStyleName = _interopRequireDefault(require("hyphenate-style-name"));
+
+var _warnValidStyle = _interopRequireDefault(require("../warnValidStyle"));
+
 /* eslint-disable */
 
 /**
@@ -10,10 +23,6 @@
  * Based on React 16.3.0
  */
 
-import dangerousStyleValue from '../dangerousStyleValue';
-import hyphenateStyleName from 'hyphenate-style-name';
-import warnValidStyle from '../warnValidStyle';
-
 /**
  * Sets the value for multiple styles on a node.  If a value is specified as
  * '' (empty string), the corresponding style property will be unset.
@@ -23,23 +32,30 @@ import warnValidStyle from '../warnValidStyle';
  */
 function setValueForStyles(node, styles, getStack) {
   var style = node.style;
+
   for (var styleName in styles) {
     if (!styles.hasOwnProperty(styleName)) {
       continue;
     }
+
     var isCustomProperty = styleName.indexOf('--') === 0;
     var isImportant = typeof styles[styleName] === 'string' && styles[styleName].indexOf('!important') > -1;
+
     if (process.env.NODE_ENV !== 'production') {
       if (!isCustomProperty) {
-        warnValidStyle(styleName, styles[styleName], getStack);
+        (0, _warnValidStyle.default)(styleName, styles[styleName], getStack);
       }
     }
-    var styleValue = dangerousStyleValue(styleName, styles[styleName], isCustomProperty);
+
+    var styleValue = (0, _dangerousStyleValue.default)(styleName, styles[styleName], isCustomProperty);
+
     if (styleName === 'float') {
       styleName = 'cssFloat';
     }
+
     if (isCustomProperty || isImportant) {
-      var name = isCustomProperty ? styleName : hyphenateStyleName(styleName);
+      var name = isCustomProperty ? styleName : (0, _hyphenateStyleName.default)(styleName);
+
       if (isImportant) {
         var _styleValue$split = styleValue.split('!'),
             value = _styleValue$split[0],
@@ -55,4 +71,5 @@ function setValueForStyles(node, styles, getStack) {
   }
 }
 
-export default setValueForStyles;
+var _default = setValueForStyles;
+exports.default = _default;

@@ -1,3 +1,14 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _I18nManager = _interopRequireDefault(require("../I18nManager"));
+
+var _multiplyStyleLengthValue = _interopRequireDefault(require("../../modules/multiplyStyleLengthValue"));
+
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
  *
@@ -6,12 +17,7 @@
  *
  * @noflow
  */
-
-import I18nManager from '../I18nManager';
-import multiplyStyleLengthValue from '../../modules/multiplyStyleLengthValue';
-
 var emptyObject = {};
-
 var borderTopLeftRadius = 'borderTopLeftRadius';
 var borderTopRightRadius = 'borderTopRightRadius';
 var borderBottomLeftRadius = 'borderBottomLeftRadius';
@@ -27,9 +33,8 @@ var marginLeft = 'marginLeft';
 var marginRight = 'marginRight';
 var paddingLeft = 'paddingLeft';
 var paddingRight = 'paddingRight';
-var left = 'left';
+var left = 'left'; // Map of LTR property names to their BiDi equivalent.
 
-// Map of LTR property names to their BiDi equivalent.
 var PROPERTIES_FLIP = {
   borderTopLeftRadius: borderTopRightRadius,
   borderTopRightRadius: borderTopLeftRadius,
@@ -47,9 +52,8 @@ var PROPERTIES_FLIP = {
   paddingLeft: paddingRight,
   paddingRight: paddingLeft,
   right: left
-};
+}; // Map of I18N property names to their LTR equivalent.
 
-// Map of I18N property names to their LTR equivalent.
 var PROPERTIES_I18N = {
   borderTopStartRadius: borderTopLeftRadius,
   borderTopEndRadius: borderTopRightRadius,
@@ -68,22 +72,19 @@ var PROPERTIES_I18N = {
   paddingEnd: paddingRight,
   start: left
 };
-
 var PROPERTIES_VALUE = {
   clear: true,
   float: true,
   textAlign: true
-};
+}; // Invert the sign of a numeric-like value
 
-// Invert the sign of a numeric-like value
 var additiveInverse = function additiveInverse(value) {
-  return multiplyStyleLengthValue(value, -1);
+  return (0, _multiplyStyleLengthValue.default)(value, -1);
 };
 
 var i18nStyle = function i18nStyle(originalStyle) {
-  var doLeftAndRightSwapInRTL = I18nManager.doLeftAndRightSwapInRTL,
-      isRTL = I18nManager.isRTL;
-
+  var doLeftAndRightSwapInRTL = _I18nManager.default.doLeftAndRightSwapInRTL,
+      isRTL = _I18nManager.default.isRTL;
   var style = originalStyle || emptyObject;
   var frozenProps = {};
   var nextStyle = {};
@@ -92,20 +93,20 @@ var i18nStyle = function i18nStyle(originalStyle) {
     if (!Object.prototype.hasOwnProperty.call(style, originalProp)) {
       continue;
     }
+
     var originalValue = style[originalProp];
     var prop = originalProp;
-    var value = originalValue;
+    var value = originalValue; // BiDi flip properties
 
-    // BiDi flip properties
     if (PROPERTIES_I18N.hasOwnProperty(originalProp)) {
       // convert start/end
       var convertedProp = PROPERTIES_I18N[originalProp];
       prop = isRTL ? PROPERTIES_FLIP[convertedProp] : convertedProp;
     } else if (isRTL && doLeftAndRightSwapInRTL && PROPERTIES_FLIP[originalProp]) {
       prop = PROPERTIES_FLIP[originalProp];
-    }
+    } // BiDi flip values
 
-    // BiDi flip values
+
     if (PROPERTIES_VALUE.hasOwnProperty(originalProp)) {
       if (originalValue === 'start') {
         value = isRTL ? 'right' : 'left';
@@ -135,4 +136,5 @@ var i18nStyle = function i18nStyle(originalStyle) {
   return nextStyle;
 };
 
-export default i18nStyle;
+var _default = i18nStyle;
+exports.default = _default;

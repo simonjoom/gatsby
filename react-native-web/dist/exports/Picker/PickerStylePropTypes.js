@@ -1,3 +1,16 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _ColorPropType = _interopRequireDefault(require("../ColorPropType"));
+
+var _ViewStylePropTypes = _interopRequireDefault(require("../View/ViewStylePropTypes"));
+
 /**
  * Copyright (c) 2017-present, Nicolas Gallagher.
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -7,12 +20,8 @@
  *
  * 
  */
-
-import ColorPropType from '../ColorPropType';
-import ViewStylePropTypes from '../View/ViewStylePropTypes';
-
-var PickerStylePropTypes = Object.assign({}, ViewStylePropTypes, {
-  color: ColorPropType
+var PickerStylePropTypes = (0, _extends2.default)({}, _ViewStylePropTypes.default, {
+  color: _ColorPropType.default
 });
-
-export default PickerStylePropTypes;
+var _default = PickerStylePropTypes;
+exports.default = _default;

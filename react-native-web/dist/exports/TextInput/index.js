@@ -1,10 +1,41 @@
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+"use strict";
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _applyLayout = _interopRequireDefault(require("../../modules/applyLayout"));
+
+var _applyNativeMethods = _interopRequireDefault(require("../../modules/applyNativeMethods"));
+
+var _ExecutionEnvironment = require("fbjs/lib/ExecutionEnvironment");
+
+var _react = require("react");
+
+var _ColorPropType = _interopRequireDefault(require("../ColorPropType"));
+
+var _createElement = _interopRequireDefault(require("../createElement"));
+
+var _findNodeHandle = _interopRequireDefault(require("../findNodeHandle"));
+
+var _StyleSheet = _interopRequireDefault(require("../StyleSheet"));
+
+var _StyleSheetPropType = _interopRequireDefault(require("../../modules/StyleSheetPropType"));
+
+var _TextInputStylePropTypes = _interopRequireDefault(require("./TextInputStylePropTypes"));
+
+var _TextInputState = _interopRequireDefault(require("../../modules/TextInputState"));
+
+var _ViewPropTypes = _interopRequireDefault(require("../ViewPropTypes"));
+
+var _propTypes = require("prop-types");
 
 /**
  * Copyright (c) 2015-present, Nicolas Gallagher.
@@ -15,27 +46,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-
-import applyLayout from '../../modules/applyLayout';
-import applyNativeMethods from '../../modules/applyNativeMethods';
-import { canUseDOM } from 'fbjs/lib/ExecutionEnvironment';
-import { Component } from 'react';
-import ColorPropType from '../ColorPropType';
-import createElement from '../createElement';
-import findNodeHandle from '../findNodeHandle';
-import StyleSheet from '../StyleSheet';
-import StyleSheetPropType from '../../modules/StyleSheetPropType';
-import TextInputStylePropTypes from './TextInputStylePropTypes';
-import TextInputState from '../../modules/TextInputState';
-import ViewPropTypes from '../ViewPropTypes';
-import { any, bool, func, number, oneOf, shape, string } from 'prop-types';
-
-var isAndroid = canUseDOM && /Android/i.test(navigator && navigator.userAgent);
+var isAndroid = _ExecutionEnvironment.canUseDOM && /Android/i.test(navigator && navigator.userAgent);
 var emptyObject = {};
-
 /**
  * React Native events differ from W3C events.
  */
+
 var normalizeEventHandler = function normalizeEventHandler(handler) {
   return function (e) {
     if (handler) {
@@ -44,33 +60,34 @@ var normalizeEventHandler = function normalizeEventHandler(handler) {
     }
   };
 };
-
 /**
  * Determines whether a 'selection' prop differs from a node's existing
  * selection state.
  */
+
+
 var isSelectionStale = function isSelectionStale(node, selection) {
   if (node && selection) {
     var selectionEnd = node.selectionEnd,
         selectionStart = node.selectionStart;
     var start = selection.start,
         end = selection.end;
-
     return start !== selectionStart || end !== selectionEnd;
   }
+
   return false;
 };
-
 /**
  * Certain input types do no support 'selectSelectionRange' and will throw an
  * error.
  */
+
+
 var setSelection = function setSelection(node, selection) {
   try {
     if (isSelectionStale(node, selection)) {
       var start = selection.start,
-          end = selection.end;
-      // workaround for Blink on Android: see https://github.com/text-mask/text-mask/issues/300
+          end = selection.end; // workaround for Blink on Android: see https://github.com/text-mask/text-mask/issues/300
 
       if (isAndroid) {
         setTimeout(function () {
@@ -83,26 +100,30 @@ var setSelection = function setSelection(node, selection) {
   } catch (e) {}
 };
 
-var TextInput = function (_Component) {
-  _inherits(TextInput, _Component);
+var TextInput =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(TextInput, _Component);
 
   function TextInput() {
-    var _temp, _this, _ret;
+    var _this;
 
-    _classCallCheck(this, TextInput);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this._handleBlur = function (e) {
-      var onBlur = _this.props.onBlur;
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
 
-      TextInputState._currentlyFocusedNode = null;
+    _this._handleBlur = function (e) {
+      var onBlur = _this.props.onBlur;
+      _TextInputState.default._currentlyFocusedNode = null;
+
       if (onBlur) {
         onBlur(e);
       }
-    }, _this._handleChange = function (e) {
+    };
+
+    _this._handleChange = function (e) {
       var _this$props = _this.props,
           onChange = _this$props.onChange,
           onChangeText = _this$props.onChangeText;
@@ -111,72 +132,89 @@ var TextInput = function (_Component) {
       if (onChange) {
         onChange(e);
       }
+
       if (onChangeText) {
         onChangeText(text);
       }
+
       _this._handleSelectionChange(e);
-    }, _this._handleFocus = function (e) {
+    };
+
+    _this._handleFocus = function (e) {
       var _this$props2 = _this.props,
           clearTextOnFocus = _this$props2.clearTextOnFocus,
           onFocus = _this$props2.onFocus,
           selectTextOnFocus = _this$props2.selectTextOnFocus;
-
       var node = _this._node;
-      TextInputState._currentlyFocusedNode = _this._node;
+      _TextInputState.default._currentlyFocusedNode = _this._node;
+
       if (onFocus) {
         onFocus(e);
       }
+
       if (clearTextOnFocus) {
         _this.clear();
       }
+
       if (selectTextOnFocus) {
         node && node.select();
       }
-    }, _this._handleKeyDown = function (e) {
-      // Prevent key events bubbling (see #612)
-      e.stopPropagation();
+    };
 
-      // Backspace, Tab, Cmd+Enter, and Arrow keys only fire 'keydown' DOM events
+    _this._handleKeyDown = function (e) {
+      // Prevent key events bubbling (see #612)
+      e.stopPropagation(); // Backspace, Tab, Cmd+Enter, and Arrow keys only fire 'keydown' DOM events
+
       if (e.which === 8 || e.which === 9 || e.which === 13 && e.metaKey || e.which === 37 || e.which === 38 || e.which === 39 || e.which === 40) {
         _this._handleKeyPress(e);
       }
-    }, _this._handleKeyPress = function (e) {
+    };
+
+    _this._handleKeyPress = function (e) {
       var _this$props3 = _this.props,
           blurOnSubmit = _this$props3.blurOnSubmit,
           multiline = _this$props3.multiline,
           onKeyPress = _this$props3.onKeyPress,
           onSubmitEditing = _this$props3.onSubmitEditing;
-
       var blurOnSubmitDefault = !multiline;
       var shouldBlurOnSubmit = blurOnSubmit == null ? blurOnSubmitDefault : blurOnSubmit;
 
       if (onKeyPress) {
-        var keyValue = void 0;
+        var keyValue;
+
         switch (e.which) {
           case 8:
             keyValue = 'Backspace';
             break;
+
           case 9:
             keyValue = 'Tab';
             break;
+
           case 13:
             keyValue = 'Enter';
             break;
+
           case 32:
             keyValue = ' ';
             break;
+
           case 37:
             keyValue = 'ArrowLeft';
             break;
+
           case 38:
             keyValue = 'ArrowUp';
             break;
+
           case 39:
             keyValue = 'ArrowRight';
             break;
+
           case 40:
             keyValue = 'ArrowDown';
             break;
+
           default:
             {
               // Trim to only care about the keys that have a textual representation
@@ -205,26 +243,32 @@ var TextInput = function (_Component) {
         if ((blurOnSubmit || !multiline) && onSubmitEditing) {
           // prevent "Enter" from inserting a newline
           e.preventDefault();
-          e.nativeEvent = { target: e.target, text: e.target.value };
+          e.nativeEvent = {
+            target: e.target,
+            text: e.target.value
+          };
           onSubmitEditing(e);
         }
+
         if (shouldBlurOnSubmit) {
           _this.blur();
         }
       }
-    }, _this._handleSelectionChange = function (e) {
+    };
+
+    _this._handleSelectionChange = function (e) {
       var _this$props4 = _this.props,
           onSelectionChange = _this$props4.onSelectionChange,
           _this$props4$selectio = _this$props4.selection,
-          selection = _this$props4$selectio === undefined ? emptyObject : _this$props4$selectio;
+          selection = _this$props4$selectio === void 0 ? emptyObject : _this$props4$selectio;
 
       if (onSelectionChange) {
         try {
           var node = e.target;
+
           if (isSelectionStale(node, selection)) {
             var selectionStart = node.selectionStart,
                 selectionEnd = node.selectionEnd;
-
             e.nativeEvent.selection = {
               start: selectionStart,
               end: selectionEnd
@@ -233,87 +277,98 @@ var TextInput = function (_Component) {
           }
         } catch (e) {}
       }
-    }, _this._setNode = function (component) {
-      _this._node = findNodeHandle(component);
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    _this._setNode = function (component) {
+      _this._node = (0, _findNodeHandle.default)(component);
+    };
+
+    return _this;
   }
 
-  TextInput.prototype.clear = function clear() {
+  var _proto = TextInput.prototype;
+
+  _proto.clear = function clear() {
     this._node.value = '';
   };
 
-  TextInput.prototype.isFocused = function isFocused() {
-    return TextInputState.currentlyFocusedField() === this._node;
+  _proto.isFocused = function isFocused() {
+    return _TextInputState.default.currentlyFocusedField() === this._node;
   };
 
-  TextInput.prototype.componentDidMount = function componentDidMount() {
+  _proto.componentDidMount = function componentDidMount() {
     setSelection(this._node, this.props.selection);
+
     if (document.activeElement === this._node) {
-      TextInputState._currentlyFocusedNode = this._node;
+      _TextInputState.default._currentlyFocusedNode = this._node;
     }
   };
 
-  TextInput.prototype.componentDidUpdate = function componentDidUpdate() {
+  _proto.componentDidUpdate = function componentDidUpdate() {
     setSelection(this._node, this.props.selection);
   };
 
-  TextInput.prototype.render = function render() {
-    var _props = this.props,
-        autoCorrect = _props.autoCorrect,
-        editable = _props.editable,
-        keyboardType = _props.keyboardType,
-        multiline = _props.multiline,
-        numberOfLines = _props.numberOfLines,
-        secureTextEntry = _props.secureTextEntry,
-        style = _props.style,
-        blurOnSubmit = _props.blurOnSubmit,
-        clearTextOnFocus = _props.clearTextOnFocus,
-        onChangeText = _props.onChangeText,
-        onLayout = _props.onLayout,
-        onSelectionChange = _props.onSelectionChange,
-        onSubmitEditing = _props.onSubmitEditing,
-        selection = _props.selection,
-        selectTextOnFocus = _props.selectTextOnFocus,
-        spellCheck = _props.spellCheck,
-        caretHidden = _props.caretHidden,
-        clearButtonMode = _props.clearButtonMode,
-        dataDetectorTypes = _props.dataDetectorTypes,
-        disableFullscreenUI = _props.disableFullscreenUI,
-        enablesReturnKeyAutomatically = _props.enablesReturnKeyAutomatically,
-        inlineImageLeft = _props.inlineImageLeft,
-        inlineImagePadding = _props.inlineImagePadding,
-        keyboardAppearance = _props.keyboardAppearance,
-        onContentSizeChange = _props.onContentSizeChange,
-        onEndEditing = _props.onEndEditing,
-        onScroll = _props.onScroll,
-        returnKeyLabel = _props.returnKeyLabel,
-        returnKeyType = _props.returnKeyType,
-        selectionColor = _props.selectionColor,
-        selectionState = _props.selectionState,
-        textBreakStrategy = _props.textBreakStrategy,
-        underlineColorAndroid = _props.underlineColorAndroid,
-        otherProps = _objectWithoutProperties(_props, ['autoCorrect', 'editable', 'keyboardType', 'multiline', 'numberOfLines', 'secureTextEntry', 'style', 'blurOnSubmit', 'clearTextOnFocus', 'onChangeText', 'onLayout', 'onSelectionChange', 'onSubmitEditing', 'selection', 'selectTextOnFocus', 'spellCheck', 'caretHidden', 'clearButtonMode', 'dataDetectorTypes', 'disableFullscreenUI', 'enablesReturnKeyAutomatically', 'inlineImageLeft', 'inlineImagePadding', 'keyboardAppearance', 'onContentSizeChange', 'onEndEditing', 'onScroll', 'returnKeyLabel', 'returnKeyType', 'selectionColor', 'selectionState', 'textBreakStrategy', 'underlineColorAndroid']);
-
-    var type = void 0;
+  _proto.render = function render() {
+    var _this$props5 = this.props,
+        autoCorrect = _this$props5.autoCorrect,
+        editable = _this$props5.editable,
+        keyboardType = _this$props5.keyboardType,
+        multiline = _this$props5.multiline,
+        numberOfLines = _this$props5.numberOfLines,
+        secureTextEntry = _this$props5.secureTextEntry,
+        style = _this$props5.style,
+        blurOnSubmit = _this$props5.blurOnSubmit,
+        clearTextOnFocus = _this$props5.clearTextOnFocus,
+        onChangeText = _this$props5.onChangeText,
+        onLayout = _this$props5.onLayout,
+        onSelectionChange = _this$props5.onSelectionChange,
+        onSubmitEditing = _this$props5.onSubmitEditing,
+        selection = _this$props5.selection,
+        selectTextOnFocus = _this$props5.selectTextOnFocus,
+        spellCheck = _this$props5.spellCheck,
+        caretHidden = _this$props5.caretHidden,
+        clearButtonMode = _this$props5.clearButtonMode,
+        dataDetectorTypes = _this$props5.dataDetectorTypes,
+        disableFullscreenUI = _this$props5.disableFullscreenUI,
+        enablesReturnKeyAutomatically = _this$props5.enablesReturnKeyAutomatically,
+        inlineImageLeft = _this$props5.inlineImageLeft,
+        inlineImagePadding = _this$props5.inlineImagePadding,
+        keyboardAppearance = _this$props5.keyboardAppearance,
+        onContentSizeChange = _this$props5.onContentSizeChange,
+        onEndEditing = _this$props5.onEndEditing,
+        onScroll = _this$props5.onScroll,
+        returnKeyLabel = _this$props5.returnKeyLabel,
+        returnKeyType = _this$props5.returnKeyType,
+        selectionColor = _this$props5.selectionColor,
+        selectionState = _this$props5.selectionState,
+        textBreakStrategy = _this$props5.textBreakStrategy,
+        underlineColorAndroid = _this$props5.underlineColorAndroid,
+        otherProps = (0, _objectWithoutPropertiesLoose2.default)(_this$props5, ["autoCorrect", "editable", "keyboardType", "multiline", "numberOfLines", "secureTextEntry", "style", "blurOnSubmit", "clearTextOnFocus", "onChangeText", "onLayout", "onSelectionChange", "onSubmitEditing", "selection", "selectTextOnFocus", "spellCheck", "caretHidden", "clearButtonMode", "dataDetectorTypes", "disableFullscreenUI", "enablesReturnKeyAutomatically", "inlineImageLeft", "inlineImagePadding", "keyboardAppearance", "onContentSizeChange", "onEndEditing", "onScroll", "returnKeyLabel", "returnKeyType", "selectionColor", "selectionState", "textBreakStrategy", "underlineColorAndroid"]);
+    var type;
 
     switch (keyboardType) {
       case 'email-address':
         type = 'email';
         break;
+
       case 'number-pad':
       case 'numeric':
         type = 'number';
         break;
+
       case 'phone-pad':
         type = 'tel';
         break;
+
       case 'search':
       case 'web-search':
         type = 'search';
         break;
+
       case 'url':
         type = 'url';
         break;
+
       default:
         type = 'text';
     }
@@ -323,7 +378,6 @@ var TextInput = function (_Component) {
     }
 
     var component = multiline ? 'textarea' : 'input';
-
     Object.assign(otherProps, {
       autoCorrect: autoCorrect ? 'on' : 'off',
       dir: 'auto',
@@ -345,13 +399,68 @@ var TextInput = function (_Component) {
       otherProps.type = type;
     }
 
-    return createElement(component, otherProps);
+    return (0, _createElement.default)(component, otherProps);
   };
 
   return TextInput;
-}(Component);
+}(_react.Component);
 
 TextInput.displayName = 'TextInput';
+TextInput.propTypes = (0, _extends2.default)({}, _ViewPropTypes.default, {
+  autoCapitalize: (0, _propTypes.oneOf)(['characters', 'none', 'sentences', 'words']),
+  autoComplete: _propTypes.string,
+  autoCorrect: _propTypes.bool,
+  autoFocus: _propTypes.bool,
+  blurOnSubmit: _propTypes.bool,
+  clearTextOnFocus: _propTypes.bool,
+  defaultValue: _propTypes.string,
+  editable: _propTypes.bool,
+  keyboardType: (0, _propTypes.oneOf)(['default', 'email-address', 'number-pad', 'numbers-and-punctuation', 'numeric', 'phone-pad', 'search', 'url', 'web-search']),
+  maxLength: _propTypes.number,
+  multiline: _propTypes.bool,
+  numberOfLines: _propTypes.number,
+  onBlur: _propTypes.func,
+  onChange: _propTypes.func,
+  onChangeText: _propTypes.func,
+  onFocus: _propTypes.func,
+  onKeyPress: _propTypes.func,
+  onSelectionChange: _propTypes.func,
+  onSubmitEditing: _propTypes.func,
+  placeholder: _propTypes.string,
+  placeholderTextColor: _ColorPropType.default,
+  secureTextEntry: _propTypes.bool,
+  selectTextOnFocus: _propTypes.bool,
+  selection: (0, _propTypes.shape)({
+    start: _propTypes.number.isRequired,
+    end: _propTypes.number
+  }),
+  spellCheck: _propTypes.bool,
+  style: (0, _StyleSheetPropType.default)(_TextInputStylePropTypes.default),
+  value: _propTypes.string,
+
+  /* react-native compat */
+
+  /* eslint-disable */
+  caretHidden: _propTypes.bool,
+  clearButtonMode: _propTypes.string,
+  dataDetectorTypes: _propTypes.string,
+  disableFullscreenUI: _propTypes.bool,
+  enablesReturnKeyAutomatically: _propTypes.bool,
+  keyboardAppearance: _propTypes.string,
+  inlineImageLeft: _propTypes.string,
+  inlineImagePadding: _propTypes.number,
+  onContentSizeChange: _propTypes.func,
+  onEndEditing: _propTypes.func,
+  onScroll: _propTypes.func,
+  returnKeyLabel: _propTypes.string,
+  returnKeyType: _propTypes.string,
+  selectionColor: _ColorPropType.default,
+  selectionState: _propTypes.any,
+  textBreakStrategy: _propTypes.string,
+  underlineColorAndroid: _ColorPropType.default
+  /* eslint-enable */
+
+});
 TextInput.defaultProps = {
   autoCapitalize: 'sentences',
   autoComplete: 'on',
@@ -363,62 +472,9 @@ TextInput.defaultProps = {
   secureTextEntry: false,
   style: emptyObject
 };
-TextInput.State = TextInputState;
-TextInput.propTypes = process.env.NODE_ENV !== "production" ? Object.assign({}, ViewPropTypes, {
-  autoCapitalize: oneOf(['characters', 'none', 'sentences', 'words']),
-  autoComplete: string,
-  autoCorrect: bool,
-  autoFocus: bool,
-  blurOnSubmit: bool,
-  clearTextOnFocus: bool,
-  defaultValue: string,
-  editable: bool,
-  keyboardType: oneOf(['default', 'email-address', 'number-pad', 'numbers-and-punctuation', 'numeric', 'phone-pad', 'search', 'url', 'web-search']),
-  maxLength: number,
-  multiline: bool,
-  numberOfLines: number,
-  onBlur: func,
-  onChange: func,
-  onChangeText: func,
-  onFocus: func,
-  onKeyPress: func,
-  onSelectionChange: func,
-  onSubmitEditing: func,
-  placeholder: string,
-  placeholderTextColor: ColorPropType,
-  secureTextEntry: bool,
-  selectTextOnFocus: bool,
-  selection: shape({
-    start: number.isRequired,
-    end: number
-  }),
-  spellCheck: bool,
-  style: StyleSheetPropType(TextInputStylePropTypes),
-  value: string,
-  /* react-native compat */
-  /* eslint-disable */
-  caretHidden: bool,
-  clearButtonMode: string,
-  dataDetectorTypes: string,
-  disableFullscreenUI: bool,
-  enablesReturnKeyAutomatically: bool,
-  keyboardAppearance: string,
-  inlineImageLeft: string,
-  inlineImagePadding: number,
-  onContentSizeChange: func,
-  onEndEditing: func,
-  onScroll: func,
-  returnKeyLabel: string,
-  returnKeyType: string,
-  selectionColor: ColorPropType,
-  selectionState: any,
-  textBreakStrategy: string,
-  underlineColorAndroid: ColorPropType
-  /* eslint-enable */
-}) : {};
+TextInput.State = _TextInputState.default;
 
-
-var styles = StyleSheet.create({
+var styles = _StyleSheet.default.create({
   initial: {
     MozAppearance: 'textfield',
     WebkitAppearance: 'none',
@@ -435,4 +491,6 @@ var styles = StyleSheet.create({
   }
 });
 
-export default applyLayout(applyNativeMethods(TextInput));
+var _default = (0, _applyLayout.default)((0, _applyNativeMethods.default)(TextInput));
+
+exports.default = _default;

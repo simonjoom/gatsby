@@ -1,3 +1,12 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _invariant = _interopRequireDefault(require("fbjs/lib/invariant"));
+
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  *
@@ -6,11 +15,9 @@
  *
  * 
  */
-
-import invariant from 'fbjs/lib/invariant';
-
 var ensurePositiveDelayProps = function ensurePositiveDelayProps(props) {
-  invariant(!(props.delayPressIn < 0 || props.delayPressOut < 0 || props.delayLongPress < 0), 'Touchable components cannot have negative delay properties');
+  (0, _invariant.default)(!(props.delayPressIn < 0 || props.delayPressOut < 0 || props.delayLongPress < 0), 'Touchable components cannot have negative delay properties');
 };
 
-export default ensurePositiveDelayProps;
+var _default = ensurePositiveDelayProps;
+exports.default = _default;

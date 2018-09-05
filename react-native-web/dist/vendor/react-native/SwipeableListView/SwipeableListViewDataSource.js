@@ -8,9 +8,12 @@
  */
 'use strict';
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-import ListViewDataSource from '../ListView/ListViewDataSource';
+exports.__esModule = true;
+exports.default = void 0;
+
+var _ListViewDataSource = _interopRequireDefault(require("../ListView/ListViewDataSource"));
 
 /**
  * Data source wrapper around ListViewDataSource to allow for tracking of
@@ -20,14 +23,13 @@ import ListViewDataSource from '../ListView/ListViewDataSource';
  * See https://github.com/facebook/react-native/pull/5602 for why
  * ListViewDataSource is not subclassed.
  */
-
-var SwipeableListViewDataSource = function () {
+var SwipeableListViewDataSource =
+/*#__PURE__*/
+function () {
   function SwipeableListViewDataSource(params) {
     var _this = this;
 
-    _classCallCheck(this, SwipeableListViewDataSource);
-
-    this._dataSource = new ListViewDataSource({
+    this._dataSource = new _ListViewDataSource.default({
       getRowData: params.getRowData,
       getSectionHeaderData: params.getSectionHeaderData,
       rowHasChanged: function rowHasChanged(row1, row2) {
@@ -41,28 +43,26 @@ var SwipeableListViewDataSource = function () {
     });
   }
 
-  SwipeableListViewDataSource.prototype.cloneWithRowsAndSections = function cloneWithRowsAndSections(dataBlob, sectionIdentities, rowIdentities) {
-    this._dataSource = this._dataSource.cloneWithRowsAndSections(dataBlob, sectionIdentities, rowIdentities);
+  var _proto = SwipeableListViewDataSource.prototype;
 
+  _proto.cloneWithRowsAndSections = function cloneWithRowsAndSections(dataBlob, sectionIdentities, rowIdentities) {
+    this._dataSource = this._dataSource.cloneWithRowsAndSections(dataBlob, sectionIdentities, rowIdentities);
     this._dataBlob = dataBlob;
     this.rowIdentities = this._dataSource.rowIdentities;
     this.sectionIdentities = this._dataSource.sectionIdentities;
-
     return this;
-  };
-
-  // For the actual ListView to use
+  }; // For the actual ListView to use
 
 
-  SwipeableListViewDataSource.prototype.getDataSource = function getDataSource() {
+  _proto.getDataSource = function getDataSource() {
     return this._dataSource;
   };
 
-  SwipeableListViewDataSource.prototype.getOpenRowID = function getOpenRowID() {
+  _proto.getOpenRowID = function getOpenRowID() {
     return this._openRowID;
   };
 
-  SwipeableListViewDataSource.prototype.getFirstRowID = function getFirstRowID() {
+  _proto.getFirstRowID = function getFirstRowID() {
     /**
      * If rowIdentities is specified, find the first data row from there since
      * we don't want to attempt to bounce section headers. If unspecified, find
@@ -71,29 +71,31 @@ var SwipeableListViewDataSource = function () {
     if (this.rowIdentities) {
       return this.rowIdentities[0] && this.rowIdentities[0][0];
     }
+
     return Object.keys(this._dataBlob)[0];
   };
 
-  SwipeableListViewDataSource.prototype.getLastRowID = function getLastRowID() {
+  _proto.getLastRowID = function getLastRowID() {
     if (this.rowIdentities && this.rowIdentities.length) {
       var lastSection = this.rowIdentities[this.rowIdentities.length - 1];
+
       if (lastSection && lastSection.length) {
         return lastSection[lastSection.length - 1];
       }
     }
+
     return Object.keys(this._dataBlob)[this._dataBlob.length - 1];
   };
 
-  SwipeableListViewDataSource.prototype.setOpenRowID = function setOpenRowID(rowID) {
+  _proto.setOpenRowID = function setOpenRowID(rowID) {
     this._previousOpenRowID = this._openRowID;
     this._openRowID = rowID;
-
     this._dataSource = this._dataSource.cloneWithRowsAndSections(this._dataBlob, this.sectionIdentities, this.rowIdentities);
-
     return this;
   };
 
   return SwipeableListViewDataSource;
 }();
 
-export default SwipeableListViewDataSource;
+var _default = SwipeableListViewDataSource;
+exports.default = _default;

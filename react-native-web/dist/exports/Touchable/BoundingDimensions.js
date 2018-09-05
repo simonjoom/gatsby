@@ -1,3 +1,12 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _PooledClass = _interopRequireDefault(require("../../vendor/react-native/PooledClass"));
+
 /**
  * Copyright (c) 2015-present, Nicolas Gallagher.
  *
@@ -6,14 +15,11 @@
  *
  * 
  */
-
-import PooledClass from '../../vendor/react-native/PooledClass';
-
-var twoArgumentPooler = PooledClass.twoArgumentPooler;
-
+var twoArgumentPooler = _PooledClass.default.twoArgumentPooler;
 /**
  * PooledClass representing the bounding rectangle of a region.
  */
+
 function BoundingDimensions(width, height) {
   this.width = width;
   this.height = height;
@@ -28,6 +34,7 @@ BoundingDimensions.getPooledFromElement = function (element) {
   return BoundingDimensions.getPooled(element.offsetWidth, element.offsetHeight);
 };
 
-PooledClass.addPoolingTo(BoundingDimensions, twoArgumentPooler);
+_PooledClass.default.addPoolingTo(BoundingDimensions, twoArgumentPooler);
 
-export default BoundingDimensions;
+var _default = BoundingDimensions;
+exports.default = _default;

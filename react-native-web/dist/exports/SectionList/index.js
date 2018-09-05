@@ -1,3 +1,12 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _SectionList = _interopRequireDefault(require("../../vendor/react-native/SectionList"));
+
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
  *
@@ -6,6 +15,5 @@
  *
  * 
  */
-
-import SectionList from '../../vendor/react-native/SectionList';
-export default SectionList;
+var _default = _SectionList.default;
+exports.default = _default;

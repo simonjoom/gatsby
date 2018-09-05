@@ -9,30 +9,36 @@
  */
 'use strict';
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-import AnimatedNode from './AnimatedNode';
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
+var _AnimatedNode2 = _interopRequireDefault(require("./AnimatedNode"));
 
-var AnimatedWithChildren = function (_AnimatedNode) {
-  _inherits(AnimatedWithChildren, _AnimatedNode);
+var _NativeAnimatedHelper = _interopRequireDefault(require("../NativeAnimatedHelper"));
+
+var AnimatedWithChildren =
+/*#__PURE__*/
+function (_AnimatedNode) {
+  (0, _inheritsLoose2.default)(AnimatedWithChildren, _AnimatedNode);
 
   function AnimatedWithChildren() {
-    _classCallCheck(this, AnimatedWithChildren);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, _AnimatedNode.call(this));
-
+    _this = _AnimatedNode.call(this) || this;
     _this._children = [];
     return _this;
   }
 
-  AnimatedWithChildren.prototype.__makeNative = function __makeNative() {
+  var _proto = AnimatedWithChildren.prototype;
+
+  _proto.__makeNative = function __makeNative() {
     if (!this.__isNative) {
       this.__isNative = true;
+
       for (var _iterator = this._children, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
         var _ref;
 
@@ -48,43 +54,52 @@ var AnimatedWithChildren = function (_AnimatedNode) {
         var child = _ref;
 
         child.__makeNative();
-        NativeAnimatedHelper.API.connectAnimatedNodes(this.__getNativeTag(), child.__getNativeTag());
+
+        _NativeAnimatedHelper.default.API.connectAnimatedNodes(this.__getNativeTag(), child.__getNativeTag());
       }
     }
   };
 
-  AnimatedWithChildren.prototype.__addChild = function __addChild(child) {
+  _proto.__addChild = function __addChild(child) {
     if (this._children.length === 0) {
       this.__attach();
     }
+
     this._children.push(child);
+
     if (this.__isNative) {
       // Only accept "native" animated nodes as children
       child.__makeNative();
-      NativeAnimatedHelper.API.connectAnimatedNodes(this.__getNativeTag(), child.__getNativeTag());
+
+      _NativeAnimatedHelper.default.API.connectAnimatedNodes(this.__getNativeTag(), child.__getNativeTag());
     }
   };
 
-  AnimatedWithChildren.prototype.__removeChild = function __removeChild(child) {
+  _proto.__removeChild = function __removeChild(child) {
     var index = this._children.indexOf(child);
+
     if (index === -1) {
       console.warn("Trying to remove a child that doesn't exist");
       return;
     }
+
     if (this.__isNative && child.__isNative) {
-      NativeAnimatedHelper.API.disconnectAnimatedNodes(this.__getNativeTag(), child.__getNativeTag());
+      _NativeAnimatedHelper.default.API.disconnectAnimatedNodes(this.__getNativeTag(), child.__getNativeTag());
     }
+
     this._children.splice(index, 1);
+
     if (this._children.length === 0) {
       this.__detach();
     }
   };
 
-  AnimatedWithChildren.prototype.__getChildren = function __getChildren() {
+  _proto.__getChildren = function __getChildren() {
     return this._children;
   };
 
   return AnimatedWithChildren;
-}(AnimatedNode);
+}(_AnimatedNode2.default);
 
-export default AnimatedWithChildren;
+var _default = AnimatedWithChildren;
+exports.default = _default;

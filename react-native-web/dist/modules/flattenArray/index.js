@@ -1,3 +1,8 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
 function flattenArray(array) {
   function flattenDown(array, result) {
     for (var i = 0; i < array.length; i++) {
@@ -12,7 +17,9 @@ function flattenArray(array) {
 
     return result;
   }
+
   return flattenDown(array, []);
 }
 
-export default flattenArray;
+var _default = flattenArray;
+exports.default = _default;

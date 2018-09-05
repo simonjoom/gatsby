@@ -1,8 +1,21 @@
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+"use strict";
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _StyleSheet = _interopRequireDefault(require("../StyleSheet"));
+
+var _View = _interopRequireDefault(require("../View"));
+
+var _propTypes = require("prop-types");
+
+var _react = _interopRequireWildcard(require("react"));
 
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
@@ -13,75 +26,69 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-
-import StyleSheet from '../StyleSheet';
-import View from '../View';
-import { any, node } from 'prop-types';
-import React, { Component } from 'react';
-
-var AppContainer = function (_Component) {
-  _inherits(AppContainer, _Component);
+var AppContainer =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(AppContainer, _Component);
 
   function AppContainer() {
-    var _temp, _this, _ret;
+    var _this;
 
-    _classCallCheck(this, AppContainer);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = { mainKey: 1 }, _temp), _possibleConstructorReturn(_this, _ret);
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+    _this.state = {
+      mainKey: 1
+    };
+    return _this;
   }
 
-  AppContainer.prototype.getChildContext = function getChildContext() {
+  var _proto = AppContainer.prototype;
+
+  _proto.getChildContext = function getChildContext() {
     return {
       rootTag: this.props.rootTag
     };
   };
 
-  AppContainer.prototype.render = function render() {
-    var _props = this.props,
-        children = _props.children,
-        WrapperComponent = _props.WrapperComponent;
+  _proto.render = function render() {
+    var _this$props = this.props,
+        children = _this$props.children,
+        WrapperComponent = _this$props.WrapperComponent;
 
-    var innerView = React.createElement(View, {
+    var innerView = _react.default.createElement(_View.default, {
       children: children,
       key: this.state.mainKey,
-      pointerEvents: 'box-none',
+      pointerEvents: "box-none",
       style: styles.appContainer
     });
 
     if (WrapperComponent) {
-      innerView = React.createElement(
-        WrapperComponent,
-        null,
-        innerView
-      );
+      innerView = _react.default.createElement(WrapperComponent, null, innerView);
     }
 
-    return React.createElement(
-      View,
-      { pointerEvents: 'box-none', style: styles.appContainer },
-      innerView
-    );
+    return _react.default.createElement(_View.default, {
+      pointerEvents: "box-none",
+      style: styles.appContainer
+    }, innerView);
   };
 
   return AppContainer;
-}(Component);
+}(_react.Component);
 
+exports.default = AppContainer;
 AppContainer.childContextTypes = {
-  rootTag: any
+  rootTag: _propTypes.any
 };
-export default AppContainer;
-AppContainer.propTypes = process.env.NODE_ENV !== "production" ? {
-  WrapperComponent: any,
-  children: node,
-  rootTag: any.isRequired
-} : {};
+AppContainer.propTypes = {
+  WrapperComponent: _propTypes.any,
+  children: _propTypes.node,
+  rootTag: _propTypes.any.isRequired
+};
 
-
-var styles = StyleSheet.create({
+var styles = _StyleSheet.default.create({
   appContainer: {
     flex: 1
   }

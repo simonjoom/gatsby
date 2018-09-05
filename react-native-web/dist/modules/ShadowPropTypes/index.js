@@ -1,3 +1,14 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _ColorPropType = _interopRequireDefault(require("../../exports/ColorPropType"));
+
+var _propTypes = require("prop-types");
+
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
  *
@@ -6,20 +17,16 @@
  *
  * 
  */
-
-import ColorPropType from '../../exports/ColorPropType';
-import { number, oneOfType, shape, string } from 'prop-types';
-var numberOrString = oneOfType([number, string]);
-
+var numberOrString = (0, _propTypes.oneOfType)([_propTypes.number, _propTypes.string]);
 var ShadowPropTypes = {
-  shadowColor: ColorPropType,
-  shadowOffset: shape({
+  shadowColor: _ColorPropType.default,
+  shadowOffset: (0, _propTypes.shape)({
     width: numberOrString,
     height: numberOrString
   }),
-  shadowOpacity: number,
+  shadowOpacity: _propTypes.number,
   shadowRadius: numberOrString,
   shadowSpread: numberOrString
 };
-
-export default ShadowPropTypes;
+var _default = ShadowPropTypes;
+exports.default = _default;

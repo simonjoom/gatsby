@@ -1,3 +1,10 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _propTypes = require("prop-types");
+
 /**
  * Copyright (c) 2017-present, Nicolas Gallagher.
  *
@@ -6,14 +13,11 @@
  *
  * 
  */
-
-import { oneOf, string } from 'prop-types';
-
 var InteractionPropTypes = {
-  cursor: string,
-  touchAction: oneOf(['auto', 'inherit', 'manipulation', 'none', 'pan-down', 'pan-left', 'pan-right', 'pan-up', 'pan-x', 'pan-y', 'pinch-zoom']),
-  userSelect: string,
-  willChange: string
+  cursor: _propTypes.string,
+  touchAction: (0, _propTypes.oneOf)(['auto', 'inherit', 'manipulation', 'none', 'pan-down', 'pan-left', 'pan-right', 'pan-up', 'pan-x', 'pan-y', 'pinch-zoom']),
+  userSelect: _propTypes.string,
+  willChange: _propTypes.string
 };
-
-export default InteractionPropTypes;
+var _default = InteractionPropTypes;
+exports.default = _default;

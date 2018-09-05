@@ -1,10 +1,27 @@
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+"use strict";
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+exports.__esModule = true;
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _ColorPropType = _interopRequireDefault(require("../ColorPropType"));
+
+var _View = _interopRequireDefault(require("../View"));
+
+var _ViewPropTypes = _interopRequireDefault(require("../ViewPropTypes"));
+
+var _propTypes = require("prop-types");
+
+var _react = _interopRequireWildcard(require("react"));
 
 /**
  * Copyright (c) 2017-present, Nicolas Gallagher.
@@ -15,54 +32,47 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-
-import ColorPropType from '../ColorPropType';
-import View from '../View';
-import ViewPropTypes from '../ViewPropTypes';
-import { arrayOf, bool, func, number, oneOf, string } from 'prop-types';
-import React, { Component } from 'react';
-
-var RefreshControl = function (_Component) {
-  _inherits(RefreshControl, _Component);
+var RefreshControl =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(RefreshControl, _Component);
 
   function RefreshControl() {
-    _classCallCheck(this, RefreshControl);
-
-    return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    return _Component.apply(this, arguments) || this;
   }
 
-  RefreshControl.prototype.render = function render() {
-    var _props = this.props,
-        colors = _props.colors,
-        enabled = _props.enabled,
-        onRefresh = _props.onRefresh,
-        progressBackgroundColor = _props.progressBackgroundColor,
-        progressViewOffset = _props.progressViewOffset,
-        refreshing = _props.refreshing,
-        size = _props.size,
-        tintColor = _props.tintColor,
-        title = _props.title,
-        titleColor = _props.titleColor,
-        rest = _objectWithoutProperties(_props, ['colors', 'enabled', 'onRefresh', 'progressBackgroundColor', 'progressViewOffset', 'refreshing', 'size', 'tintColor', 'title', 'titleColor']);
+  var _proto = RefreshControl.prototype;
 
-    return React.createElement(View, rest);
+  _proto.render = function render() {
+    var _this$props = this.props,
+        colors = _this$props.colors,
+        enabled = _this$props.enabled,
+        onRefresh = _this$props.onRefresh,
+        progressBackgroundColor = _this$props.progressBackgroundColor,
+        progressViewOffset = _this$props.progressViewOffset,
+        refreshing = _this$props.refreshing,
+        size = _this$props.size,
+        tintColor = _this$props.tintColor,
+        title = _this$props.title,
+        titleColor = _this$props.titleColor,
+        rest = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["colors", "enabled", "onRefresh", "progressBackgroundColor", "progressViewOffset", "refreshing", "size", "tintColor", "title", "titleColor"]);
+    return _react.default.createElement(_View.default, rest);
   };
 
   return RefreshControl;
-}(Component);
+}(_react.Component);
 
-RefreshControl.propTypes = process.env.NODE_ENV !== "production" ? Object.assign({}, ViewPropTypes, {
-  colors: arrayOf(ColorPropType),
-  enabled: bool,
-  onRefresh: func,
-  progressBackgroundColor: ColorPropType,
-  progressViewOffset: number,
-  refreshing: bool.isRequired,
-  size: oneOf([0, 1]),
-  tintColor: ColorPropType,
-  title: string,
-  titleColor: ColorPropType
-}) : {};
-
-
-export default RefreshControl;
+RefreshControl.propTypes = (0, _extends2.default)({}, _ViewPropTypes.default, {
+  colors: (0, _propTypes.arrayOf)(_ColorPropType.default),
+  enabled: _propTypes.bool,
+  onRefresh: _propTypes.func,
+  progressBackgroundColor: _ColorPropType.default,
+  progressViewOffset: _propTypes.number,
+  refreshing: _propTypes.bool.isRequired,
+  size: (0, _propTypes.oneOf)([0, 1]),
+  tintColor: _ColorPropType.default,
+  title: _propTypes.string,
+  titleColor: _ColorPropType.default
+});
+var _default = RefreshControl;
+exports.default = _default;

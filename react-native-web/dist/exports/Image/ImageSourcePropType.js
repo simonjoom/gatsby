@@ -9,37 +9,47 @@
  */
 'use strict';
 
-import PropTypes from 'prop-types';
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var ImageURISourcePropType = PropTypes.shape({
+exports.__esModule = true;
+exports.default = void 0;
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var ImageURISourcePropType = _propTypes.default.shape({
   /**
    * `uri` is a string representing the resource identifier for the image, which
    * could be an http address, a local file path, or the name of a static image
    * resource (which should be wrapped in the `require('./path/to/image.png')`
    * function).
    */
-  uri: PropTypes.string,
+  uri: _propTypes.default.string,
+
   /**
    * `bundle` is the iOS asset bundle which the image is included in. This
    * will default to [NSBundle mainBundle] if not set.
    * @platform ios
    */
-  bundle: PropTypes.string,
+  bundle: _propTypes.default.string,
+
   /**
    * `method` is the HTTP Method to use. Defaults to GET if not specified.
    */
-  method: PropTypes.string,
+  method: _propTypes.default.string,
+
   /**
    * `headers` is an object representing the HTTP headers to send along with the
    * request for a remote image.
    */
-  headers: PropTypes.objectOf(PropTypes.string),
+  headers: _propTypes.default.objectOf(_propTypes.default.string),
+
   /**
    * `body` is the HTTP body to send with the request. This must be a valid
    * UTF-8 string, and will be sent exactly as specified, with no
    * additional encoding (e.g. URL-escaping or base64) applied.
    */
-  body: PropTypes.string,
+  body: _propTypes.default.string,
+
   /**
    * `cache` determines how the requests handles potentially cached
    * responses.
@@ -60,24 +70,25 @@ var ImageURISourcePropType = PropTypes.shape({
    *
    * @platform ios
    */
-  cache: PropTypes.oneOf(['default', 'reload', 'force-cache', 'only-if-cached']),
+  cache: _propTypes.default.oneOf(['default', 'reload', 'force-cache', 'only-if-cached']),
+
   /**
    * `width` and `height` can be specified if known at build time, in which case
    * these will be used to set the default `<Image/>` component dimensions.
    */
-  width: PropTypes.number,
-  height: PropTypes.number,
+  width: _propTypes.default.number,
+  height: _propTypes.default.number,
+
   /**
    * `scale` is used to indicate the scale factor of the image. Defaults to 1.0 if
    * unspecified, meaning that one image pixel equates to one display point / DIP.
    */
-  scale: PropTypes.number
+  scale: _propTypes.default.number
 });
 
-var ImageSourcePropType = PropTypes.oneOfType([ImageURISourcePropType,
-// Opaque type returned by require('./image.jpg')
-PropTypes.number, PropTypes.string,
-// Multiple sources
-PropTypes.arrayOf(ImageURISourcePropType)]);
+var ImageSourcePropType = _propTypes.default.oneOfType([ImageURISourcePropType, // Opaque type returned by require('./image.jpg')
+_propTypes.default.number, _propTypes.default.string, // Multiple sources
+_propTypes.default.arrayOf(ImageURISourcePropType)]);
 
-export default ImageSourcePropType;
+var _default = ImageSourcePropType;
+exports.default = _default;

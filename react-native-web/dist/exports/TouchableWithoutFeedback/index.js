@@ -1,4 +1,33 @@
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _createReactClass = _interopRequireDefault(require("create-react-class"));
+
+var _EdgeInsetsPropType = _interopRequireDefault(require("../EdgeInsetsPropType"));
+
+var _ensurePositiveDelayProps = _interopRequireDefault(require("../Touchable/ensurePositiveDelayProps"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _StyleSheet = _interopRequireDefault(require("../StyleSheet"));
+
+var _reactTimerMixin = _interopRequireDefault(require("react-timer-mixin"));
+
+var _Touchable = _interopRequireDefault(require("../Touchable"));
+
+var _ViewPropTypes = _interopRequireDefault(require("../ViewPropTypes"));
+
+var _warning = _interopRequireDefault(require("fbjs/lib/warning"));
+
+var _propTypes = require("prop-types");
 
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
@@ -9,20 +38,12 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
  *
  * 
  */
-
-import createReactClass from 'create-react-class';
-import EdgeInsetsPropType from '../EdgeInsetsPropType';
-import ensurePositiveDelayProps from '../Touchable/ensurePositiveDelayProps';
-import React from 'react';
-import StyleSheet from '../StyleSheet';
-import TimerMixin from 'react-timer-mixin';
-import Touchable from '../Touchable';
-import ViewPropTypes from '../ViewPropTypes';
-import warning from 'fbjs/lib/warning';
-import { any, bool, func, number, string } from 'prop-types';
-
-var PRESS_RETENTION_OFFSET = { top: 20, left: 20, right: 20, bottom: 30 };
-
+var PRESS_RETENTION_OFFSET = {
+  top: 20,
+  left: 20,
+  right: 20,
+  bottom: 30
+};
 /**
  * Do not use unless you have a very good reason. All elements that
  * respond to press should have a visual feedback when touched.
@@ -32,53 +53,61 @@ var PRESS_RETENTION_OFFSET = { top: 20, left: 20, right: 20, bottom: 30 };
  */
 
 /* eslint-disable react/prefer-es6-class, react/prop-types */
-var TouchableWithoutFeedback = createReactClass({
-  displayName: 'TouchableWithoutFeedback',
-  mixins: [TimerMixin, Touchable.Mixin],
 
+var TouchableWithoutFeedback = (0, _createReactClass.default)({
+  displayName: 'TouchableWithoutFeedback',
+  mixins: [_reactTimerMixin.default, _Touchable.default.Mixin],
   propTypes: {
-    accessibilityComponentType: ViewPropTypes.accessibilityComponentType,
-    accessibilityLabel: string,
-    accessibilityRole: ViewPropTypes.accessibilityRole,
-    accessibilityTraits: ViewPropTypes.accessibilityTraits,
-    accessible: bool,
-    children: any,
+    accessibilityComponentType: _ViewPropTypes.default.accessibilityComponentType,
+    accessibilityLabel: _propTypes.string,
+    accessibilityRole: _ViewPropTypes.default.accessibilityRole,
+    accessibilityTraits: _ViewPropTypes.default.accessibilityTraits,
+    accessible: _propTypes.bool,
+    children: _propTypes.any,
+
     /**
      * Delay in ms, from onPressIn, before onLongPress is called.
      */
-    delayLongPress: number,
+    delayLongPress: _propTypes.number,
+
     /**
      * Delay in ms, from the start of the touch, before onPressIn is called.
      */
-    delayPressIn: number,
+    delayPressIn: _propTypes.number,
+
     /**
      * Delay in ms, from the release of the touch, before onPressOut is called.
      */
-    delayPressOut: number,
+    delayPressOut: _propTypes.number,
+
     /**
      * If true, disable all interactions for this component.
      */
-    disabled: bool,
+    disabled: _propTypes.bool,
+
     /**
      * This defines how far your touch can start away from the button. This is
      * added to `pressRetentionOffset` when moving off of the button.
      */
     // $FlowFixMe(>=0.41.0)
-    hitSlop: EdgeInsetsPropType,
+    hitSlop: _EdgeInsetsPropType.default,
+
     /**
      * Invoked on mount and layout changes with
      *
      *   `{nativeEvent: {layout: {x, y, width, height}}}`
      */
-    onLayout: func,
-    onLongPress: func,
+    onLayout: _propTypes.func,
+    onLongPress: _propTypes.func,
+
     /**
      * Called when the touch is released, but not if cancelled (e.g. by a scroll
      * that steals the responder lock).
      */
-    onPress: func,
-    onPressIn: func,
-    onPressOut: func,
+    onPress: _propTypes.func,
+    onPressIn: _propTypes.func,
+    onPressOut: _propTypes.func,
+
     /**
      * When the scroll view is disabled, this defines how far your touch may
      * move off of the button, before deactivating the button. Once deactivated,
@@ -87,20 +116,17 @@ var TouchableWithoutFeedback = createReactClass({
      * is disabled. Ensure you pass in a constant to reduce memory allocations.
      */
     // $FlowFixMe
-    pressRetentionOffset: EdgeInsetsPropType,
-    testID: string
+    pressRetentionOffset: _EdgeInsetsPropType.default,
+    testID: _propTypes.string
   },
-
   getInitialState: function getInitialState() {
     return this.touchableGetInitialState();
   },
-
   componentDidMount: function componentDidMount() {
-    ensurePositiveDelayProps(this.props);
+    (0, _ensurePositiveDelayProps.default)(this.props);
   },
-
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-    ensurePositiveDelayProps(nextProps);
+    (0, _ensurePositiveDelayProps.default)(nextProps);
   },
 
   /**
@@ -110,64 +136,60 @@ var TouchableWithoutFeedback = createReactClass({
   touchableHandlePress: function touchableHandlePress(e) {
     this.props.onPress && this.props.onPress(e);
   },
-
   touchableHandleActivePressIn: function touchableHandleActivePressIn(e) {
     this.props.onPressIn && this.props.onPressIn(e);
   },
-
   touchableHandleActivePressOut: function touchableHandleActivePressOut(e) {
     this.props.onPressOut && this.props.onPressOut(e);
   },
-
   touchableHandleLongPress: function touchableHandleLongPress(e) {
     this.props.onLongPress && this.props.onLongPress(e);
   },
-
   touchableGetPressRectOffset: function touchableGetPressRectOffset() {
     return this.props.pressRetentionOffset || PRESS_RETENTION_OFFSET;
   },
-
   touchableGetHitSlop: function touchableGetHitSlop() {
     return this.props.hitSlop;
   },
-
   touchableGetHighlightDelayMS: function touchableGetHighlightDelayMS() {
     return this.props.delayPressIn || 0;
   },
-
   touchableGetLongPressDelayMS: function touchableGetLongPressDelayMS() {
     return this.props.delayLongPress === 0 ? 0 : this.props.delayLongPress || 500;
   },
-
   touchableGetPressOutDelayMS: function touchableGetPressOutDelayMS() {
     return this.props.delayPressOut || 0;
   },
-
   render: function render() {
-    var _props = this.props,
-        delayLongPress = _props.delayLongPress,
-        delayPressIn = _props.delayPressIn,
-        delayPressOut = _props.delayPressOut,
-        onLongPress = _props.onLongPress,
-        onPress = _props.onPress,
-        onPressIn = _props.onPressIn,
-        onPressOut = _props.onPressOut,
-        pressRetentionOffset = _props.pressRetentionOffset,
-        other = _objectWithoutProperties(_props, ['delayLongPress', 'delayPressIn', 'delayPressOut', 'onLongPress', 'onPress', 'onPressIn', 'onPressOut', 'pressRetentionOffset']);
-
-    // Note(avik): remove dynamic typecast once Flow has been upgraded
+    var _this$props = this.props,
+        delayLongPress = _this$props.delayLongPress,
+        delayPressIn = _this$props.delayPressIn,
+        delayPressOut = _this$props.delayPressOut,
+        onLongPress = _this$props.onLongPress,
+        onPress = _this$props.onPress,
+        onPressIn = _this$props.onPressIn,
+        onPressOut = _this$props.onPressOut,
+        pressRetentionOffset = _this$props.pressRetentionOffset,
+        other = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["delayLongPress", "delayPressIn", "delayPressOut", "onLongPress", "onPress", "onPressIn", "onPressOut", "pressRetentionOffset"]); // Note(avik): remove dynamic typecast once Flow has been upgraded
     // $FlowFixMe
 
+    var child = _react.default.Children.only(this.props.children);
 
-    var child = React.Children.only(this.props.children);
     var children = child.props.children;
-    warning(!child.type || child.type.displayName !== 'Text', 'TouchableWithoutFeedback does not work well with Text children. Wrap children in a View instead. See ' + (child._owner && child._owner.getName && child._owner.getName() || '<unknown>'));
-    if (process.env.NODE_ENV !== 'production' && Touchable.TOUCH_TARGET_DEBUG && child.type && child.type.displayName === 'View') {
-      children = React.Children.toArray(children);
-      children.push(Touchable.renderDebugView({ color: 'red', hitSlop: this.props.hitSlop }));
+    (0, _warning.default)(!child.type || child.type.displayName !== 'Text', 'TouchableWithoutFeedback does not work well with Text children. Wrap children in a View instead. See ' + (child._owner && child._owner.getName && child._owner.getName() || '<unknown>'));
+
+    if (process.env.NODE_ENV !== 'production' && _Touchable.default.TOUCH_TARGET_DEBUG && child.type && child.type.displayName === 'View') {
+      children = _react.default.Children.toArray(children);
+      children.push(_Touchable.default.renderDebugView({
+        color: 'red',
+        hitSlop: this.props.hitSlop
+      }));
     }
-    var style = Touchable.TOUCH_TARGET_DEBUG && child.type && child.type.displayName === 'Text' ? [!this.props.disabled && styles.actionable, child.props.style, { color: 'red' }] : [!this.props.disabled && styles.actionable, child.props.style];
-    return React.cloneElement(child, Object.assign({}, other, {
+
+    var style = _Touchable.default.TOUCH_TARGET_DEBUG && child.type && child.type.displayName === 'Text' ? [!this.props.disabled && styles.actionable, child.props.style, {
+      color: 'red'
+    }] : [!this.props.disabled && styles.actionable, child.props.style];
+    return _react.default.cloneElement(child, (0, _extends2.default)({}, other, {
       accessible: this.props.accessible !== false,
       children: children,
       onKeyDown: this.touchableHandleKeyEvent,
@@ -183,11 +205,12 @@ var TouchableWithoutFeedback = createReactClass({
   }
 });
 
-var styles = StyleSheet.create({
+var styles = _StyleSheet.default.create({
   actionable: {
     cursor: 'pointer',
     touchAction: 'manipulation'
   }
 });
 
-export default TouchableWithoutFeedback;
+var _default = TouchableWithoutFeedback;
+exports.default = _default;

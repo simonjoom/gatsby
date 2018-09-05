@@ -1,12 +1,29 @@
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+"use strict";
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _debounce = _interopRequireDefault(require("debounce"));
+
+var _StyleSheet = _interopRequireDefault(require("../StyleSheet"));
+
+var _View = _interopRequireDefault(require("../View"));
+
+var _ViewPropTypes = _interopRequireDefault(require("../ViewPropTypes"));
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _propTypes = require("prop-types");
 
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
@@ -16,14 +33,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-
-import debounce from 'debounce';
-import StyleSheet from '../StyleSheet';
-import View from '../View';
-import ViewPropTypes from '../ViewPropTypes';
-import React, { Component } from 'react';
-import { bool, func, number } from 'prop-types';
-
 var normalizeScrollEvent = function normalizeScrollEvent(e) {
   return {
     nativeEvent: {
@@ -31,48 +40,61 @@ var normalizeScrollEvent = function normalizeScrollEvent(e) {
         get x() {
           return e.target.scrollLeft;
         },
+
         get y() {
           return e.target.scrollTop;
         }
+
       },
       contentSize: {
         get height() {
           return e.target.scrollHeight;
         },
+
         get width() {
           return e.target.scrollWidth;
         }
+
       },
       layoutMeasurement: {
         get height() {
           return e.target.offsetHeight;
         },
+
         get width() {
           return e.target.offsetWidth;
         }
+
       }
     },
     timeStamp: Date.now()
   };
 };
-
 /**
  * Encapsulates the Web-specific scroll throttling and disabling logic
  */
 
-var ScrollViewBase = function (_Component) {
-  _inherits(ScrollViewBase, _Component);
+
+var ScrollViewBase =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(ScrollViewBase, _Component);
 
   function ScrollViewBase() {
-    var _temp, _this, _ret;
+    var _this;
 
-    _classCallCheck(this, ScrollViewBase);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this._debouncedOnScrollEnd = debounce(_this._handleScrollEnd, 100), _this._state = { isScrolling: false, scrollLastTick: 0 }, _this._createPreventableScrollHandler = function (handler) {
+    _this = _Component.call.apply(_Component, [this].concat(args)) || this;
+    _this._debouncedOnScrollEnd = (0, _debounce.default)(_this._handleScrollEnd, 100);
+    _this._state = {
+      isScrolling: false,
+      scrollLastTick: 0
+    };
+
+    _this._createPreventableScrollHandler = function (handler) {
       return function (e) {
         if (_this.props.scrollEnabled) {
           if (handler) {
@@ -83,13 +105,15 @@ var ScrollViewBase = function (_Component) {
           e.preventDefault();
         }
       };
-    }, _this._handleScroll = function (e) {
+    };
+
+    _this._handleScroll = function (e) {
       e.persist();
       e.stopPropagation();
-      var scrollEventThrottle = _this.props.scrollEventThrottle;
-      // A scroll happened, so the scroll bumps the debounce.
+      var scrollEventThrottle = _this.props.scrollEventThrottle; // A scroll happened, so the scroll bumps the debounce.
 
       _this._debouncedOnScrollEnd(e);
+
       if (_this._state.isScrolling) {
         // Scroll last tick may have changed, check if we need to notify
         if (_this._shouldEmitScrollEvent(_this._state.scrollLastTick, scrollEventThrottle)) {
@@ -99,121 +123,125 @@ var ScrollViewBase = function (_Component) {
         // Weren't scrolling, so we must have just started
         _this._handleScrollStart(e);
       }
-    }, _this._setViewRef = function (element) {
+    };
+
+    _this._setViewRef = function (element) {
       _this._viewRef = element;
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    return _this;
   }
 
-  ScrollViewBase.prototype.setNativeProps = function setNativeProps(props) {
+  var _proto = ScrollViewBase.prototype;
+
+  _proto.setNativeProps = function setNativeProps(props) {
     if (this._viewRef) {
       this._viewRef.setNativeProps(props);
     }
   };
 
-  ScrollViewBase.prototype.render = function render() {
-    var _props = this.props,
-        scrollEnabled = _props.scrollEnabled,
-        style = _props.style,
-        alwaysBounceHorizontal = _props.alwaysBounceHorizontal,
-        alwaysBounceVertical = _props.alwaysBounceVertical,
-        automaticallyAdjustContentInsets = _props.automaticallyAdjustContentInsets,
-        bounces = _props.bounces,
-        bouncesZoom = _props.bouncesZoom,
-        canCancelContentTouches = _props.canCancelContentTouches,
-        centerContent = _props.centerContent,
-        contentInset = _props.contentInset,
-        contentInsetAdjustmentBehavior = _props.contentInsetAdjustmentBehavior,
-        contentOffset = _props.contentOffset,
-        decelerationRate = _props.decelerationRate,
-        directionalLockEnabled = _props.directionalLockEnabled,
-        endFillColor = _props.endFillColor,
-        indicatorStyle = _props.indicatorStyle,
-        keyboardShouldPersistTaps = _props.keyboardShouldPersistTaps,
-        maximumZoomScale = _props.maximumZoomScale,
-        minimumZoomScale = _props.minimumZoomScale,
-        onMomentumScrollBegin = _props.onMomentumScrollBegin,
-        onMomentumScrollEnd = _props.onMomentumScrollEnd,
-        onScrollBeginDrag = _props.onScrollBeginDrag,
-        onScrollEndDrag = _props.onScrollEndDrag,
-        overScrollMode = _props.overScrollMode,
-        pinchGestureEnabled = _props.pinchGestureEnabled,
-        removeClippedSubviews = _props.removeClippedSubviews,
-        scrollEventThrottle = _props.scrollEventThrottle,
-        scrollIndicatorInsets = _props.scrollIndicatorInsets,
-        scrollPerfTag = _props.scrollPerfTag,
-        scrollsToTop = _props.scrollsToTop,
-        showsHorizontalScrollIndicator = _props.showsHorizontalScrollIndicator,
-        showsVerticalScrollIndicator = _props.showsVerticalScrollIndicator,
-        snapToInterval = _props.snapToInterval,
-        snapToAlignment = _props.snapToAlignment,
-        zoomScale = _props.zoomScale,
-        other = _objectWithoutProperties(_props, ['scrollEnabled', 'style', 'alwaysBounceHorizontal', 'alwaysBounceVertical', 'automaticallyAdjustContentInsets', 'bounces', 'bouncesZoom', 'canCancelContentTouches', 'centerContent', 'contentInset', 'contentInsetAdjustmentBehavior', 'contentOffset', 'decelerationRate', 'directionalLockEnabled', 'endFillColor', 'indicatorStyle', 'keyboardShouldPersistTaps', 'maximumZoomScale', 'minimumZoomScale', 'onMomentumScrollBegin', 'onMomentumScrollEnd', 'onScrollBeginDrag', 'onScrollEndDrag', 'overScrollMode', 'pinchGestureEnabled', 'removeClippedSubviews', 'scrollEventThrottle', 'scrollIndicatorInsets', 'scrollPerfTag', 'scrollsToTop', 'showsHorizontalScrollIndicator', 'showsVerticalScrollIndicator', 'snapToInterval', 'snapToAlignment', 'zoomScale']);
-
-    return React.createElement(View, _extends({}, other, {
+  _proto.render = function render() {
+    var _this$props = this.props,
+        scrollEnabled = _this$props.scrollEnabled,
+        style = _this$props.style,
+        alwaysBounceHorizontal = _this$props.alwaysBounceHorizontal,
+        alwaysBounceVertical = _this$props.alwaysBounceVertical,
+        automaticallyAdjustContentInsets = _this$props.automaticallyAdjustContentInsets,
+        bounces = _this$props.bounces,
+        bouncesZoom = _this$props.bouncesZoom,
+        canCancelContentTouches = _this$props.canCancelContentTouches,
+        centerContent = _this$props.centerContent,
+        contentInset = _this$props.contentInset,
+        contentInsetAdjustmentBehavior = _this$props.contentInsetAdjustmentBehavior,
+        contentOffset = _this$props.contentOffset,
+        decelerationRate = _this$props.decelerationRate,
+        directionalLockEnabled = _this$props.directionalLockEnabled,
+        endFillColor = _this$props.endFillColor,
+        indicatorStyle = _this$props.indicatorStyle,
+        keyboardShouldPersistTaps = _this$props.keyboardShouldPersistTaps,
+        maximumZoomScale = _this$props.maximumZoomScale,
+        minimumZoomScale = _this$props.minimumZoomScale,
+        onMomentumScrollBegin = _this$props.onMomentumScrollBegin,
+        onMomentumScrollEnd = _this$props.onMomentumScrollEnd,
+        onScrollBeginDrag = _this$props.onScrollBeginDrag,
+        onScrollEndDrag = _this$props.onScrollEndDrag,
+        overScrollMode = _this$props.overScrollMode,
+        pinchGestureEnabled = _this$props.pinchGestureEnabled,
+        removeClippedSubviews = _this$props.removeClippedSubviews,
+        scrollEventThrottle = _this$props.scrollEventThrottle,
+        scrollIndicatorInsets = _this$props.scrollIndicatorInsets,
+        scrollPerfTag = _this$props.scrollPerfTag,
+        scrollsToTop = _this$props.scrollsToTop,
+        showsHorizontalScrollIndicator = _this$props.showsHorizontalScrollIndicator,
+        showsVerticalScrollIndicator = _this$props.showsVerticalScrollIndicator,
+        snapToInterval = _this$props.snapToInterval,
+        snapToAlignment = _this$props.snapToAlignment,
+        zoomScale = _this$props.zoomScale,
+        other = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["scrollEnabled", "style", "alwaysBounceHorizontal", "alwaysBounceVertical", "automaticallyAdjustContentInsets", "bounces", "bouncesZoom", "canCancelContentTouches", "centerContent", "contentInset", "contentInsetAdjustmentBehavior", "contentOffset", "decelerationRate", "directionalLockEnabled", "endFillColor", "indicatorStyle", "keyboardShouldPersistTaps", "maximumZoomScale", "minimumZoomScale", "onMomentumScrollBegin", "onMomentumScrollEnd", "onScrollBeginDrag", "onScrollEndDrag", "overScrollMode", "pinchGestureEnabled", "removeClippedSubviews", "scrollEventThrottle", "scrollIndicatorInsets", "scrollPerfTag", "scrollsToTop", "showsHorizontalScrollIndicator", "showsVerticalScrollIndicator", "snapToInterval", "snapToAlignment", "zoomScale"]);
+    return _react.default.createElement(_View.default, (0, _extends2.default)({}, other, {
       onScroll: this._handleScroll,
       onTouchMove: this._createPreventableScrollHandler(this.props.onTouchMove),
       onWheel: this._createPreventableScrollHandler(this.props.onWheel),
       ref: this._setViewRef,
-      style: StyleSheet.compose(style, !scrollEnabled && styles.scrollDisabled)
+      style: _StyleSheet.default.compose(style, !scrollEnabled && styles.scrollDisabled)
     }));
   };
 
-  ScrollViewBase.prototype._handleScrollStart = function _handleScrollStart(e) {
+  _proto._handleScrollStart = function _handleScrollStart(e) {
     this._state.isScrolling = true;
     this._state.scrollLastTick = Date.now();
   };
 
-  ScrollViewBase.prototype._handleScrollTick = function _handleScrollTick(e) {
+  _proto._handleScrollTick = function _handleScrollTick(e) {
     var onScroll = this.props.onScroll;
-
     this._state.scrollLastTick = Date.now();
+
     if (onScroll) {
       onScroll(normalizeScrollEvent(e));
     }
   };
 
-  ScrollViewBase.prototype._handleScrollEnd = function _handleScrollEnd(e) {
+  _proto._handleScrollEnd = function _handleScrollEnd(e) {
     var onScroll = this.props.onScroll;
-
     this._state.isScrolling = false;
+
     if (onScroll) {
       onScroll(normalizeScrollEvent(e));
     }
   };
 
-  ScrollViewBase.prototype._shouldEmitScrollEvent = function _shouldEmitScrollEvent(lastTick, eventThrottle) {
+  _proto._shouldEmitScrollEvent = function _shouldEmitScrollEvent(lastTick, eventThrottle) {
     var timeSinceLastTick = Date.now() - lastTick;
     return eventThrottle > 0 && timeSinceLastTick >= eventThrottle;
   };
 
   return ScrollViewBase;
-}(Component);
-
-// Chrome doesn't support e.preventDefault in this case; touch-action must be
+}(_react.Component); // Chrome doesn't support e.preventDefault in this case; touch-action must be
 // used to disable scrolling.
 // https://developers.google.com/web/updates/2017/01/scrolling-intervention
 
 
+exports.default = ScrollViewBase;
+ScrollViewBase.propTypes = (0, _extends2.default)({}, _ViewPropTypes.default, {
+  onMomentumScrollBegin: _propTypes.func,
+  onMomentumScrollEnd: _propTypes.func,
+  onScroll: _propTypes.func,
+  onScrollBeginDrag: _propTypes.func,
+  onScrollEndDrag: _propTypes.func,
+  onTouchMove: _propTypes.func,
+  onWheel: _propTypes.func,
+  removeClippedSubviews: _propTypes.bool,
+  scrollEnabled: _propTypes.bool,
+  scrollEventThrottle: _propTypes.number,
+  showsHorizontalScrollIndicator: _propTypes.bool,
+  showsVerticalScrollIndicator: _propTypes.bool
+});
 ScrollViewBase.defaultProps = {
   scrollEnabled: true,
   scrollEventThrottle: 0
 };
-export default ScrollViewBase;
-ScrollViewBase.propTypes = process.env.NODE_ENV !== "production" ? Object.assign({}, ViewPropTypes, {
-  onMomentumScrollBegin: func,
-  onMomentumScrollEnd: func,
-  onScroll: func,
-  onScrollBeginDrag: func,
-  onScrollEndDrag: func,
-  onTouchMove: func,
-  onWheel: func,
-  removeClippedSubviews: bool,
-  scrollEnabled: bool,
-  scrollEventThrottle: number,
-  showsHorizontalScrollIndicator: bool,
-  showsVerticalScrollIndicator: bool
-}) : {};
-var styles = StyleSheet.create({
+
+var styles = _StyleSheet.default.create({
   scrollDisabled: {
     touchAction: 'none'
   }

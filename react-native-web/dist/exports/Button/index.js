@@ -1,8 +1,25 @@
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+"use strict";
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _ColorPropType = _interopRequireDefault(require("../ColorPropType"));
+
+var _StyleSheet = _interopRequireDefault(require("../StyleSheet"));
+
+var _TouchableOpacity = _interopRequireDefault(require("../TouchableOpacity"));
+
+var _Text = _interopRequireDefault(require("../Text"));
+
+var _propTypes = require("prop-types");
+
+var _react = _interopRequireWildcard(require("react"));
 
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
@@ -12,65 +29,52 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * 
  */
-
-import ColorPropType from '../ColorPropType';
-import StyleSheet from '../StyleSheet';
-import TouchableOpacity from '../TouchableOpacity';
-import Text from '../Text';
-import { bool, func, string } from 'prop-types';
-import React, { Component } from 'react';
-
-var Button = function (_Component) {
-  _inherits(Button, _Component);
+var Button =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inheritsLoose2.default)(Button, _Component);
 
   function Button() {
-    _classCallCheck(this, Button);
-
-    return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    return _Component.apply(this, arguments) || this;
   }
 
-  Button.prototype.render = function render() {
-    var _props = this.props,
-        accessibilityLabel = _props.accessibilityLabel,
-        color = _props.color,
-        disabled = _props.disabled,
-        onPress = _props.onPress,
-        testID = _props.testID,
-        title = _props.title;
+  var _proto = Button.prototype;
 
-
-    return React.createElement(
-      TouchableOpacity,
-      {
-        accessibilityLabel: accessibilityLabel,
-        accessibilityRole: 'button',
-        disabled: disabled,
-        onPress: onPress,
-        style: [styles.button, color && { backgroundColor: color }, disabled && styles.buttonDisabled],
-        testID: testID
-      },
-      React.createElement(
-        Text,
-        { style: [styles.text, disabled && styles.textDisabled] },
-        title
-      )
-    );
+  _proto.render = function render() {
+    var _this$props = this.props,
+        accessibilityLabel = _this$props.accessibilityLabel,
+        color = _this$props.color,
+        disabled = _this$props.disabled,
+        onPress = _this$props.onPress,
+        testID = _this$props.testID,
+        title = _this$props.title;
+    return _react.default.createElement(_TouchableOpacity.default, {
+      accessibilityLabel: accessibilityLabel,
+      accessibilityRole: "button",
+      disabled: disabled,
+      onPress: onPress,
+      style: [styles.button, color && {
+        backgroundColor: color
+      }, disabled && styles.buttonDisabled],
+      testID: testID
+    }, _react.default.createElement(_Text.default, {
+      style: [styles.text, disabled && styles.textDisabled]
+    }, title));
   };
 
   return Button;
-}(Component);
+}(_react.Component);
 
-Button.propTypes = process.env.NODE_ENV !== "production" ? {
-  accessibilityLabel: string,
-  color: ColorPropType,
-  disabled: bool,
-  onPress: func.isRequired,
-  testID: string,
-  title: string.isRequired
-} : {};
+Button.propTypes = {
+  accessibilityLabel: _propTypes.string,
+  color: _ColorPropType.default,
+  disabled: _propTypes.bool,
+  onPress: _propTypes.func.isRequired,
+  testID: _propTypes.string,
+  title: _propTypes.string.isRequired
+};
 
-
-var styles = StyleSheet.create({
+var styles = _StyleSheet.default.create({
   button: {
     backgroundColor: '#2196F3',
     borderRadius: 2
@@ -90,4 +94,5 @@ var styles = StyleSheet.create({
   }
 });
 
-export default Button;
+var _default = Button;
+exports.default = _default;

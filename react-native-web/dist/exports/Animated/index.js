@@ -1,3 +1,22 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _AnimatedImplementation = _interopRequireDefault(require("../../vendor/react-native/Animated/AnimatedImplementation"));
+
+var _Image = _interopRequireDefault(require("../Image"));
+
+var _ScrollView = _interopRequireDefault(require("../ScrollView"));
+
+var _Text = _interopRequireDefault(require("../Text"));
+
+var _View = _interopRequireDefault(require("../View"));
+
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
  *
@@ -6,18 +25,11 @@
  *
  * 
  */
-
-import AnimatedImplementation from '../../vendor/react-native/Animated/AnimatedImplementation';
-import Image from '../Image';
-import ScrollView from '../ScrollView';
-import Text from '../Text';
-import View from '../View';
-
-var Animated = Object.assign({}, AnimatedImplementation, {
-  Image: AnimatedImplementation.createAnimatedComponent(Image),
-  ScrollView: AnimatedImplementation.createAnimatedComponent(ScrollView),
-  View: AnimatedImplementation.createAnimatedComponent(View),
-  Text: AnimatedImplementation.createAnimatedComponent(Text)
+var Animated = (0, _extends2.default)({}, _AnimatedImplementation.default, {
+  Image: _AnimatedImplementation.default.createAnimatedComponent(_Image.default),
+  ScrollView: _AnimatedImplementation.default.createAnimatedComponent(_ScrollView.default),
+  View: _AnimatedImplementation.default.createAnimatedComponent(_View.default),
+  Text: _AnimatedImplementation.default.createAnimatedComponent(_Text.default)
 });
-
-export default Animated;
+var _default = Animated;
+exports.default = _default;

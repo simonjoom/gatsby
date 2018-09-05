@@ -9,105 +9,123 @@
  */
 'use strict';
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+exports.__esModule = true;
+exports.default = void 0;
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
 
-import AnimatedNode from './AnimatedNode';
-import AnimatedWithChildren from './AnimatedWithChildren';
-import NativeAnimatedHelper from '../NativeAnimatedHelper';
+var _AnimatedNode = _interopRequireDefault(require("./AnimatedNode"));
 
-var AnimatedTransform = function (_AnimatedWithChildren) {
-  _inherits(AnimatedTransform, _AnimatedWithChildren);
+var _AnimatedWithChildren2 = _interopRequireDefault(require("./AnimatedWithChildren"));
+
+var _NativeAnimatedHelper = _interopRequireDefault(require("../NativeAnimatedHelper"));
+
+var AnimatedTransform =
+/*#__PURE__*/
+function (_AnimatedWithChildren) {
+  (0, _inheritsLoose2.default)(AnimatedTransform, _AnimatedWithChildren);
 
   function AnimatedTransform(transforms) {
-    _classCallCheck(this, AnimatedTransform);
+    var _this;
 
-    var _this = _possibleConstructorReturn(this, _AnimatedWithChildren.call(this));
-
+    _this = _AnimatedWithChildren.call(this) || this;
     _this._transforms = transforms;
     return _this;
   }
 
-  AnimatedTransform.prototype.__makeNative = function __makeNative() {
+  var _proto = AnimatedTransform.prototype;
+
+  _proto.__makeNative = function __makeNative() {
     _AnimatedWithChildren.prototype.__makeNative.call(this);
+
     this._transforms.forEach(function (transform) {
       for (var key in transform) {
         var value = transform[key];
-        if (value instanceof AnimatedNode) {
+
+        if (value instanceof _AnimatedNode.default) {
           value.__makeNative();
         }
       }
     });
   };
 
-  AnimatedTransform.prototype.__getValue = function __getValue() {
+  _proto.__getValue = function __getValue() {
     return this._transforms.map(function (transform) {
       var result = {};
+
       for (var key in transform) {
         var value = transform[key];
-        if (value instanceof AnimatedNode) {
+
+        if (value instanceof _AnimatedNode.default) {
           result[key] = value.__getValue();
         } else {
           result[key] = value;
         }
       }
+
       return result;
     });
   };
 
-  AnimatedTransform.prototype.__getAnimatedValue = function __getAnimatedValue() {
+  _proto.__getAnimatedValue = function __getAnimatedValue() {
     return this._transforms.map(function (transform) {
       var result = {};
+
       for (var key in transform) {
         var value = transform[key];
-        if (value instanceof AnimatedNode) {
+
+        if (value instanceof _AnimatedNode.default) {
           result[key] = value.__getAnimatedValue();
         } else {
           // All transform components needed to recompose matrix
           result[key] = value;
         }
       }
+
       return result;
     });
   };
 
-  AnimatedTransform.prototype.__attach = function __attach() {
+  _proto.__attach = function __attach() {
     var _this2 = this;
 
     this._transforms.forEach(function (transform) {
       for (var key in transform) {
         var value = transform[key];
-        if (value instanceof AnimatedNode) {
+
+        if (value instanceof _AnimatedNode.default) {
           value.__addChild(_this2);
         }
       }
     });
   };
 
-  AnimatedTransform.prototype.__detach = function __detach() {
+  _proto.__detach = function __detach() {
     var _this3 = this;
 
     this._transforms.forEach(function (transform) {
       for (var key in transform) {
         var value = transform[key];
-        if (value instanceof AnimatedNode) {
+
+        if (value instanceof _AnimatedNode.default) {
           value.__removeChild(_this3);
         }
       }
     });
+
     _AnimatedWithChildren.prototype.__detach.call(this);
   };
 
-  AnimatedTransform.prototype.__getNativeConfig = function __getNativeConfig() {
+  _proto.__getNativeConfig = function __getNativeConfig() {
     var transConfigs = [];
 
     this._transforms.forEach(function (transform) {
       for (var key in transform) {
         var value = transform[key];
-        if (value instanceof AnimatedNode) {
+
+        if (value instanceof _AnimatedNode.default) {
           transConfigs.push({
             type: 'animated',
             property: key,
@@ -123,7 +141,8 @@ var AnimatedTransform = function (_AnimatedWithChildren) {
       }
     });
 
-    NativeAnimatedHelper.validateTransform(transConfigs);
+    _NativeAnimatedHelper.default.validateTransform(transConfigs);
+
     return {
       type: 'transform',
       transforms: transConfigs
@@ -131,6 +150,7 @@ var AnimatedTransform = function (_AnimatedWithChildren) {
   };
 
   return AnimatedTransform;
-}(AnimatedWithChildren);
+}(_AnimatedWithChildren2.default);
 
-export default AnimatedTransform;
+var _default = AnimatedTransform;
+exports.default = _default;

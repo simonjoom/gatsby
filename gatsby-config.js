@@ -6,24 +6,36 @@ module.exports = {
     siteUrl: 'https://gatsbyjs.github.io/gatsby-starter-blog/',
   },
   pathPrefix: '/gatsby-starter-blog',
-  plugins: [
-    'gatsby-plugin-sharp',  
+  plugins: [ 
+    'gatsby-transformer-sharp',
+    'gatsby-plugin-sharp', 
     {
       resolve: `gatsby-mdx`,
+      /*transformers: {
+          mdx: ({ node, getNode }) => {
+          console.log(node)
+            const { title } = node
+            const mdxContent = getNode(node.mdxContent___NODE)
+            console.log(mdxContent,"mdxContent")
+            return { meta: { title }, content: mdxContent.mdxContent }
+          },
+        },*/
       options: {
-          root: __dirname, 
+        root: __dirname,
         extensions: ['.mdx', '.md'],
-        defaultLayouts:{posts:`${__dirname}/src/templates/layout.js`}, 
-        mdPlugins: [require('remark-toc')],
+        defaultLayouts: { posts: `${__dirname}/src/templates/layout.js` },
+        mdPlugins: [
+        require('remark-toc')
+        ],
         gatsbyRemarkPlugins: [
           {
-            resolve: 'gatsby-remark-images',
+            resolve: `${__dirname}/gatsby-remark-images` ,
             options: {
-              maxWidth: 1035,
+              maxWidth: 55,
               sizeByPixelDensity: true,
             },
           },
-         { resolve: 'gatsby-remark-autolink-headers' }
+          { resolve: 'gatsby-remark-autolink-headers' },
         ],
       },
     },
@@ -54,7 +66,7 @@ module.exports = {
         icon: `src/assets/gatsby-icon.png`,
       },
     },
-    `gatsby-plugin-offline`,
+   // `gatsby-plugin-offline`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: 'gatsby-plugin-typography',
@@ -64,7 +76,6 @@ module.exports = {
     },
   ],
 }
-
 
 /*
         transformers: {
@@ -96,5 +107,4 @@ module.exports = {
         ],
       },
     }, */
-    //  `gatsby-transformer-sharp`,
- 
+//  `gatsby-transformer-sharp`,

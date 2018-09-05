@@ -1,3 +1,18 @@
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _createDOMProps = _interopRequireDefault(require("../createDOMProps"));
+
+var _findNodeHandle = _interopRequireDefault(require("../../exports/findNodeHandle"));
+
+var _styleResolver = _interopRequireDefault(require("../../exports/StyleSheet/styleResolver"));
+
+var _UIManager = _interopRequireDefault(require("../../exports/UIManager"));
+
 /**
  * Copyright (c) 2016-present, Nicolas Gallagher.
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -7,37 +22,28 @@
  *
  * 
  */
-
-import createDOMProps from '../createDOMProps';
-import findNodeHandle from '../../exports/findNodeHandle';
-import styleResolver from '../../exports/StyleSheet/styleResolver';
-import UIManager from '../../exports/UIManager';
-
 var NativeMethodsMixin = {
   /**
    * Removes focus from an input or view. This is the opposite of `focus()`.
    */
   blur: function blur() {
-    UIManager.blur(findNodeHandle(this));
+    _UIManager.default.blur((0, _findNodeHandle.default)(this));
   },
-
 
   /**
    * Requests focus for the given input or view.
    * The exact behavior triggered will depend the type of view.
    */
   focus: function focus() {
-    UIManager.focus(findNodeHandle(this));
+    _UIManager.default.focus((0, _findNodeHandle.default)(this));
   },
-
 
   /**
    * Determines the position and dimensions of the view
    */
   measure: function measure(callback) {
-    UIManager.measure(findNodeHandle(this), callback);
+    _UIManager.default.measure((0, _findNodeHandle.default)(this), callback);
   },
-
 
   /**
    * Determines the location of the given view in the window and returns the
@@ -55,17 +61,15 @@ var NativeMethodsMixin = {
    * has been completed.
    */
   measureInWindow: function measureInWindow(callback) {
-    UIManager.measureInWindow(findNodeHandle(this), callback);
+    _UIManager.default.measureInWindow((0, _findNodeHandle.default)(this), callback);
   },
-
 
   /**
    * Measures the view relative to another view (usually an ancestor)
    */
   measureLayout: function measureLayout(relativeToNativeNode, onSuccess, onFail) {
-    UIManager.measureLayout(findNodeHandle(this), relativeToNativeNode, onFail, onSuccess);
+    _UIManager.default.measureLayout((0, _findNodeHandle.default)(this), relativeToNativeNode, onFail, onSuccess);
   },
-
 
   /**
    * This function sends props straight to the underlying DOM node.
@@ -77,14 +81,16 @@ var NativeMethodsMixin = {
     if (!nativeProps) {
       return;
     }
-    var node = findNodeHandle(this);
-    // Next state is determined by comparison to existing state (in the DOM).
+
+    var node = (0, _findNodeHandle.default)(this); // Next state is determined by comparison to existing state (in the DOM).
     // Existing state has already gone through i18n transform
-    var domProps = createDOMProps(null, nativeProps, function (style) {
-      return styleResolver.resolveWithNode(style, node);
+
+    var domProps = (0, _createDOMProps.default)(null, nativeProps, function (style) {
+      return _styleResolver.default.resolveWithNode(style, node);
     });
-    UIManager.updateView(node, domProps, this);
+
+    _UIManager.default.updateView(node, domProps, this);
   }
 };
-
-export default NativeMethodsMixin;
+var _default = NativeMethodsMixin;
+exports.default = _default;

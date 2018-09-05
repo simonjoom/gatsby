@@ -24,6 +24,9 @@ export const pageQuery = graphql`
       frontmatter {
         date(formatString: "DD MMMM, YYYY")
         title
+        attachments {
+          publicURL
+        }
       }
       tableOfContents
     }
@@ -39,7 +42,7 @@ export default class MDXRuntimeTest extends Component {
       tableOfContents,
       pageContext,
     } = this.props
-    console.log(children, data)
+    console.log(data.mdx.frontmatter)
     const post = data.mdx
     const { previous, next } = pageContext
     return (
