@@ -1,4 +1,6 @@
-import React, { Component } from 'react' 
+import React, { Component } from 'react'
+import { View } from 'react-native'
+import Helmet from 'react-helmet'
 import MDXRenderer from 'gatsby-mdx/mdx-renderer'
 import { Link, graphql } from 'gatsby'
 import get from 'lodash/get'
@@ -14,6 +16,7 @@ export const pageQuery = graphql`
       tableOfContents
       code {
         scope
+        body
       }
       excerpt
       frontmatter {
@@ -32,17 +35,9 @@ export const pageQuery = graphql`
         attachments {
           publicURL
         }
-        fields {
-          slug
-        }
-        parent {
-          ... on File {
-            absolutePath
-            relativePath
-            name
-            dir
-          }
-        }
+      }
+      fields {
+        slug
       }
     }
   }
@@ -57,7 +52,7 @@ export default class MDXRuntimeTest extends Component {
       tableOfContents,
       pageContext,
     } = this.props
-    console.log(data.mdx.frontmatter)
+    console.log(data.mdx)
     const post = data.mdx
     const { previous, next } = pageContext
     return (

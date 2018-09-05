@@ -69,7 +69,7 @@ exports.createPages = ({ graphql, actions }) => {
         reject(result.errors)
       }
       const posts = result.data.allMdx.edges
-
+console.log("pists",posts)
       _.each(posts, (post, index) => {
         const previous =
           index === posts.length - 1 ? null : posts[index + 1].node
