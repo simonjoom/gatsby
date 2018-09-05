@@ -29,7 +29,6 @@ exports.createPages = ({ graphql, actions }) => {
                 id
                 tableOfContents
                 code {
-                  body
                   scope
                 }
                 frontmatter {
@@ -50,7 +49,15 @@ exports.createPages = ({ graphql, actions }) => {
                 }
                 fields {
                   slug
-                } 
+                }
+                parent {
+                  ... on File {
+                    absolutePath
+                    relativePath
+                    name
+                    dir
+                  }
+                }
               }
             }
           }

@@ -13,7 +13,6 @@ export const pageQuery = graphql`
       id
       tableOfContents
       code {
-        body
         scope
       }
       excerpt
