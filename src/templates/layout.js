@@ -13,22 +13,39 @@ export const pageQuery = graphql`
   query($id: String!) {
     mdx(id: { eq: $id }) {
       id
-      fields {
-        slug
-      }
+      tableOfContents
       code {
         scope
-        body
       }
       excerpt
       frontmatter {
         date(formatString: "DD MMMM, YYYY")
         title
+        cover_image {
+          childImageSharp {
+            sizes(maxWidth: 1240) {
+              srcSet
+              aspectRatio
+              src
+              sizes
+            }
+          }
+        }
         attachments {
           publicURL
         }
+        fields {
+          slug
+        }
+        parent {
+          ... on File {
+            absolutePath
+            relativePath
+            name
+            dir
+          }
+        }
       }
-      tableOfContents
     }
   }
 `
