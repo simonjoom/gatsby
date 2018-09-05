@@ -12,7 +12,7 @@ const propTypes = {
 }
 
 const defaultProps = {
-  colors: ['#000000', '#937d76', '#9bb4c9'],
+  colors: ['#fff', '#fff'],
 }
 
 const Gradient = ({ children, colors, scroll, style }) => (
@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignSelf: 'stretch',
-    paddingTop: 20,
+    paddingTop: 0,
     alignItems: 'center',
-    backgroundColor: '#2980b9',
+    // backgroundColor: '#2980b9',
   },
 })
 export default Gradient

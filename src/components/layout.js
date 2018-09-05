@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { Link } from 'gatsby'
 
 import { withNavigation } from 'react-navigation'
-import LoginAdmin from 'views/admin/login/Login'
-import { rhythm, scale } from '../utils/typography'
+// import LoginAdmin from 'views/admin/login/Login'
+// import { rhythm, scale } from '../utils/typography'
 import { MainStack, MainStackAdmin } from './config'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import NavigationService from './config/NavigationService'
 import {
   createBottomTabNavigator,
@@ -18,25 +18,26 @@ const HOST = process.env.__DEV__
   : 'http://ns327841.ip-37-187-112.eu/'
 
 const Vomp = ({ header, children, navigation, location }) => {
-  console.log('locationVomp', location)
+  // console.log('locationVomp', location)
   return withNavigation(
     class Vomp extends Component {
       render() {
-        console.log('location', location)
+        // console.log('location', location)
         return (
           <View
             style={{
-              alignItems: 'center',
-              alignSelf: 'center',
+              // alignItems: 'center',
+              // alignSelf: 'center',
+              // minHeight:"100%",
               flex: 1,
-              flexGrow: 1,
-              maxWidth: rhythm(24),
-              padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
+              // flexGrow: 1,
+              // maxWidth: rhythm(24),
+              // padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
             }}
           >
             {header}
             {children}
-            <LoginAdmin navigation={this.props.navigation} />
+            {/* <LoginAdmin navigation={this.props.navigation} /> */}
           </View>
         )
       }
@@ -51,8 +52,8 @@ class Template extends React.Component {
     const rootPath = `${__PATH_PREFIX__}/`
     console.log(location.pathname, rootPath)
     let style = {
-      ...scale(1.5),
-      marginBottom: rhythm(1.5),
+      // ...scale(1.5),
+      // marginBottom: rhythm(1.5),
       marginTop: 0,
     }
 
@@ -74,7 +75,7 @@ class Template extends React.Component {
           }}
           to={'/'}
         >
-          Gatsby Starter Blog
+          {/* Skiscool */}
         </Link>
       </HH>
     )
@@ -85,14 +86,14 @@ class Template extends React.Component {
           path: '',
           screen: MainStackAdmin({
             screen: Vomp({ header: header('h2'), children, location }),
-            title: title ? title : 'notitle',
+            // title: title ? title : 'Menu',
           }),
         },
         Main: {
           path: 'sent',
           screen: MainStackAdmin({
             screen: Vomp({ header: header('h2'), children, location }),
-            title: title ? title : 'notitle',
+            // title: title ? title : 'Menu',
           }),
         },
       },

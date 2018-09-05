@@ -1,84 +1,45 @@
-import React from 'react'
-import { Link, graphql } from 'gatsby'
-import get from 'lodash/get'
-import Helmet from 'react-helmet'
+import React, {Component} from "react"
+import {Text, View, ImageBackground, Image, StyleSheet} from "react-native";
+import Layout from "components/layout"
 
-import Bio from 'components/Bio'
-import Layout from 'components/layout'
-import { rhythm } from '../utils/typography'
-
-export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-        description
-      }
-    }
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
-      edges {
-        node {
-          id
-          fields {
-            slug
-          }
-          excerpt
-          frontmatter {
-            date(formatString: "DD MMMM, YYYY")
-            title
-          }
-        }
-      }
-    }
-  }
-`
-//const BlogIndex = ({ data,location }) => {
-class BlogIndex extends React.Component {
-  render() {
-    const siteTitle = get(this.props.data, 'site.siteMetadata.title')
-    const siteDescription = get(
-      this.props.data,
-      'site.siteMetadata.description'
+class BackgroundImage extends Component {
+  render(){
+    return (
+      <ImageBackground source={require('../../static/home-image.jpg')} style={styles.image}>
+        {this.props.children}
+      </ImageBackground>
     )
+  }
+}
 
-    const posts = get(this.props.data, 'allMdx.edges')
-    //const morePosts = get(this, 'props.data.allContentfulBlogPostMdx.edges')
-
-    //const posts = get(this, 'props.data.allMarkdownRemark.edges') 
+class Home extends Component {
+  render(){
     return (
       <Layout location={this.props.location}>
-        <Helmet
-          htmlAttributes={{ lang: 'en' }}
-          meta={[{ name: 'description', content: siteDescription }]}
-          title={siteTitle}
-        />
-        <Bio />
-        <Link style={{ boxShadow: 'none' }} to="/test">
-          Test
-        </Link>
-
-        {posts.map(({ node }) => {
-          const title = get(node, 'frontmatter.title') || node.fields.slug
-          return (
-            <div key={node.id}>
-              <h3
-                style={{
-                  marginBottom: rhythm(1 / 4),
-                }}
-              >
-                <Link style={{ boxShadow: 'none' }} to={node.fields.slug}>
-                  {title}
-                </Link>
-              </h3>
-              <small>{node.frontmatter && node.frontmatter.date}</small>
-              <p dangerouslySetInnerHTML={{ __html: node.excerpt }} />
-            </div>
-          )
-        })}
+        <View style={{flex:1}}>
+          {/* <Text>Hello World</Text> */}
+          <BackgroundImage>
+            <Text style={styles.text}>Fullscreen!</Text>
+          </BackgroundImage>
+        </View>
       </Layout>
     )
   }
 }
-//}
 
-export default BlogIndex
+const styles = StyleSheet.create({
+  image:{
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: 'cover',
+    zIndex:100
+  },
+  text:{
+    display:'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
+})
+
+export default Home

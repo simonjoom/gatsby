@@ -17,7 +17,7 @@ export const MainScreen = ({
         screenProps={screenProps}
       >
         <ChildrenComp navigation={navigation} />
-        <Button onPress={() => navigation.navigate('Login')} title="Login" />
+        {/* <Button onPress={() => navigation.navigate('Login')} title="Login" /> */}
       </LayoutScreen>
     </Gradient>
   )
