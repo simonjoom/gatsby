@@ -1,6 +1,4 @@
-import React, { Component } from 'react'
-import { View } from 'react-native'
-import Helmet from 'react-helmet'
+import React, { Component } from 'react' 
 import MDXRenderer from 'gatsby-mdx/mdx-renderer'
 import { Link, graphql } from 'gatsby'
 import get from 'lodash/get'
@@ -15,6 +13,7 @@ export const pageQuery = graphql`
       id
       tableOfContents
       code {
+        body
         scope
       }
       excerpt

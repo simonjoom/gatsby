@@ -7,9 +7,8 @@ const componentWithMDXScope = require('gatsby-mdx/component-with-mdx-scope')
 const eslintFormatter = require('react-dev-utils/eslintFormatter')
 const paths = require('./paths')
 const escapeStringRegexp = require('escape-string-regexp')
-const defaultOptions = require('./utils/default-options')
-const extractExports = require('./utils/extract-exports')
-const mdx = require('./utils/mdx.js')
+const defaultOptions = require('gatsby-mdx/utils/default-options')
+const extractExports = require('gatsby-mdx/utils/extract-exports') 
 
 /**
  * Add frontmatter as page context for MDX pages
@@ -30,9 +29,9 @@ exports.createPages = ({ graphql, actions }) => {
                 id
                 tableOfContents
                 code {
+                  body
                   scope
                 }
-                
                 frontmatter {
                   title
                   cover_image {
@@ -51,15 +50,7 @@ exports.createPages = ({ graphql, actions }) => {
                 }
                 fields {
                   slug
-                }
-                parent {
-                  ... on File {
-                    absolutePath
-                    relativePath
-                    name
-                    dir
-                  }
-                }
+                } 
               }
             }
           }

@@ -81,11 +81,10 @@ if (useTemplate) {
 
 module.exports.srcPaths = [
   module.exports.appSrc,
-  resolveApp('.cache/gatsby-mdx'),
-  resolveApp('.cache/gatsby-remark-images'), 
-  resolveApp('./utils'),
+  resolveApp('.cache/gatsby-mdx'), 
   resolveApp('node_modules/gatsby-mdx'),
-  resolveApp('node_modules/react-navigation'), 
+  resolveApp('node_modules/react-navigation'),
+  resolveApp('node_modules/react-native-web'),
   resolveApp('node_modules/react-native-web-linear-gradient'),
   resolveApp('node_modules/react-native-tab-view'),
   //    resolveApp('node_modules/react-native-paper'),
@@ -99,11 +98,9 @@ module.exports.srcPaths = [
   //    resolveApp('node_modules/react-native-platform-touchable'),
 ]
 module.exports.srcPathsExc = [
-  module.exports.appSrc,
-  resolveApp('./utils'),
-  resolveApp('.cache/gatsby-mdx'), 
-  resolveApp('.cache/gatsby-remark-images'),
-  resolveApp('src/gatsby-remark-images'),
+  module.exports.appSrc, 
+  resolveApp('.cache/gatsby-mdx'),
+  resolveApp('./gatsby-remark-images'),
   resolveApp('node_modules/gatsby-mdx'),
   resolveApp('node_modules/react-navigation'),
   resolveApp('node_modules/react-native-web'),

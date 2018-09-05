@@ -1,5 +1,5 @@
 const { isString, once } = require("lodash");
-const debug = require("debug")("./default-options");
+const debug = require("debug")("gatsby-mdx:default-options");
 
 const optDebug = once(options => {
   debug("options", options);

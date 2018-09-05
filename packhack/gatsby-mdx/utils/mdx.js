@@ -14,7 +14,7 @@ module.exports = async function mdxToJsx(source, options) {
   const { data, content } = grayMatter(source);
 
   let code = await mdx(content, options || {}); 
-  return `${code2}
+  return `${code}
 
 export const _frontmatter = ${JSON.stringify(data)};
 `;
