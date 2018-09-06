@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'react-native'
 import LayoutScreen from 'components/layout/Container'
-import Gradient from 'components/gradient/Gradient'
+// import Gradient from 'components/gradient/Gradient'
 
 export const MainScreen = ({
   navigation,
@@ -10,7 +10,7 @@ export const MainScreen = ({
   title,
 }) => {
   return (
-    <Gradient>
+    // <Gradient>
       <LayoutScreen
         title={title}
         navigation={navigation}
@@ -19,6 +19,6 @@ export const MainScreen = ({
         <ChildrenComp navigation={navigation} />
         {/* <Button onPress={() => navigation.navigate('Login')} title="Login" /> */}
       </LayoutScreen>
-    </Gradient>
+    // </Gradient>
   )
 }

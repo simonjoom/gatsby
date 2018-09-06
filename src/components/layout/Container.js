@@ -8,7 +8,8 @@ import {
   ViewPropTypes,
   ScrollView,
   Dimensions,
-} from 'react-native'
+} from 'react-native' 
+import LinearGradient from 'react-native-linear-gradient'
 import { SafeAreaView } from 'react-navigation'
 import Colors from 'src/statics/colors'
 import Title from '../title/Title'
@@ -52,25 +53,23 @@ const TopBar = props => {
 const Container = props => {
   if (props.asScroll) {
     return (
-      <View style={[styles.container, props.containerStyle]}>
-        <ScrollView
-          contentContainerStyle={[styles.subContainer, props.innerStyle]}
-        >
-          <SafeAreaView forceInset={{ top: 'always' }}>
-            <TopBar {...props} />
-            {props.children}
-          </SafeAreaView>
-        </ScrollView>
-      </View>
+      <ScrollView
+        contentContainerStyle={[styles.subContainer, props.innerStyle]}
+      >
+        <SafeAreaView forceInset={{ top: 'always' }}>
+          <TopBar {...props} />
+          {props.children}
+        </SafeAreaView>
+      </ScrollView>
     )
   }
   return (
-    <View style={[styles.container, props.containerStyle]}>
+    <>
       <TopBar {...props} />
       <View style={[styles.subContainer, props.innerStyle]}>
         {props.children}
       </View>
-    </View>
+    </>
   )
 }
 
@@ -84,11 +83,10 @@ Container.propTypes = {
   containerStyle: ViewPropTypes.style,
 }
 
-const SCREEN_WIDTH = Dimensions.get('window').width
+//const SCREEN_WIDTH = Dimensions.get('window').width
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: SCREEN_WIDTH,
     paddingTop: Platform.select({
       ios: 20,
       android: StatusBar.currentHeight,
@@ -98,6 +96,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   containerTitle: {
+    backgroundColor: '#0748f6',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

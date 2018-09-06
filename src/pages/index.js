@@ -21,6 +21,11 @@ class Home extends Component {
           <BackgroundImage>
             <Text style={styles.text}>Fullscreen!</Text>
           </BackgroundImage>
+          <Text>Hellower World</Text>
+          <Text>Hellower World</Text>
+          <Text>Hellower World</Text>
+          <Text>Hellower World</Text>
+          <Text>Hellower World</Text>
         </View>
       </Layout>
     )
@@ -31,7 +36,8 @@ const styles = StyleSheet.create({
   image:{
     flex: 1,
     width: null,
-    height: null,
+    height: 500,
+    backgroundPosition: 'top',
     resizeMode: 'cover',
     zIndex:100
   },
@@ -39,6 +45,9 @@ const styles = StyleSheet.create({
     display:'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: '5em',
+    fontWeight: 'bold',
+    fontSize:'2em'
   }
 })
 

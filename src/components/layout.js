@@ -30,7 +30,7 @@ const Vomp = ({ header, children, navigation, location }) => {
               // alignSelf: 'center',
               // minHeight:"100%",
               flex: 1,
-              // flexGrow: 1,
+              flexGrow: 1,
               // maxWidth: rhythm(24),
               // padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
             }}
