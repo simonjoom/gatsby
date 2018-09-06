@@ -11,7 +11,7 @@ const Myheight = width > height ? height : width
 export default StyleSheet.create({
   container: {
     flex: 1,
-    width: Mywidth,
+   // width: Mywidth,
     //    height:Myheight,
     alignSelf: 'center',
     //margin:"auto",

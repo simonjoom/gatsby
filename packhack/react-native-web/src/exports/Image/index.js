@@ -193,6 +193,9 @@ class Image extends Component<*, State> {
       testID,
       /* eslint-disable */
       capInsets,
+      style,
+      styleAccessibilityImage,
+      styleImage,
       onError,
       onLayout,
       onLoad,
@@ -220,7 +223,7 @@ class Image extends Component<*, State> {
     const displayImageUri = resolveAssetUri(selectedSource);
     const imageSizeStyle = resolveAssetDimensions(selectedSource);
     const backgroundImage = displayImageUri ? `url("${displayImageUri}")` : null;
-    const flatStyle = { ...StyleSheet.flatten(this.props.style) };
+    const flatStyle = { ...StyleSheet.flatten(style) };
     const finalResizeMode = resizeMode || flatStyle.resizeMode || ImageResizeMode.cover;
 
     // CSS filters
@@ -254,37 +257,39 @@ class Image extends Component<*, State> {
 
     // Accessibility image allows users to trigger the browser's image context menu
     const hiddenImage = displayImageUri
-      ? createElement('img', {
+      ? createElement('img', { 
           alt: accessibilityLabel || '',
           draggable: draggable || false,
           ref: this._setImageRef,
           src: displayImageUri,
-          style: styles.accessibilityImage
+          style: StyleSheet.flatten([styles.accessibilityImage,styleAccessibilityImage])
         })
       : null;
-
+      const styleImages=StyleSheet.flatten([styles.image,styleImage]);
+      const View1Style=StyleSheet.flatten([
+          styles.root,
+          this.context.isInAParentText && styles.inline,
+          imageSizeStyle,
+          flatStyle
+        ]);
+    const View2style=StyleSheet.flatten([
+            styleImages,
+            this._getBackgroundSize(finalResizeMode),
+            backgroundImage && { backgroundImage },
+            filters.length > 0 && { filter: filters.join(' ') }
+          ]); 
+          
     return (
       <View
         {...other}
         accessibilityLabel={accessibilityLabel}
         accessible={accessible}
         onLayout={this._createLayoutHandler(finalResizeMode)}
-        style={[
-          styles.root,
-          this.context.isInAParentText && styles.inline,
-          imageSizeStyle,
-          flatStyle
-        ]}
+        style={View1Style}
         testID={testID}
       >
         <View
-          style={[
-            styles.image,
-            resizeModeStyles[finalResizeMode],
-            this._getBackgroundSize(finalResizeMode),
-            backgroundImage && { backgroundImage },
-            filters.length > 0 && { filter: filters.join(' ') }
-          ]}
+          style={View2style}
         />
         {hiddenImage}
         {createTintColorSVG(tintColor, this._filterId)}
@@ -372,7 +377,7 @@ class Image extends Component<*, State> {
     }
   }
 
-  _setImageRef = ref => {
+  _setImageRef = ref => { 
     this._imageRef = ref;
   };
 

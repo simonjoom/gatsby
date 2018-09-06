@@ -250,9 +250,9 @@ module.exports = async (
     let match = rawHTML.match(svgDataUriPattern) // inline SVG markup may contain characters (e.g., #, ") that need to be escaped
 
     if (match) {
-      var before = match[1],
-        svg = match[2],
-        after = match[3] 
+      var before = match[1]
+      var svg = match[2]
+      var after = match[3]
 
       //rawHTML = before + "url('data:image/svg+xml;utf8,zefzefezfze')" + encodedS + encodedSvg + after
       rawHTML = before + 'url(data:image/jpeg;base64,' + svg + ')' + after

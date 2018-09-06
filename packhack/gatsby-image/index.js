@@ -1,108 +1,124 @@
-import React from "react"
-import PropTypes from "prop-types"
+"use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/inheritsLoose"));
+
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _reactNative = require("react-native");
+
+var _jsxFileName = "/Users/simon/gatsby/gatsby-blog/packhack/gatsby-image/src/index.js";
+
+/*
+const FancyImage = React.forwardRef((props, ref) => (
+  <Image forwardedRef={ref} {...props} />
+))
+const ref = React.createRef()*/
 // Handle legacy names for image queries.
-const convertProps = props => {
-  let convertedProps = { ...props }
-  if (convertedProps.resolutions) {
-    convertedProps.fixed = convertedProps.resolutions
-    delete convertedProps.resolutions
-  }
+var convertProps = function convertProps(props) {
+  var convertedProps = (0, _extends2.default)({}, props);
+
   if (convertedProps.sizes) {
-    convertedProps.fluid = convertedProps.sizes
-    delete convertedProps.sizes
+    convertedProps.fluid = convertedProps.sizes;
+    delete convertedProps.sizes;
   }
 
-  return convertedProps
-}
-
-// Cache if we've seen an image before so we don't both with
+  return convertedProps;
+}; // Cache if we've seen an image before so we don't both with
 // lazy-loading & fading in on subsequent mounts.
-const imageCache = {}
-const inImageCache = props => {
-  const convertedProps = convertProps(props)
-  // Find src
-  const src = convertedProps.fluid
-    ? convertedProps.fluid.src
-    : convertedProps.fixed.src
+
+
+var imageCache = {};
+
+var inImageCache = function inImageCache(props) {
+  var convertedProps = convertProps(props); // Find src
+
+  var src = convertedProps.fluid.src; // ? convertedProps.fluid.src
+  // : convertedProps.fixed.src
 
   if (imageCache[src]) {
-    return true
+    return true;
   } else {
-    imageCache[src] = true
-    return false
+    imageCache[src] = true;
+    return false;
   }
-}
+};
 
-let io
-const listeners = []
+var io;
+var listeners = [];
 
 function getIO() {
-  if (
-    typeof io === `undefined` &&
-    typeof window !== `undefined` &&
-    window.IntersectionObserver
-  ) {
-    io = new window.IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          listeners.forEach(l => {
-            if (l[0] === entry.target) {
-              // Edge doesn't currently support isIntersecting, so also test for an intersectionRatio > 0
-              if (entry.isIntersecting || entry.intersectionRatio > 0) {
-                io.unobserve(l[0])
-                l[1]()
-              }
+  if (typeof io === "undefined" && typeof window !== "undefined" && window.IntersectionObserver) {
+    io = new window.IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        listeners.forEach(function (l) {
+          if (l[0] === entry.target) {
+            // Edge doesn't currently support isIntersecting, so also test for an intersectionRatio > 0
+            if (entry.isIntersecting || entry.intersectionRatio > 0) {
+              io.unobserve(l[0]);
+              l[1]();
             }
-          })
-        })
-      },
-      { rootMargin: `200px` }
-    )
+          }
+        });
+      });
+    }, {
+      rootMargin: "200px"
+    });
   }
 
-  return io
+  return io;
 }
 
-const listenToIntersections = (el, cb) => {
-  getIO().observe(el)
-  listeners.push([el, cb])
-}
+var listenToIntersections = function listenToIntersections(el, cb) {
+  getIO().observe(el);
+  listeners.push([el, cb]);
+};
 
-let isWebpSupportedCache = null
-const isWebpSupported = () => {
+var isWebpSupportedCache = null;
+
+var isWebpSupported = function isWebpSupported() {
   if (isWebpSupportedCache !== null) {
-    return isWebpSupportedCache
+    return isWebpSupportedCache;
   }
 
-  const elem =
-    typeof window !== `undefined` ? window.document.createElement(`canvas`) : {}
-  if (elem.getContext && elem.getContext(`2d`)) {
-    isWebpSupportedCache =
-      elem.toDataURL(`image/webp`).indexOf(`data:image/webp`) === 0
+  var elem = typeof window !== "undefined" ? window.document.createElement("canvas") : {};
+
+  if (elem.getContext && elem.getContext("2d")) {
+    isWebpSupportedCache = elem.toDataURL("image/webp").indexOf("data:image/webp") === 0;
   } else {
-    isWebpSupportedCache = false
+    isWebpSupportedCache = false;
   }
 
-  return isWebpSupportedCache
-}
+  return isWebpSupportedCache;
+};
 
-const noscriptImg = props => {
+var noscriptImg = function noscriptImg(props) {
   // Check if prop exists before adding each attribute to the string output below to prevent
   // HTML validation issues caused by empty values like width="" and height=""
-  const src = props.src ? `src="${props.src}" ` : `src="" ` // required attribute
-  const srcSet = props.srcSet ? `srcset="${props.srcSet}" ` : ``
-  const sizes = props.sizes ? `sizes="${props.sizes}" ` : ``
-  const title = props.title ? `title="${props.title}" ` : ``
-  const alt = props.alt ? `alt="${props.alt}" ` : `alt="" ` // required attribute
-  const width = props.width ? `width="${props.width}" ` : ``
-  const height = props.height ? `height="${props.height}" ` : ``
-  const opacity = props.opacity ? props.opacity : `1`
-  const transitionDelay = props.transitionDelay ? props.transitionDelay : `0.5s`
+  var src = props.src ? "src=\"" + props.src + "\" " : "src=\"\" "; // required attribute
 
-  return `<img ${width}${height}${src}${srcSet}${alt}${title}${sizes}style="position:absolute;top:0;left:0;transition:opacity 0.5s;transition-delay:${transitionDelay};opacity:${opacity};width:100%;height:100%;object-fit:cover;object-position:center"/>`
-}
+  var srcSet = props.srcSet ? "srcset=\"" + props.srcSet + "\" " : "";
+  var sizes = props.sizes ? "sizes=\"" + props.sizes + "\" " : "";
+  var title = props.title ? "title=\"" + props.title + "\" " : "";
+  var alt = props.alt ? "alt=\"" + props.alt + "\" " : "alt=\"\" "; // required attribute
 
+  var width = props.width ? "width=\"" + props.width + "\" " : "";
+  var height = props.height ? "height=\"" + props.height + "\" " : "";
+  var opacity = props.opacity ? props.opacity : "1";
+  var transitionDelay = props.transitionDelay ? props.transitionDelay : "0.5s";
+  return "<img " + width + height + src + srcSet + alt + title + sizes + "style=\"position:absolute;top:0;left:0;transition:opacity 0.5s;transition-delay:" + transitionDelay + ";opacity:" + opacity + ";width:100%;height:100%;object-fit:cover;object-position:center\"/>";
+};
+/*
 const Img = props => {
   const { style, onLoad, onError, ...otherProps } = props
   return (
@@ -129,333 +145,222 @@ Img.propTypes = {
   style: PropTypes.object,
   onError: PropTypes.func,
   onLoad: PropTypes.func,
-}
+}*/
 
-class Image extends React.Component {
-  constructor(props) {
-    super(props)
 
-    // If this browser doesn't support the IntersectionObserver API
+var GatsbyImage =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inheritsLoose2.default)(GatsbyImage, _React$Component);
+
+  function GatsbyImage(props) {
+    var _this;
+
+    _this = _React$Component.call(this, props) || this; // If this browser doesn't support the IntersectionObserver API
     // we default to start downloading the image right away.
-    let isVisible = true
-    let imgLoaded = true
-    let IOSupported = false
 
-    // If this image has already been loaded before then we can assume it's
+    var isVisible = true;
+    var imgLoaded = true;
+    var IOSupported = false;
+    var Imgheight; // If this image has already been loaded before then we can assume it's
     // already in the browser cache so it's cheap to just show directly.
-    const seenBefore = inImageCache(props)
 
-    if (
-      !seenBefore &&
-      typeof window !== `undefined` &&
-      window.IntersectionObserver
-    ) {
-      isVisible = false
-      imgLoaded = false
-      IOSupported = true
+    var seenBefore = inImageCache(props);
+
+    if (!seenBefore && typeof window !== "undefined" && window.IntersectionObserver) {
+      isVisible = false;
+      imgLoaded = false;
+      IOSupported = true;
+    } // Always don't render image while server rendering
+
+
+    if (typeof window === "undefined") {
+      isVisible = false;
+      imgLoaded = false;
     }
 
-    // Always don't render image while server rendering
-    if (typeof window === `undefined`) {
-      isVisible = false
-      imgLoaded = false
-    }
-
-    this.state = {
-      isVisible,
-      imgLoaded,
-      IOSupported,
-    }
-
-    this.handleRef = this.handleRef.bind(this)
+    _this.state = {
+      Imgheight: Imgheight,
+      isVisible: isVisible,
+      imgLoaded: imgLoaded,
+      IOSupported: IOSupported
+    };
+    _this.handleRef = _this.handleRef.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    return _this;
   }
 
-  handleRef(ref) {
+  var _proto = GatsbyImage.prototype;
+
+  _proto.handleRef = function handleRef(ref) {
+    var _this2 = this;
+
     if (this.state.IOSupported && ref) {
-      listenToIntersections(ref, () => {
-        this.setState({ isVisible: true, imgLoaded: false })
-      })
+      listenToIntersections(ref, function () {
+        _this2.setState({
+          isVisible: true,
+          imgLoaded: false
+        });
+      });
     }
-  }
+  };
 
-  render() {
-    const {
-      title,
-      alt,
-      className,
-      outerWrapperClassName,
-      style = {},
-      imgStyle = {},
-      placeholderStyle = {},
-      fluid,
-      fixed,
-      backgroundColor,
-      Tag,
-    } = convertProps(this.props)
+  _proto.render = function render() {
+    var _this3 = this;
 
-    let bgColor
-    if (typeof backgroundColor === `boolean`) {
-      bgColor = `lightgray`
+    var _convertProps = convertProps(this.props),
+        title = _convertProps.title,
+        alt = _convertProps.alt,
+        resizeMode = _convertProps.resizeMode,
+        height = _convertProps.height,
+        className = _convertProps.className,
+        outerWrapperClassName = _convertProps.outerWrapperClassName,
+        _convertProps$imgStyl = _convertProps.imgStyle,
+        imgStyle = _convertProps$imgStyl === void 0 ? {} : _convertProps$imgStyl,
+        _convertProps$placeho = _convertProps.placeholderStyle,
+        placeholderStyle = _convertProps$placeho === void 0 ? {} : _convertProps$placeho,
+        fluid = _convertProps.fluid,
+        backgroundColor = _convertProps.backgroundColor;
+
+    var bgColor;
+
+    if (typeof backgroundColor === "boolean") {
+      bgColor = "lightgray";
     } else {
-      bgColor = backgroundColor
-    }
-
-    const imagePlaceholderStyle = {
-      opacity: this.state.imgLoaded ? 0 : 1,
-      transitionDelay: `0.25s`,
-      ...imgStyle,
-      ...placeholderStyle,
-    }
-
-    const imageStyle = {
-      opacity: this.state.imgLoaded || this.props.fadeIn === false ? 1 : 0,
-      ...imgStyle,
+      bgColor = backgroundColor;
     }
 
     if (fluid) {
-      const image = fluid
+      var image = fluid;
+      var Pattern = /\(max-width: (.*)px\).*vw, (.*)px/;
+      var match = fluid.sizes.match(Pattern);
+      var presentationWidth = match[1] + 'px';
+      var presentationHeight = height || match[2] + 'px';
+      var imagePlaceholderStyle = (0, _extends2.default)({
+        opacity: this.state.imgLoaded ? 0 : 1,
+        transitionDelay: "0.25s"
+      }, imgStyle, placeholderStyle);
+      var imageStyle = (0, _extends2.default)({
+        opacity: this.state.imgLoaded || this.props.fadeIn === false ? 1 : 0
+      }, imgStyle); // Use webp by default if browser supports it
 
-      // Use webp by default if browser supports it
       if (image.srcWebp && image.srcSetWebp && isWebpSupported()) {
-        image.src = image.srcWebp
-        image.srcSet = image.srcSetWebp
+        image.src = image.srcWebp;
+        image.srcSet = image.srcSetWebp;
       }
 
-      // The outer div is necessary to reset the z-index to 0.
-      return (
-        <Tag
-          className={`${
-            outerWrapperClassName ? outerWrapperClassName : ``
-          } gatsby-image-outer-wrapper`}
-          style={{
-            // Let users set component to be absolutely positioned.
-            position: style.position === `absolute` ? `initial` : `relative`,
-          }}
-        >
-          <Tag
-            className={`${className ? className : ``} gatsby-image-wrapper`}
-            style={{
-              position: `relative`,
-              overflow: `hidden`,
-              ...style,
-            }}
-            ref={this.handleRef}
-          >
-            {/* Preserve the aspect ratio. */}
-            <Tag
-              style={{
-                width: `100%`,
-                paddingBottom: `${100 / image.aspectRatio}%`,
-              }}
-            />
+      var srcFront = image.tracedSVG || image.base64; // The outer div is necessary to reset the z-index to 0.
 
-            {/* Show the blury base64 image. */}
-            {image.base64 && (
-              <Img
-                alt={alt}
-                title={title}
-                src={image.base64}
-                style={imagePlaceholderStyle}
-              />
-            )}
-
-            {/* Show the traced SVG image. */}
-            {image.tracedSVG && (
-              <Img
-                alt={alt}
-                title={title}
-                src={image.tracedSVG}
-                style={imagePlaceholderStyle}
-              />
-            )}
-
-            {/* Show a solid background color. */}
-            {bgColor && (
-              <Tag
-                title={title}
-                style={{
-                  backgroundColor: bgColor,
-                  position: `absolute`,
-                  top: 0,
-                  bottom: 0,
-                  opacity: !this.state.imgLoaded ? 1 : 0,
-                  transitionDelay: `0.35s`,
-                  right: 0,
-                  left: 0,
-                }}
-              />
-            )}
-
-            {/* Once the image is visible (or the browser doesn't support IntersectionObserver), start downloading the image */}
-            {this.state.isVisible && (
-              <Img
-                alt={alt}
-                title={title}
-                srcSet={image.srcSet}
-                src={image.src}
-                sizes={image.sizes}
-                style={imageStyle}
-                onLoad={() => {
-                  this.state.IOSupported && this.setState({ imgLoaded: true })
-                  this.props.onLoad && this.props.onLoad()
-                }}
-                onError={this.props.onError}
-              />
-            )}
-
-            {/* Show the original image during server-side rendering if JavaScript is disabled */}
-            <noscript
-              dangerouslySetInnerHTML={{
-                __html: noscriptImg({ alt, title, ...image }),
-              }}
-            />
-          </Tag>
-        </Tag>
-      )
+      return _react.default.createElement("div", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 231
+        },
+        __self: this
+      }, bgColor && _react.default.createElement(_reactNative.View, {
+        title: title,
+        style: {
+          backgroundColor: bgColor,
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          opacity: !this.state.imgLoaded ? 1 : 0,
+          transitionDelay: "0.35s",
+          right: 0,
+          left: 0
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 233
+        },
+        __self: this
+      }), _react.default.createElement("div", {
+        ref: this.handleRef,
+        style: {
+          width: "100%"
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 247
+        },
+        __self: this
+      }), this.state.isVisible && _react.default.createElement(_reactNative.Image, {
+        alt: alt,
+        resizeMode: resizeMode,
+        title: title,
+        srcSet: image.srcSet,
+        defaultSource: srcFront,
+        source: image.src,
+        sizes: image.sizes,
+        styleAccessibilityImage: imagePlaceholderStyle,
+        styleImage: imageStyle,
+        style: {
+          height: presentationHeight,
+          maxWidth: '100%'
+        },
+        onLoadEnd: function onLoadEnd() {
+          _this3.state.IOSupported && _this3.setState({
+            imgLoaded: true
+          });
+          _this3.props.onLoad && _this3.props.onLoad();
+        },
+        onError: this.props.onError,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 255
+        },
+        __self: this
+      }), _react.default.createElement("noscript", {
+        dangerouslySetInnerHTML: {
+          __html: noscriptImg((0, _extends2.default)({
+            alt: alt,
+            title: title
+          }, image))
+        },
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 277
+        },
+        __self: this
+      }));
     }
 
-    if (fixed) {
-      const image = fixed
-      const divStyle = {
-        position: `relative`,
-        overflow: `hidden`,
-        display: `inline-block`,
-        width: image.width,
-        height: image.height,
-        ...style,
-      }
+    return null;
+  };
 
-      if (style.display === `inherit`) {
-        delete divStyle.display
-      }
+  return GatsbyImage;
+}(_react.default.Component);
 
-      // Use webp by default if browser supports it
-      if (image.srcWebp && image.srcSetWebp && isWebpSupported()) {
-        image.src = image.srcWebp
-        image.srcSet = image.srcSetWebp
-      }
-
-      // The outer div is necessary to reset the z-index to 0.
-      return (
-        <Tag
-          className={`${
-            outerWrapperClassName ? outerWrapperClassName : ``
-          } gatsby-image-outer-wrapper`}
-          style={{
-            // Let users set component to be absolutely positioned.
-            position: style.position === `absolute` ? `initial` : `relative`,
-          }}
-        >
-          <Tag
-            className={`${className ? className : ``} gatsby-image-wrapper`}
-            style={divStyle}
-            ref={this.handleRef}
-          >
-            {/* Show the blury base64 image. */}
-            {image.base64 && (
-              <Img
-                alt={alt}
-                title={title}
-                src={image.base64}
-                style={imagePlaceholderStyle}
-              />
-            )}
-
-            {/* Show the traced SVG image. */}
-            {image.tracedSVG && (
-              <Img
-                alt={alt}
-                title={title}
-                src={image.tracedSVG}
-                style={imagePlaceholderStyle}
-              />
-            )}
-
-            {/* Show a solid background color. */}
-            {bgColor && (
-              <Tag
-                title={title}
-                style={{
-                  backgroundColor: bgColor,
-                  width: image.width,
-                  opacity: !this.state.imgLoaded ? 1 : 0,
-                  transitionDelay: `0.25s`,
-                  height: image.height,
-                }}
-              />
-            )}
-
-            {/* Once the image is visible, start downloading the image */}
-            {this.state.isVisible && (
-              <Img
-                alt={alt}
-                title={title}
-                width={image.width}
-                height={image.height}
-                srcSet={image.srcSet}
-                src={image.src}
-                style={imageStyle}
-                onLoad={() => {
-                  this.setState({ imgLoaded: true })
-                  this.props.onLoad && this.props.onLoad()
-                }}
-                onError={this.props.onError}
-              />
-            )}
-
-            {/* Show the original image during server-side rendering if JavaScript is disabled */}
-            <noscript
-              dangerouslySetInnerHTML={{
-                __html: noscriptImg({
-                  alt,
-                  title,
-                  width: image.width,
-                  height: image.height,
-                  ...image,
-                }),
-              }}
-            />
-          </Tag>
-        </Tag>
-      )
-    }
-
-    return null
-  }
-}
-
-Image.defaultProps = {
+_reactNative.Image.defaultProps = {
   fadeIn: true,
-  alt: ``,
-  Tag: `div`,
-}
+  alt: "",
+  resizeMode: 'center'
+};
 
-const fixedObject = PropTypes.shape({
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  src: PropTypes.string.isRequired,
-  srcSet: PropTypes.string.isRequired,
-  base64: PropTypes.string,
-  tracedSVG: PropTypes.string,
-  srcWebp: PropTypes.string,
-  srcSetWebp: PropTypes.string,
-})
+var fixedObject = _propTypes.default.shape({
+  width: _propTypes.default.number.isRequired,
+  height: _propTypes.default.number.isRequired,
+  src: _propTypes.default.string.isRequired,
+  srcSet: _propTypes.default.string.isRequired,
+  base64: _propTypes.default.string,
+  tracedSVG: _propTypes.default.string,
+  srcWebp: _propTypes.default.string,
+  srcSetWebp: _propTypes.default.string
+});
 
-const fluidObject = PropTypes.shape({
-  aspectRatio: PropTypes.number.isRequired,
-  src: PropTypes.string.isRequired,
-  srcSet: PropTypes.string.isRequired,
-  sizes: PropTypes.string.isRequired,
-  base64: PropTypes.string,
-  tracedSVG: PropTypes.string,
-  srcWebp: PropTypes.string,
-  srcSetWebp: PropTypes.string,
-})
-
+var fluidObject = _propTypes.default.shape({
+  aspectRatio: _propTypes.default.number.isRequired,
+  src: _propTypes.default.string.isRequired,
+  srcSet: _propTypes.default.string.isRequired,
+  sizes: _propTypes.default.string.isRequired,
+  base64: _propTypes.default.string,
+  tracedSVG: _propTypes.default.string,
+  srcWebp: _propTypes.default.string,
+  srcSetWebp: _propTypes.default.string
+});
+/*
 Image.propTypes = {
   resolutions: fixedObject,
   sizes: fluidObject,
-  fixed: fixedObject,
   fluid: fluidObject,
   fadeIn: PropTypes.bool,
   title: PropTypes.string,
@@ -472,7 +377,12 @@ Image.propTypes = {
   backgroundColor: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   onLoad: PropTypes.func,
   onError: PropTypes.func,
-  Tag: PropTypes.string,
-}
+   style={{
+               // height: this.state.Imgheight || presentationHeight,
+               // maxWidth: '100%',
+              }}
+}*/
 
-export default Image
+
+var _default = GatsbyImage;
+exports.default = _default;

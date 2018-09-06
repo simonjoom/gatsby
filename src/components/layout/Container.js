@@ -84,11 +84,10 @@ Container.propTypes = {
   containerStyle: ViewPropTypes.style,
 }
 
-const SCREEN_WIDTH = Dimensions.get('window').width
+//const SCREEN_WIDTH = Dimensions.get('window').width
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: SCREEN_WIDTH,
+    flex: 1, 
     paddingTop: Platform.select({
       ios: 20,
       android: StatusBar.currentHeight,

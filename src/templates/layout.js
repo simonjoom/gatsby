@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { Text } from 'react-native'
 import Helmet from 'react-helmet'
 import MDXRenderer from 'gatsby-mdx/mdx-renderer'
 import { Link, graphql } from 'gatsby'
@@ -53,7 +53,7 @@ export default class MDXRuntimeTest extends Component {
       pageContext,
     } = this.props
     console.log(data.mdx)
-    const post = data.mdx
+    const post = data.mdx 
     const { previous, next } = pageContext
     return (
       <Layout
@@ -61,7 +61,7 @@ export default class MDXRuntimeTest extends Component {
         title={post.frontmatter && post.frontmatter.title}
       >
         <h1>{post.frontmatter.title}</h1>
-        <p
+        <Text
           style={{
             ...scale(-1 / 5),
             display: 'block',
@@ -70,7 +70,7 @@ export default class MDXRuntimeTest extends Component {
           }}
         >
           {post.frontmatter.date}
-        </p>
+        </Text>
         <MDXRenderer tableOfContents={tableOfContents}>
           {post.code.body}
         </MDXRenderer>

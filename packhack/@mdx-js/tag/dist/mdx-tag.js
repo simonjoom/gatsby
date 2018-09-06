@@ -12,8 +12,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _View = require("react-native-web").View;
-
 var _hoistNonReactStatics = require('hoist-non-react-statics');
 
 var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
@@ -56,10 +54,9 @@ var MDXTag = function (_Component) {
           Layout = _props.Layout,
           layoutProps = _props.layoutProps;
 
+
       var Component = components[parentName + '.' + name] || components[name] || defaults[name] || name;
- var tt; 
-if(Component=="p")
-tt="div" 
+      childProps.style={width:"100%"} 
       if (Layout) {
         (0, _hoistNonReactStatics2.default)(this, Layout);
 
@@ -72,18 +69,13 @@ tt="div"
             children
           )
         );
-      } 
-      
-        //(0, _hoistNonReactStatics2.default)(this, _View);
-      if(tt=="div") 
-      return _react2.default.createElement(_View,
+      }
+
+      return _react2.default.createElement(
+        Component,
         childProps,
-        children);
-       else
-      return _react2.default.createElement(Component,
-        childProps,
-        children);
-        
+        children
+      );
     }
   }]);
 
