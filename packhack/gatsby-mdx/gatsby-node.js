@@ -25,8 +25,7 @@ exports.onCreatePage = async ({ page, actions }, pluginOptions) => {
   const ext = path.extname(page.component); 
   if (extensions.includes(ext)) {
     const content = await fs.readFile(page.component, "utf8");
-    const code = await mdx(content, options);
-console.log(page)
+    const code = await mdx(content, options); 
     // grab the exported frontmatter
     const { frontmatter } = extractExports(code);
 

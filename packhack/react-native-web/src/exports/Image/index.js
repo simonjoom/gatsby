@@ -185,6 +185,7 @@ class Image extends Component<*, State> {
     const { shouldDisplaySource } = this.state;
     const {
       accessibilityLabel,
+      srcSet,
       accessible,
       blurRadius,
       defaultSource,
@@ -192,7 +193,7 @@ class Image extends Component<*, State> {
       source,
       testID,
       /* eslint-disable */
-      capInsets,
+      capInsets, 
       style,
       styleAccessibilityImage,
       styleImage,
@@ -262,6 +263,7 @@ class Image extends Component<*, State> {
           draggable: draggable || false,
           ref: this._setImageRef,
           src: displayImageUri,
+          srcset:srcSet,
           style: StyleSheet.flatten([styles.accessibilityImage,styleAccessibilityImage])
         })
       : null;

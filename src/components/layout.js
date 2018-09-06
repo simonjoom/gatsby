@@ -49,7 +49,7 @@ class Template extends React.Component {
     // const HistoryNavigator = withBrowserHistory(Drawer)
     const { location, children, title } = this.props
     const rootPath = `${__PATH_PREFIX__}/`
-    console.log(location.pathname, rootPath)
+    
     let style = {
       ...scale(1.5),
       marginBottom: rhythm(1.5),
@@ -74,7 +74,7 @@ class Template extends React.Component {
           }}
           to={'/'}
         >
-          Gatsby Starter Blog
+          SkiScool
         </Link>
       </HH>
     )
