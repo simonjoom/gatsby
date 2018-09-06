@@ -13,3 +13,4 @@ cp -Rf ./packhack/react-navigation-stack ./node_modules/
 cp -Rf ./packhack/gatsby ./node_modules/ 
 cp -Rf ./packhack/gatsby-mdx ./node_modules/ 
 cp -Rf ./packhack/htmltojsx ./node_modules/ 
+cp -Rf ./packhack/gatsby-image ./node_modules/ 
