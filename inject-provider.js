@@ -2,7 +2,7 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 
 import { AsyncStorage } from 'react-native'
-import Layout from "./src/components/Layout"
+import Layout from "./src/components/layout"
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { createHttpLink } from 'apollo-link-http'

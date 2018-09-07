@@ -4,7 +4,7 @@ import { View, Text, TextInput, Dimensions } from 'react-native'
 
 import color from 'src/statics/colors'
 import styles from './Input.styles'
-import { myicons } from '../Layout';
+import { myicons } from '../layout';
 
 let { width, height } = {
   width: (Dimensions.get('window').width * 2) / 3,

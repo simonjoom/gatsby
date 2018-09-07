@@ -3,7 +3,7 @@
 import { canUseDOM } from 'fbjs/lib/ExecutionEnvironment'
 import { Component } from 'react'
 import { ColorPropType } from 'react-native-web'
-import MyModal from './helpers/Modal'
+//import MyModal from './helpers/Modal'
 
 type StatusBarAnimation = 'none' | 'fade' | 'slide'
 type StatusBarStyle = 'default' | 'light-content' | 'dark-content'
@@ -119,6 +119,5 @@ class StatusB extends Component<Props> {
 
 //RNWeb.Modal = require("react-native-web-modal").default;
 //RNWeb.StatusB = StatusB;
-export const StatusBar = StatusB
-export const Modal = MyModal
+export const StatusBar = StatusB 
 export * from 'react-native-web'

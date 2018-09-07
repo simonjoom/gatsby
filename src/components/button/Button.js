@@ -26,15 +26,7 @@ const propTypes = {
   fontSize: PropTypes.number,
   loading: PropTypes.bool,
   disabled: PropTypes.bool,
-}
-
-let { width, height } = {
-  width: (Dimensions.get('window').width * 2) / 3,
-  height: (Dimensions.get('window').height * 2) / 3,
-}
-
-const Mywidth = width > height ? width : height
-const Myheight = width > height ? height : width
+} 
 
 const defaultProps = {
   style: {},

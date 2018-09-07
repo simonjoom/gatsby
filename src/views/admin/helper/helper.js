@@ -17,7 +17,7 @@ import Picker from 'react-native-picker'
 import Button from 'src/components/button/Button'
 import Gradient from 'src/components/gradient/Gradient'
 import CompUpload from '../Upload/Container'
-import { myicons } from '../../../components/Layout'
+import { myicons } from 'src/components/layout'
 
 const pathbase =
   process.env.NODE_ENV === 'development'
