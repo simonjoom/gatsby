@@ -5,8 +5,9 @@ import Helmet from 'react-helmet'
 import { withNavigation } from 'react-navigation'
 import LoginAdmin from 'views/admin/login/Login'
 import { rhythm, scale } from '../utils/typography'
-import { mainStackAdmin, signup, main2 } from './stack'
+import { MainStackAdmin, Signup, main2 } from './stack'
 import { View } from 'react-native'
+import Transition from './stack/Transition'
 import {
   createBottomTabNavigator,
   createSwitchNavigator,
@@ -102,41 +103,58 @@ class Template extends React.Component {
     DrawerNavigator = createDrawerNavigator(
       {
         MainwithBackground: {
-          screen: mainStackAdmin({
-            view: Vomp({
-              header: header('h2'),
-              children,
-              location,
-            }),
-            title: title ? title : 'notitle',
-            type: 'withBackground',
-          }),
+          screen: ({ navigation }) => (
+            <MainStackAdmin
+              screenProps={{
+                view: Vomp({
+                  header: header('h2'),
+                  children,
+                  location,
+                }),
+                title: title ? title : 'notitle',
+                withBackground: true,
+                navigation,
+              }}
+            />
+          ),
         },
         Main2: {
-          screen: main2({
-            view: Vomp({
-              header: header('h4'),
-              children,
-              location,
-            }),
-            title: title ? title : 'notitledd',
-            type: 'noMain',
-          }),
+          screen: ({ navigation }) => (
+            <MainStackAdmin
+              screenProps={{
+                view: Vomp({
+                  header: header('h2'),
+                  children,
+                  location,
+                }),
+                title: title ? title : 'notitle',
+                withBackground: false,
+                navigation,
+              }}
+            />
+          ),
         },
         Signup: {
-          screen: signup({
-            view: Vomp({
-              header: header('h4'),
-              children,
-              location,
-            }),
-            title: title ? title : 'notitledd',
-            type: 'Signup',
-          }),
+          screen: ({ navigation }) => (
+            <Signup
+              screenProps={{
+                view: Vomp({
+                  header: header('h2'),
+                  children,
+                  location,
+                }),
+                title: title ? title : 'notitle',
+                withBackground: false,
+                navigation,
+              }}
+            />
+          ),
         },
       },
       {
         initialRouteName: 'MainwithBackground',
+        transitionConfig: Transition,
+        useNativeAnimations: false,
         contentOptions: {
           activeTintColor: '#e91e63',
         },

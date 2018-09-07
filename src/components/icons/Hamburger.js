@@ -8,6 +8,8 @@ const Hamburger = ({ navigation, route ,Icon}) => (
   <View>
     <TouchableOpacity
       onPress={() => {
+        console.log(navigation)
+        navigation.navigate(route)&&
         navigation.openDrawer()
       }}
     >

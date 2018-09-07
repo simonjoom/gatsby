@@ -4,7 +4,8 @@ import { View, TouchableOpacity } from 'react-native'
 
 import Colors from 'src/statics/colors'
 
-const Plus = ({ navigation, route, Icon }) => (
+const Plus = ({ navigation, route, Icon }) => {
+  return(
   <View>
     <TouchableOpacity onPress={() => navigation.navigate(route)}>
       <Icon
@@ -15,7 +16,7 @@ const Plus = ({ navigation, route, Icon }) => (
       />
     </TouchableOpacity>
   </View>
-)
+)}
 
 Plus.defaultProps = {
   Icon:"div"

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { createStackNavigator, withNavigation } from 'react-navigation'
+import dismissableStackNavigator from 'helpers'
 import {
   MainScreen,
   BackendScreen,
@@ -9,37 +10,45 @@ import {
 } from './Layout'
 import Transition from './Transition'
 
-const mainStackAdmin = ({ view, title, type, screenProps, navigation }) => { 
-  return createStackNavigator(
-    {
-      // Main: { screen: MainScreen },
-      MainwithBackground: {
-        screen: ({ navigation, screenProps }) =>
-          MainScreen({
-            withBackground: true,
-            navigation,
-            ChildrenComp: view,
-            title: title,
-          }),
-      },
-      Backend: {
-        screen: BackendScreen,
-      },
+const MainStackAdmin = createStackNavigator(
+  {
+    // Main: { screen: MainScreen },
+    MainwithBackground: {
+      screen: ({ navigation, screenProps }) =>
+        MainScreen({
+          withBackground: screenProps.withBackground,
+          navigation: screenProps.navigation,
+          ChildrenComp: screenProps.view,
+          title: screenProps.title,
+        }),
     },
-    {
-      initialRouteName: 'MainwithBackground',
-      //   transitionConfig: Transition,
-      useNativeAnimations: false,
-      navigationOptions: navigationOptions,
-      cardStyle: { backgroundColor: '#2980B9' },
-    }
-  )
-}
- 
-const main2 = ({ view, title, screenProps, navigation }) => { 
+    Main2: {
+      screen: ({ navigation, screenProps }) =>
+        MainScreen({
+          withBackground: screenProps.withBackground,
+          navigation: screenProps.navigation,
+          ChildrenComp: screenProps.view,
+          title: screenProps.title,
+        }),
+    },
+    Backend: {
+      screen: BackendScreen,
+    },
+  },
+  {
+    initialRouteName: 'MainwithBackground',
+    transitionConfig: Transition,
+    useNativeAnimations: false,
+    navigationOptions: navigationOptions,
+    cardStyle: { backgroundColor: '#2980B9' },
+  }
+)
+
+/*
+const main2 = ({ view, title, screenProps, navigation }) => {
   return createStackNavigator(
-    { 
-      Main2: { 
+    {
+      Main2: {
         screen: ({ navigation, screenProps }) => {
           return MainScreen({
             withBackground: false,
@@ -49,37 +58,36 @@ const main2 = ({ view, title, screenProps, navigation }) => {
             title: title,
           })
         },
-      }
+      },
     },
     {
       initialRouteName: 'Main2',
-      //   transitionConfig: Transition,
+      transitionConfig: Transition,
       useNativeAnimations: false,
       navigationOptions: navigationOptions,
       cardStyle: { backgroundColor: '#2980B9' },
     }
   )
 }
-
-const signup = ({ view, title, type, screenProps, navigation }) => { 
-  return createStackNavigator(
-    { 
-      Signup: {
-        screen: ({ navigation, screenProps }) =>
-          SignUpAdminscreen({
-            navigation,
-            screenProps,
-            type: 'noBackground',
-          }),
-      }
+*/
+const Signup = createStackNavigator(
+  {
+    Signup: {
+      screen: ({ navigation, screenProps }) =>
+        SignUpAdminscreen({
+          withBackground: screenProps.withBackground,
+          navigation: screenProps.navigation,
+          ChildrenComp: screenProps.view,
+          title: screenProps.title,
+        }),
     },
-    {
-      initialRouteName: 'Signup',
-      //   transitionConfig: Transition,
-      useNativeAnimations: false,
-      navigationOptions: navigationOptions,
-      cardStyle: { backgroundColor: '#2980B9' },
-    }
-  )
-}
-export {signup,main2,mainStackAdmin}
+  },
+  {
+    initialRouteName: 'Signup',
+    transitionConfig: Transition,
+    useNativeAnimations: false,
+    navigationOptions: navigationOptions,
+    cardStyle: { backgroundColor: '#2980B9' },
+  }
+)
+export { Signup, MainStackAdmin }

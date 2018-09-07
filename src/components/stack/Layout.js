@@ -13,6 +13,7 @@ export const MainScreen = ({
   title,
   withBackground,
 }) => {
+  console.log('screenProps', navigation, screenProps)
   return (
     <LayoutContainer
       title={title}
@@ -29,23 +30,22 @@ export const MainScreen = ({
   )
 }
 
-export const navigationOptions = ({ navigation }) => {
-  console.log('navigation', navigation.state)
+export const navigationOptions = ({ screenProps }) => {
+  const nav=screenProps.navigation
+  console.log('navigation', nav.state)
   return {
     headerTitle: 'Main',
     headerRight: (
       <Hamburger
-        navigation={navigation}
+        route={(nav.state && nav.state.routeName) || 'Main'}
+        navigation={nav}
         Icon={myicons.MaterialCommunityIcons}
       />
     ),
     headerLeft: (
       <Plus
-        navigation={navigation}
-        route={
-          (navigation.state && navigation.state.routeName) ||
-          'MainwithBackground'
-        }
+        navigation={nav}
+        route={(nav.state && nav.state.routeName) || 'Main'}
         Icon={myicons.MaterialCommunityIcons}
       />
     ),
@@ -87,7 +87,7 @@ const Backend = ({ navigation }) => (
   <RunBackend Routes={ta} navigation={navigation} />
 )
 
-Backend.navigationOptions = navigationOptions
+//Backend.navigationOptions = navigationOptions
 
 export const mRoute = newScene.createRouteScene()
 const ModalNavigator = dismissableStackNavigator(mRoute, {
@@ -113,13 +113,17 @@ export const BackendScreen = dismissableStackNavigator(
     headerMode: 'none',
   }
 )
-export const SignUpAdminscreen = ({ navigation, screenProps, type }) =>
+export const SignUpAdminscreen = ({
+  navigation,
+  screenProps,
+  withBackground,
+}) =>
   MainScreen({
     screenProps,
     navigation,
     ChildrenComp: SignUpAdmin,
     title: 'SignUp',
-    withBackground: type == 'Main',
+    withBackground: withBackground,
   })
 
 export const LoginAdminScreen = ({ navigation, screenProps }) =>
@@ -139,5 +143,14 @@ export const SignInAdminScreen = ({ navigation, screenProps, type }) =>
     withBackground: type == 'Main',
   })
 
-SignInAdminScreen.navigationOptions = LoginAdminScreen.navigationOptions = navigationOptions
+export const Main2Screen = ({ view, navigation, screenProps, type }) =>
+  MainScreen({
+    screenProps,
+    navigation,
+    ChildrenComp: view,
+    title: 'SignIn',
+    withBackground: type == 'Main',
+  })
+
+//SignInAdminScreen.navigationOptions = LoginAdminScreen.navigationOptions = navigationOptions
 export { SignUpAdmin, dismissableStackNavigator }
