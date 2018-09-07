@@ -54,7 +54,7 @@ var _measureLayout = function measureLayout(node, relativeToNativeNode, callback
       var x = left - relativeRect.left;
       var y = top - relativeRect.top;
       callback(x, y, width, height, left, top);
-    }, 0);
+    }, 150);
   }
 };
 
