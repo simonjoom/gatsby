@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, TouchableOpacity, Dimensions, Text } from 'react-native'
+import {myicons} from "src/components/layout"
 
 import color from 'statics/colors/index'
 import styles from './NavigationButton.styles'
@@ -31,13 +32,11 @@ const NavigationButton = ({ dark, back, enabled, onPress, text }) => {
           }}
           onPress={onPress}
         >
-          {window && (
-            <window.Ionicons
-              name="md-arrow-back"
-              size={22}
-              color={dark ? color.text : color.white}
-            />
-          )}
+          <myicons.Ionicons
+            name="md-arrow-back"
+            size={22}
+            color={dark ? color.text : color.white}
+          />
           <Text>{text}</Text>
         </TouchableOpacity>
       ) : (
@@ -58,7 +57,7 @@ const NavigationButton = ({ dark, back, enabled, onPress, text }) => {
           }}
           onPress={onPress}
         >
-          <Icon
+          <myicons.Ionicons
             name="ios-arrow-forward"
             size={22}
             color={dark ? color.text : color.red}

@@ -6,6 +6,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native'
+import {myicons} from "src/components/layout"
 
 import color from '../../statics/colors/index'
 import styles from './Button.styles'
@@ -83,7 +84,7 @@ const Button = props => {
         props.style,
       ]}
     >
-      {icon && window && <window.Ionicons size={24} name={icon} color={iconColor} />}
+      {icon && <myicons.Ionicons size={24} name={icon} color={iconColor} />}
       {!loading && (
         <Text
           style={[

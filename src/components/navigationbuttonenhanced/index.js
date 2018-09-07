@@ -4,7 +4,7 @@ import Picker from 'react-native-picker'
 import Input from 'src/components/input/Input'
 import color from '../../statics/colors/index'
 import styles from './NavigationButton.styles'
-
+import {myicons} from "src/components/layout"
 const getEnum = (listarrayobj, mkey) => {
   return listarrayobj.map(obj => {
     console.log(obj, mkey)
@@ -122,15 +122,13 @@ class NavigationButton extends Component {
               right: 40,
             }}
             onPress={() => onPress(this.state[mkey])}
-          >
-            {window && (
-              <window.Ionicons
+          > 
+              <myicons.Ionicons
                 name="ios-arrow-forward"
                 size={22}
                 color={dark ? color.text : color.red}
                 style={styles.icon}
-              />
-            )}
+              /> 
           </TouchableOpacity>
         </View>
       )
