@@ -4,23 +4,25 @@ import { Button } from 'react-native'
 import { Hamburger, Plus } from 'components/icons'
 import Colors from 'statics/colors'
 import { myicons } from 'src/components/layout'
-import LayoutScreen from './layoutscreen/Container'
+import { LayoutContainer } from './layoutscreen/Container'
 
 export const MainScreen = ({
   navigation,
   screenProps,
   ChildrenComp,
   title,
+  isMainPage,
 }) => {
   return (
-    <LayoutScreen
+    <LayoutContainer
       title={title}
       navigation={navigation}
       screenProps={screenProps}
+      isMainPage={isMainPage}
     >
       <ChildrenComp navigation={navigation} />
       <Button onPress={() => navigation.navigate('Login')} title="Login" />
-    </LayoutScreen>
+    </LayoutContainer>
   )
 }
 
@@ -120,7 +122,7 @@ export const SignUpAdminscreen = ({ navigation, screenProps }) =>
     ChildrenComp: SignUpAdmin,
     title: 'SignUp',
   })
- 
+
 export const SignInAdminScreen = ({ navigation, screenProps }) =>
   MainScreen({
     screenProps,
@@ -128,3 +130,5 @@ export const SignInAdminScreen = ({ navigation, screenProps }) =>
     ChildrenComp: SignInAdmin,
     title: 'SignIn',
   })
+
+SignInAdminScreen.navigationOptions = LoginAdminScreen.navigationOptions = SignUpAdminscreen.navigationOptions = navigationOptions

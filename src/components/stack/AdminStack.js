@@ -15,24 +15,28 @@ const MainStackAdmin = ({ screen, title, type }) =>
       // Main: { screen: MainScreen },
       Main: {
         path: '',
-        screen: ({ navigation, screenProps }) =>
-          MainScreen({
-            type,
+        screen: ({ navigation, screenProps }) => {
+          console.log(navigation)
+          return MainScreen({
+            isMainPage: type == 'Main',
             screenProps,
             navigation,
             ChildrenComp: screen,
             title: title,
-          }),
+          })
+        },
       },
       SignUp: {
-        screen: ({ navigation, screenProps }) =>
-          MainScreen({
-            type,
+        screen: ({ navigation, screenProps }) => {
+          console.log(navigation)
+          return MainScreen({
+            isMainPage: type == 'Main',
             asScroll: false,
             navigation: navigation,
             ChildrenComp: SignUpAdminscreen,
             title: 'SignUp',
-          }),
+          })
+        },
       },
       SignIn: {
         screen: SignInAdminScreen,
@@ -44,13 +48,12 @@ const MainStackAdmin = ({ screen, title, type }) =>
     {
       initialRouteName: 'Main',
       transitionConfig: Transition,
-      useNativeAnimations: false, 
+      useNativeAnimations: false,
       navigationOptions: navigationOptions,
       cardStyle: { backgroundColor: '#2980B9' },
     }
   )
 
 MainStackAdmin.defaultProps = {
-  Icons: 'div',
 }
 export default MainStackAdmin

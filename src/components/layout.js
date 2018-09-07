@@ -6,7 +6,7 @@ import { withNavigation } from 'react-navigation'
 import LoginAdmin from 'views/admin/login/Login'
 import { rhythm, scale } from '../utils/typography'
 import { MainStackAdmin } from './stack'
-import { View } from 'react-native' 
+import { View } from 'react-native'
 import {
   createBottomTabNavigator,
   createSwitchNavigator,
@@ -21,7 +21,7 @@ export const myicons = {
   SimpleLineIcons: 'div',
   MaterialCommunityIcons: 'div',
 }
-let DrawerNavigator;
+let DrawerNavigator
 const Vomp = ({ header, children, navigation, location, SimpleLineIcons }) => {
   return withNavigation(
     class Vomp extends Component {
@@ -53,7 +53,7 @@ const Vomp = ({ header, children, navigation, location, SimpleLineIcons }) => {
 
 class Template extends React.Component {
   //componentWillUnmount() {
-    //console.log("TEmplatecomponentWillUnmount")
+  //console.log("TEmplatecomponentWillUnmount")
   //}
   componentDidMount() {
     //console.log("TEmplatedidmount")
@@ -100,7 +100,7 @@ class Template extends React.Component {
 
     DrawerNavigator = createDrawerNavigator(
       {
-        Inbox: {
+        Main: {
           path: '',
           screen: MainStackAdmin({
             screen: Vomp({
@@ -110,10 +110,10 @@ class Template extends React.Component {
               SimpleLineIcons: myicons.SimpleLineIcons,
             }),
             title: title ? title : 'notitle',
-            isMain:true
+            type: 'Main',
           }),
         },
-        Main: {
+        Other: {
           path: 'sent',
           screen: MainStackAdmin({
             screen: Vomp({
@@ -122,18 +122,19 @@ class Template extends React.Component {
               location,
               SimpleLineIcons: myicons.SimpleLineIcons,
             }),
-            title: title ? title : 'notitle'
+            title: title ? title : 'notitle',
+            type: 'noMain',
           }),
         },
       },
       {
-        initialRouteName: 'Inbox',
+        initialRouteName: 'Main',
         contentOptions: {
           activeTintColor: '#e91e63',
         },
         useNativeAnimations: false,
       }
-    ) 
+    )
     return (
       <>
         <Helmet
@@ -146,5 +147,5 @@ class Template extends React.Component {
     )
   }
 }
-export const Drawer=DrawerNavigator;
+export const Drawer = DrawerNavigator
 export default Template

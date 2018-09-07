@@ -6,8 +6,8 @@ import {
   Platform,
   StyleSheet,
   ViewPropTypes,
-  ScrollView, 
-} from 'react-native'  
+  ScrollView,
+} from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import Colors from 'src/statics/colors'
 import Title from '../../title/Title'
@@ -48,7 +48,7 @@ const TopBar = props => {
   )
 }
 
-const Container = props => {
+export const LayoutContainer = props => {
   if (props.asScroll) {
     return (
       <ScrollView
@@ -63,6 +63,7 @@ const Container = props => {
   }
   return (
     <>
+      {props.isMainPage ? <View style={{ height: '200px' }} /> : null}
       <TopBar {...props} />
       <View style={[styles.subContainer, props.innerStyle]}>
         {props.children}
@@ -71,7 +72,7 @@ const Container = props => {
   )
 }
 
-Container.propTypes = {
+LayoutContainer.propTypes = {
   children: PropTypes.any,
   screenProps: PropTypes.any,
   title: PropTypes.string,
@@ -101,9 +102,7 @@ const styles = StyleSheet.create({
     paddingTop: 6,
     paddingRight: 0,
   },
-})
-
-export default Container
+}) 
 
 //
 //backgroundColor: Colors.white,

@@ -372,7 +372,7 @@ function (_Component) {
       draggable: draggable || false,
       ref: this._setImageRef,
       src: displayImageUri,
-      srcset: srcSet,
+      srcSet,
       style: _StyleSheet.default.flatten([styles.accessibilityImage, styleAccessibilityImage])
     }) : null;
 
