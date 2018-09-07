@@ -8,8 +8,7 @@ export default function DismissableStackNavigator(routes, options) {
     static router = StackNav.router
 
     render() {
-      const { state, goBack } = this.props.navigation
-      console.log('keystack', state.key)
+      const { state, goBack } = this.props.navigation 
       const props = {
         ...this.props.screenProps,
         dismiss: () => {

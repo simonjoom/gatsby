@@ -1,11 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, TouchableOpacity } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { View, TouchableOpacity } from 'react-native' 
 
 import Colors from 'src/statics/colors'
 
-const Hamburger = ({ navigation, route }) => (
+const Hamburger = ({ navigation, route ,Icon}) => (
   <View>
     <TouchableOpacity
       onPress={() => {
@@ -22,6 +21,9 @@ const Hamburger = ({ navigation, route }) => (
   </View>
 )
 
+Hamburger.defaultProps = {
+  Icon:"div"
+}
 Hamburger.propTypes = {
   navigation: PropTypes.object,
   navigate: PropTypes.func,

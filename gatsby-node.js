@@ -1,14 +1,36 @@
 const _ = require('lodash')
 const Promise = require('bluebird')
-const path = require('path')
-const fs = require('fs-extra')
+const path = require('path') 
 const { createFilePath } = require('gatsby-source-filesystem')
-const componentWithMDXScope = require('gatsby-mdx/component-with-mdx-scope')
-const eslintFormatter = require('react-dev-utils/eslintFormatter')
+const componentWithMDXScope = require('gatsby-mdx/component-with-mdx-scope') 
 const paths = require('./paths')
 const escapeStringRegexp = require('escape-string-regexp')
 const defaultOptions = require('gatsby-mdx/utils/default-options')
-const extractExports = require('gatsby-mdx/utils/extract-exports') 
+const extractExports = require('gatsby-mdx/utils/extract-exports')
+  
+
+exports.onCreateNode = async ({ node, actions, getNode }) => {
+  const { createNodeField } = actions
+
+  if (node.internal.type === 'ImageSharp') {
+    const arr = getNode(node.parent).dir.split('/')
+    const value = arr[arr.length - 1]
+    console.log('createfield', value)
+    return createNodeField({
+      name: `slug`,
+      node,
+      value,
+    })
+  } else if (node.internal.type === `Mdx`) {
+    let value = createFilePath({ node, getNode })
+
+    return createNodeField({
+      name: `slug`,
+      node,
+      value,
+    })
+  }
+}
 
 /**
  * Add frontmatter as page context for MDX pages
@@ -16,6 +38,7 @@ const extractExports = require('gatsby-mdx/utils/extract-exports')
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
+  
   return new Promise((resolve, reject) => {
     return graphql(
       `
@@ -30,8 +53,11 @@ exports.createPages = ({ graphql, actions }) => {
                 tableOfContents
                 code {
                   scope
+                  body
                 }
+                excerpt
                 frontmatter {
+                  date(formatString: "DD MMMM, YYYY")
                   title
                   cover_image {
                     childImageSharp {
@@ -69,21 +95,22 @@ exports.createPages = ({ graphql, actions }) => {
         reject(result.errors)
       }
       const posts = result.data.allMdx.edges
-console.log("pists",posts)
+      const aray = []
+      console.log('pists', posts)
       _.each(posts, (post, index) => {
         const previous =
           index === posts.length - 1 ? null : posts[index + 1].node
         const next = index === 0 ? null : posts[index - 1].node
-
-        createPage({
+        console.log('scope',post.node.code.scope)
+        const cmp = componentWithMDXScope(
+          path.resolve('./src/templates/layout.js'),
+          post.node.code.scope,
+          __dirname
+        )
+        aray.push(createPage({
           path: post.node.fields.slug,
           // component: post.node.parent.absolutePath,
-          component: componentWithMDXScope(
-            path.resolve('./src/templates/layout.js'),
-            post.node.code.scope,
-            __dirname
-          ),
-
+          component: cmp,
           context: {
             absPath: post.node.parent.absolutePath,
             previous,
@@ -91,9 +118,10 @@ console.log("pists",posts)
             id: post.node.id,
             tableOfContents: post.node.tableOfContents,
           },
-        })
+        }))
       })
-      resolve()
+      return Promise.all(aray).then(()=>resolve())
+      //resolve()
     })
   })
 }
@@ -253,19 +281,6 @@ exports.createPages = ({ graphql, actions }) => {
 
 */
 
-exports.onCreateNode = async ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
-  if (node.internal.type === `Mdx`) {
-    const value = createFilePath({ node, getNode })
-
-    createNodeField({
-      name: `slug`,
-      node,
-      value,
-    })
-  }
-}
-
 exports.onCreateWebpackConfig = (
   { stage, rules, loaders, plugins, actions, getNodes },
   pluginOptions
@@ -291,7 +306,7 @@ exports.onCreateWebpackConfig = (
           type: 'javascript/auto',
           use: [loaders.js()],
         },
-        {
+        /*  {
           test: /\.(js|jsx|mjs)$/,
           exclude: /react-native-web/,
           enforce: 'pre',
@@ -313,7 +328,7 @@ exports.onCreateWebpackConfig = (
           ],
           include: path.resolve(__dirname, 'src'),
           exclude: [/[/\\\\]node_modules[/\\\\]/, /babelhelper/],
-        },
+        },*/
         {
           test: /\.(js|jsx|mjs)$/,
           use: [loaders.jsx({})],

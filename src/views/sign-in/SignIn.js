@@ -1,15 +1,15 @@
 import React, { PureComponent } from 'react'
 import { View, AsyncStorage, ActivityIndicator } from 'react-native'
 
-import NavigationButton from '../../components/navigation-button/NavigationButton'
-import Title from '../../components/title/Title'
-import colors from '../../statics/colors'
-import Input from '../../components/input/Input'
-import KeyboardAwareCenteredView from '../../components/layout/KeyboardAwareCenteredView'
+import NavigationButton from 'src/components/navigation-button/NavigationButton'
+import Title from 'src/components/title/Title'
+import colors from 'src/statics/colors'
+import Input from 'src/components/input/Input'
+import KeyboardAwareCenteredView from 'src/components/KeyboardAwareCenteredView'
 
-import StorageKeys from '../../statics/storage-keys'
+import StorageKeys from 'src/statics/storage-keys'
 
-import { translate } from '../../i18n'
+import { translate } from 'src/i18n'
 
 import styles from './SignIn.styles'
 

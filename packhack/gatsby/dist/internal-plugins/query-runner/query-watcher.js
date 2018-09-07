@@ -77,6 +77,7 @@ const handleQuery = ({
   components,
   staticQueryComponents
 }, query, component) => {
+console.log(components,component)
   // If this is a static query
   // Add action / reducer + watch staticquery files
   if (query.isStaticQuery) {

@@ -12,8 +12,8 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 import { SafeAreaView } from 'react-navigation'
 import Colors from 'src/statics/colors'
-import Title from '../title/Title'
-import NavigationButton from '../navigation-button/NavigationButton'
+import Title from '../../title/Title'
+import NavigationButton from '../../navigation-button/NavigationButton'
 
 const TopBar = props => {
   return (

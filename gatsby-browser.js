@@ -4,7 +4,9 @@
  * See: https://www.gatsbyjs.org/docs/browser-apis/
  */
 
- // You can delete this file if you're not using it
- 
- const preferDefault = m => (m && m.default) || m
-exports.wrapRootElement = preferDefault(require(`./inject-provider`))
+// You can delete this file if you're not using it
+
+//const preferDefault = m => (m && m.default) || m
+var provider = require(`./inject-provider`) 
+exports.wrapRootElement =provider.default
+exports.wrapPageElement = provider.wrapPageElement

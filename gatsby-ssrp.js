@@ -13,10 +13,15 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { createHttpLink } from 'apollo-link-http'
 import { ApolloLink, Observable } from 'apollo-link'
 import StorageKeys from './src/statics/storage-keys'
+import Layout from './src/components/Layout'
 
 //const preferDefault = m => (m && m.default) || m
 //exports.pathPrefix='/gatsby-starter-blog';
 //exports.wrapRootElement = preferDefault(require(`./inject-provider-ssr`))
+/*
+export const wrapPageElement = ({ element, props }) => {
+  return <Layout {...props}>{element}</Layout>
+}*/
 
 //require('dotenv').config()
 let cachedToken = ''
@@ -37,20 +42,6 @@ async function getAuthorizationToken() {
   cachedToken = token
 
   return token
-}
-function makeApolloState(ssrClient) {
-  const state = { apollo: ssrClient.cache.extract() }
-  // appends apollo state to the global client window object
-  return (
-    <script
-      dangerouslySetInnerHTML={{
-        __html: `window.__APOLLO_STATE__=${JSON.stringify(state).replace(
-          /</g,
-          `\\u003c`
-        )};`,
-      }}
-    />
-  )
 }
 
 export function setupApolloClient() {
@@ -123,10 +114,36 @@ export function setupApolloClient() {
 }
 
 const apolloClient = setupApolloClient()
+export const wrapPageElement = ({ element, props }) => {
+  // props provide same data to Layout as Page element will get
+  // including location, data, etc - you don't need to pass it
+  return <Layout {...props}>{element}</Layout>
+}
+
 export const wrapRootElement = ({ element }) => (
   <ApolloProvider client={apolloClient}>{element}</ApolloProvider>
-)
-let done;
+) 
+let done 
+export const onRenderBody = (
+  { pathname, setHeadComponents },
+  pluginOptions
+) => {
+  // gets initial state with "apollo" key
+  const state = { apollo: apolloClient.cache.extract() }
+  // appends apollo state to the global client window object
+  const ApolloState = (
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `window.__APOLLO_STATE__=${JSON.stringify(state).replace(
+          /</g,
+          '\\u003c'
+        )};`,
+      }}
+    />
+  )
+  setHeadComponents([ApolloState])
+}
+
 export const replaceRenderer = ({
   bodyComponent,
   replaceBodyHTMLString,
@@ -134,34 +151,34 @@ export const replaceRenderer = ({
 }) => {
   let SecondWrap = wrapRootElement({ element: bodyComponent })
   return new Promise(resolve => {
-    try {
-      class App extends React.Component {
-        render() {
-          return SecondWrap
-        }
+    //  try {
+    class App extends React.Component {
+      render() {
+        return SecondWrap
       }
+    }
 
-      return getDataFromTree(SecondWrap).then(() => {
-        //   console.log('getDataFromTree')
-      if (done){
-        AppRegistry.registerComponent('App', () => App)
-        const { element, getStyleElement } = AppRegistry.getApplication('App')
-        const styleElement = getStyleElement()
-        const html = renderToString(element)
-        done=true;
-        // renders ApolloQueries to string and then inserts it into the page
-        replaceBodyHTMLString(html)
-        // sets head components with styled components and apollo state
-        setHeadComponents([makeApolloState(apolloClient), styleElement])
-      }
-        resolve()
-      })
+    //   return getDataFromTree(SecondWrap).then(() => {
+    //   console.log('getDataFromTree')
+    if (done) {
+      AppRegistry.registerComponent('App', () => App)
+      const { element, getStyleElement } = AppRegistry.getApplication('App')
+      const styleElement = getStyleElement()
+      const html = renderToString(element)
+      done = true
+      // renders ApolloQueries to string and then inserts it into the page
+      replaceBodyHTMLString(html)
+      // sets head components with styled components and apollo state
+      setHeadComponents([styleElement])
+    }
+    resolve()
+    /*  })
     } catch (error) {
       console.log('error', error)
       // Prevent Apollo Client GraphQL errors from crashing SSR.
       // Handle them in components via the data.error prop:
       // http://dev.apollodata.com/react/api-queries.html#graphql-query-data-error
-    }
+    }*/
   }).catch(error => {
     console.log('error', error)
   })

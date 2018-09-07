@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, StaticQuery } from 'gatsby'
+import { Link, StaticQuery,graphql } from 'gatsby'
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import Img from 'gatsby-image'
 
@@ -43,7 +43,7 @@ export default () => (
                 title
                 cover_image {
                   childImageSharp {
-                    fluid {
+                    fluid(maxWidth: 2048) {
                       ...GatsbyImageSharpFluid_withWebp_tracedSVG
                     }
                   }
@@ -68,7 +68,7 @@ export default () => (
           <Text style={styles.text}>
             Hi this is React-Native-Web rendered by Gatsby
           </Text>
-          <Img fluid={fluid} height="300px" resizeMode="cover" />
+          <Img fluid={fluid} height="300px" resizeMode="center" />
           <TouchableOpacity
             style={styles.button}
             onPress={() => alert('it works')}

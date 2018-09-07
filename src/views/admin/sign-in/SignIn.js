@@ -5,7 +5,7 @@ import NavigationButton from 'src/components/navigation-button/NavigationButton'
 import Title from 'src/components/title/Title'
 import colors from 'src/statics/colors'
 import Input from 'src/components/input/Input'
-import KeyboardAwareCenteredView from 'src/components/layout/KeyboardAwareCenteredView'
+import KeyboardAwareCenteredView from 'src/components/KeyboardAwareCenteredView'
 
 import StorageKeys from 'src/statics/storage-keys'
 

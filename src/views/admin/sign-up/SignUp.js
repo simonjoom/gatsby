@@ -7,7 +7,7 @@ import SecondStep from './steps/SecondStep'
 import FinalStep from './steps/FinalStep'
 import { translate } from 'src/i18n'
 
-import KeyboardAwareCenteredView from 'src/components/layout/KeyboardAwareCenteredView'
+import KeyboardAwareCenteredView from 'src/components/KeyboardAwareCenteredView'
 
 class SignUp extends Component {
   constructor(props) {

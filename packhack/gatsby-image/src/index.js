@@ -173,7 +173,7 @@ class GatsbyImage extends React.Component {
     this.handleRef = this.handleRef.bind(this)
   }
 
-  handleRef(ref) { 
+  handleRef(ref) {
     if (this.state.IOSupported && ref) {
       listenToIntersections(ref, () => {
         this.setState({ isVisible: true, imgLoaded: false })
@@ -253,7 +253,7 @@ class GatsbyImage extends React.Component {
           {/* Once the image is visible (or the browser doesn't support IntersectionObserver), start downloading the image */}
           {this.state.isVisible && (
             <Image
-              alt={alt}
+              accessibilityLabel={alt}
               resizeMode={resizeMode}
               title={title}
               srcSet={image.srcSet}
@@ -274,7 +274,7 @@ class GatsbyImage extends React.Component {
             />
           )}
           {/* Show the original image during server-side rendering if JavaScript is disabled */}
-          <noscript 
+          <noscript
             dangerouslySetInnerHTML={{
               __html: noscriptImg({ alt, title, ...image }),
             }}

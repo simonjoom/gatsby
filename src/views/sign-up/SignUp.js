@@ -7,7 +7,7 @@ import FirstStep from './steps/FirstStep'
 import FourthStep from './steps/FourthStep';
 import FinalStep from './steps/FinalStep';*/
 
-import KeyboardAwareCenteredView from 'src/components/layout/KeyboardAwareCenteredView'
+import KeyboardAwareCenteredView from 'src/components/KeyboardAwareCenteredView'
 
 class SignUp extends Component {
   constructor(props) {

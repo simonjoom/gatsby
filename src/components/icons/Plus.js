@@ -1,11 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, TouchableOpacity } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import Colors from 'src/statics/colors'
 
-const Plus = ({ navigation, route }) => (
+const Plus = ({ navigation, route, Icon }) => (
   <View>
     <TouchableOpacity onPress={() => navigation.navigate(route)}>
       <Icon
@@ -18,6 +17,9 @@ const Plus = ({ navigation, route }) => (
   </View>
 )
 
+Plus.defaultProps = {
+  Icon:"div"
+}
 Plus.propTypes = {
   navigation: PropTypes.object,
   route: PropTypes.any,

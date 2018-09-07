@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, TouchableOpacity, Dimensions, Text } from 'react-native'
 import Picker from 'react-native-picker'
 import Input from 'src/components/input/Input'
-import Icon from 'react-native-vector-icons/Ionicons'
 import color from '../../statics/colors/index'
 import styles from './NavigationButton.styles'
 
@@ -124,12 +123,14 @@ class NavigationButton extends Component {
             }}
             onPress={() => onPress(this.state[mkey])}
           >
-            <Icon
-              name="ios-arrow-forward"
-              size={22}
-              color={dark ? color.text : color.red}
-              style={styles.icon}
-            />
+            {window && (
+              <window.Ionicons
+                name="ios-arrow-forward"
+                size={22}
+                color={dark ? color.text : color.red}
+                style={styles.icon}
+              />
+            )}
           </TouchableOpacity>
         </View>
       )

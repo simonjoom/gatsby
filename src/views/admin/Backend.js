@@ -10,11 +10,11 @@ import {
 import dismissableStackNavigator from 'src/helpers'
 import { createStackNavigator } from 'react-navigation'
 import Colors from 'src/statics/colors'
+import { myicons } from 'components/layout'
 import Title from 'src/components/title/Title'
 import { translate } from 'src/i18n'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 //import { Drawer } from "src/components/config";
-import KeyboardAwareCenteredView from 'src/components/layout/KeyboardAwareCenteredView'
+import KeyboardAwareCenteredView from 'src/components/KeyboardAwareCenteredView'
 import Gradient from 'src/components/gradient/Gradient'
 import Button from 'src/components/button/Button'
 const buttonStyle = { marginBottom: 20 }
@@ -78,8 +78,12 @@ const WrappLayout = WrappedComponent => {
               onPress={() => {
                 this.dismiss()
               }}
-            >
-              <Icon name="window-close" size={30} style={closestyle} />
+            > 
+                <myicons.MaterialCommunityIcons
+                  name="window-close"
+                  size={30}
+                  style={closestyle}
+                /> 
             </TouchableOpacity>
             <WrappedComponent {...this.props} style={{ width: 500 }} />
           </Gradient>

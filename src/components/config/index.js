@@ -1,5 +1,5 @@
 import MainStackAdmin from './AdminStack'
-import MainStack from './Stack'
+//import MainStack from './Stack'
 //import { withBrowserHistory } from './browserhistory'
 
-export { MainStack, MainStackAdmin }
+export {  MainStackAdmin }

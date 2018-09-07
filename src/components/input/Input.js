@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, TextInput, Dimensions } from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import { View, Text, TextInput, Dimensions } from 'react-native' 
 
 import color from 'src/statics/colors'
 import styles from './Input.styles'
+import { myicons } from '../Layout';
 
 let { width, height } = {
   width: (Dimensions.get('window').width * 2) / 3,
@@ -86,9 +86,9 @@ class Input extends PureComponent {
     return (
       <View style={styles.inputIcon}>
         {this.props.validationFunction() ? (
-          <Ionicons size={25} color={color.white} name="ios-checkmark" />
+          <myicons.Ionicons size={25} color={color.white} name="ios-checkmark" />
         ) : (
-          <Ionicons size={25} color={color.white} name="ios-close" />
+          <myicons.Ionicons size={25} color={color.white} name="ios-close" />
         )}
       </View>
     )

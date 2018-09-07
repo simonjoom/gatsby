@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Text } from 'react-native'
 import Loader from 'src/components/loading/FullLoading'
-import KeyboardAwareCenteredView from 'src/components/layout/KeyboardAwareCenteredView'
+import KeyboardAwareCenteredView from 'src/components/KeyboardAwareCenteredView'
 
 const loader = WrappedComponent => {
   return class logendLoader extends Component {

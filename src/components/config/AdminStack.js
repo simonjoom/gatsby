@@ -5,6 +5,7 @@ import RoutesBackend, { RunBackend } from 'views/admin/Backend'
 // import SignInAdmin from 'views/admin/sign-in/SignInContainer'
 import LoginAdmin from 'views/admin/login/Login'
 import { Hamburger, Plus } from 'components/icons'
+import { myicons } from 'components/layout'
 import Colors from 'statics/colors'
 import dismissableStackNavigator from 'helpers'
 import { MainScreen } from './Layout'
@@ -34,8 +35,16 @@ export const SignInAdminScreen = ({ navigation }) =>
 
 const navigationOptions = ({ navigation }) => ({
   headerTitle: 'Main',
-  headerRight: <Hamburger navigation={navigation} />,
-  headerLeft: <Plus navigation={navigation} route="Login" />,
+  headerRight: (
+    <Hamburger navigation={navigation} Icon={myicons.MaterialCommunityIcons} />
+  ),
+  headerLeft: (
+    <Plus
+      navigation={navigation}
+      route="Login"
+      Icon={myicons.MaterialCommunityIcons}
+    />
+  ),
   headerTitleStyle: {
     color: Colors.$white,
   },
@@ -97,7 +106,7 @@ const ModalStack = dismissableStackNavigator(
 )
 console.log('mRoute', ModalNavigator)
 //LoginAdminScreen
-const MainStackAdmin = ({ screen, title }) =>
+const MainStackAdmin = ({ screen, title,Icons }) =>
   createStackNavigator(
     {
       // Main: { screen: MainScreen },
@@ -126,16 +135,32 @@ const MainStackAdmin = ({ screen, title }) =>
       transitionConfig: Transition,
       useNativeAnimations: false,
       //mode: 'modal',
-      navigationOptions: ({ navigation }) => ({
-        headerTitle: 'Main',
-        headerRight: <Hamburger navigation={navigation} />,
-        headerLeft: <Plus navigation={navigation} route="Login" />,
-        headerStyle: {
-          backgroundColor: Colors.$green,
-        },
-      }),
-      cardStyle:{backgroundColor:'#2980B9'}
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Main',
+          headerRight: (
+            <Hamburger
+              navigation={navigation}
+              Icon={Icons}
+            />
+          ),
+          headerLeft: (
+            <Plus
+              navigation={navigation}
+              route="Login"
+              Icon={Icons}
+            />
+          ),
+          headerStyle: {
+            backgroundColor: Colors.$green,
+          },
+        }
+      },
+      cardStyle: { backgroundColor: '#2980B9' },
     }
   )
 
+  MainStackAdmin.defaultProps = {
+    Icons: 'div',
+  }
 export default MainStackAdmin

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from 'react-native'
-import LayoutScreen from 'components/layout/Container'
+import LayoutScreen from './layoutscreen/Container'
 
 
 export const MainScreen = ({

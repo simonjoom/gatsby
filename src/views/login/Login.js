@@ -9,10 +9,8 @@ import Logo from 'src/svgcomp'
 import Gradient from 'src/components/gradient/Gradient'
 import Title from 'src/components/title/Title'
 import Button from 'src/components/button/Button'
-//import { SimpleLineIcons as Icon } from '@expo/vector-icons';
-import Icon from 'react-native-vector-icons/SimpleLineIcons'
 
-const Login = props => (
+const Login = ({ SimpleLineIcons }) => (
   <Gradient>
     <View style={styles.container}>
       <Logo id="feature-svg-component" />
@@ -27,15 +25,21 @@ const Login = props => (
           justifyContent: 'space-around',
         }}
       >
-        <Icon name="social-google" size={22} color={color.white} />
-        <Icon name="social-facebook" size={22} color={color.white} />
-        <Icon name="social-instagram" size={22} color={color.white} />
+        <SimpleLineIcons name="social-google" size={22} color={color.white} />
+        <SimpleLineIcons name="social-facebook" size={22} color={color.white} />
+        <SimpleLineIcons
+          name="social-instagram"
+          size={22}
+          color={color.white}
+        />
       </View>
     </View>
   </Gradient>
 )
 
 Login.propTypes = {}
-Login.defaultProps = {}
+Login.defaultProps = {
+  SimpleLineIcons:"div"
+}
 
 export default Login

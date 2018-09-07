@@ -1,7 +1,7 @@
 import React from 'react'
 import { KeyboardAvoidingView, Platform } from 'react-native'
 
-import styles from './KeyboardAwareCenteredView.styles'
+import styles from './index.styles'
 
 const KeyboardAwareCenteredView = props => (
   <KeyboardAvoidingView

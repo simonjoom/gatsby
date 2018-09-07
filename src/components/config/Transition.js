@@ -8,6 +8,7 @@ const transitionConfig = () => {
       easing: Easing.out(Easing.poly(4)),
       timing: Animated.spring,
       useNativeDriver: true,
+      backgroundColor: "#ffff00",
     },
     screenInterpolator: sceneProps => {
       const { position, layout, scene, index, scenes } = sceneProps

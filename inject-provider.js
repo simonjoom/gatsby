@@ -2,6 +2,7 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 
 import { AsyncStorage } from 'react-native'
+import Layout from "./src/components/Layout"
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { createHttpLink } from 'apollo-link-http'
@@ -24,6 +25,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   pathbackend = 'http://localhost:4000/graphql/'
   uriwebsocket = 'ws://localhost:4000/subscriptions'
 }
+ 
 
 //process.env.REACT_APP_ENDPOINT;
 const isFile = value => {
@@ -142,6 +144,12 @@ export function setupApolloClient() {
 
 const apolloClient = setupApolloClient()
 
+export const wrapPageElement = ({ element, props }) => {
+  console.log(props)
+  // props provide same data to Layout as Page element will get
+  // including location, data, etc - you don't need to pass it
+  return <Layout {...props}>{element}</Layout>
+}
 // eslint-disable-next-line react/prop-types,react/display-name
 export default ({ element }) => (
   <ApolloProvider client={apolloClient}>{element}</ApolloProvider>

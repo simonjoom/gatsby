@@ -123,7 +123,8 @@ function () {
             devtoolModuleFilenameTemplate: info => path.resolve(info.absoluteResourcePath).replace(/\\/g, `/`),
             // Avoid React cross-origin errors
             // See https://reactjs.org/docs/cross-origin-errors.html
-            crossOriginLoading: `anonymous`
+            crossOriginLoading: `anonymous`,
+       globalObject: `typeof self !== 'undefined' ? self : this`,
           };
 
         case `build-html`:
@@ -184,6 +185,8 @@ function () {
       let configPlugins = [plugins.moment(), // Add a few global variables. Set NODE_ENV to production (enables
       // optimizations for React) and what the link prefix is (__PATH_PREFIX__).
       plugins.define({
+       __DEV__: true,
+      __PROD__: false,
         "process.env": processEnv(stage, `development`),
         __PATH_PREFIX__: JSON.stringify(program.prefixPaths ? store.getState().config.pathPrefix : ``)
       })];
@@ -460,6 +463,7 @@ function () {
       resolveLoader: getResolveLoader(),
       resolve: getResolve(),
       node: {
+__DEV__:true,
         __filename: true
       }
     };

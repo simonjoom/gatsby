@@ -12,12 +12,12 @@ import Input from 'src/components/input/Input'
 //import mRoute from "src/AdminStack";
 import { translate } from 'src/i18n'
 import NavigationButton from 'src/components/navigation-button/NavigationButton'
-import KeyboardAwareCenteredView from 'src/components/layout/KeyboardAwareCenteredView'
+import KeyboardAwareCenteredView from 'src/components/KeyboardAwareCenteredView'
 import Picker from 'react-native-picker'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Button from 'src/components/button/Button'
 import Gradient from 'src/components/gradient/Gradient'
 import CompUpload from '../Upload/Container'
+import { myicons } from '../../../components/Layout'
 
 const pathbase =
   process.env.NODE_ENV === 'development'
@@ -655,7 +655,7 @@ class Helper extends Component {
                           }}
                           style={{ alignSelf: 'flex-start' }}
                         >
-                          <Icon
+                          <myicons.MaterialCommunityIcons
                             name={'minus'}
                             size={30}
                             style={{ padding: 10 }}

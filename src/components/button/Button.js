@@ -6,7 +6,6 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons'
 
 import color from '../../statics/colors/index'
 import styles from './Button.styles'
@@ -84,7 +83,7 @@ const Button = props => {
         props.style,
       ]}
     >
-      {icon && <Icon size={24} name={icon} color={iconColor} />}
+      {icon && window && <window.Ionicons size={24} name={icon} color={iconColor} />}
       {!loading && (
         <Text
           style={[

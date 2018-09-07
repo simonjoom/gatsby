@@ -1,6 +1,5 @@
 import React from 'react'
 import { createStackNavigator } from 'react-navigation'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import SignUp from 'views/sign-up/SignUpContainer'
 import SignIn from 'views/sign-in/SignInContainer'
@@ -8,6 +7,7 @@ import Login from 'views/login/Login'
 import { Hamburger, Plus } from 'components/icons'
 import Colors from 'statics/colors'
 import { MainScreen } from './Layout'
+import { myicons } from 'components/layout'
 
 const LoginScreen = ({ navigation }) =>
   MainScreen({
@@ -43,8 +43,16 @@ const MainStack = createStackNavigator({
 
 MainStack.navigationOptions = ({ navigation }) => ({
   headerTitle: 'Main',
-  headerRight: <Hamburger navigation={navigation} />,
-  headerLeft: <Plus navigation={navigation} route="Login" />,
+  headerRight: (
+    <Hamburger navigation={navigation} Icon={myicons.MaterialCommunityIcons} />
+  ),
+  headerLeft: (
+    <Plus
+      navigation={navigation}
+      route="Login"
+      Icon={myicons.MaterialCommunityIcons}
+    />
+  ),
   drawerIcon: ({ tintColor }) => (
     <MaterialIcons name="drafts" size={24} style={{ color: tintColor }} />
   ),
