@@ -1,40 +1,35 @@
 import React from 'react'
 import dismissableStackNavigator from 'helpers'
-import { Button ,View} from 'react-native'
+import { Button, View } from 'react-native'
 import { Hamburger, Plus } from 'components/icons'
 import Colors from 'statics/colors'
+import LoginAdmin from 'views/admin/login/Login'
 import { rhythm, scale } from 'src/utils/typography'
 import { myicons } from 'src/components/layout'
 import { LayoutContainer } from './layoutscreen/Container'
 
-export const MainScreen = ({
-  navigation,
-  screenProps
-}) => {
+export const MainScreen = ({ navigation, screenProps, children }) => { 
   return (
     <LayoutContainer
       title={screenProps.title}
       navigation={navigation}
       screenProps={screenProps}
       withBackground={screenProps.withBackground}
+      style={{
+        alignItems: 'center',
+        alignSelf: 'center',
+        flex: 1,
+        flexGrow: 1,
+        maxWidth: rhythm(24),
+        padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
+      }}
     >
-      <View
-        style={{
-          alignItems: 'center',
-          alignSelf: 'center',
-          flex: 1,
-          flexGrow: 1,
-          maxWidth: rhythm(24),
-          padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
-        }}
-      >
-        {screenProps.header}
-        {screenProps.children}
-        <LoginAdmin
-          navigation={navigation}
-          SimpleLineIcons={myicons.SimpleLineIcons}
-        />
-      </View>
+      {screenProps.header}
+      {screenProps.children||children}
+      <LoginAdmin
+        navigation={navigation}
+        SimpleLineIcons={myicons.SimpleLineIcons}
+      />
       <Button onPress={() => navigation.navigate('Backend')} title="Login" />
     </LayoutContainer>
   )
@@ -73,7 +68,6 @@ export const navigationOptions = ({ screenProps }) => {
 import RoutesBackend, { RunBackend } from 'views/admin/Backend'
 import SignUpAdmin from 'views/admin/sign-up/SignUpContainer'
 import SignInAdmin from 'views/admin/sign-in/SignInContainer'
-import LoginAdmin from 'views/admin/login/Login'
 
 const arr = {
   Filter: [],
@@ -112,7 +106,7 @@ export const BackendScreen = ({ navigation, screenProps }) =>
         screen: ({ screenProps }) =>
           MainScreen({
             screenProps,
-            navigation, 
+            navigation,
             header: screenProps.header,
             children: Backend,
             title: 'SignIn',
@@ -133,7 +127,7 @@ export const SignUpAdminscreen = ({
   MainScreen({
     screenProps,
     navigation,
-    ChildrenComp: SignUpAdmin,
+    children: <SignUpAdmin />,
     title: 'SignUp',
     withBackground: withBackground,
   })
@@ -142,7 +136,7 @@ export const LoginAdminScreen = ({ navigation, screenProps, withBackground }) =>
   MainScreen({
     screenProps,
     navigation,
-    ChildrenComp: LoginAdmin,
+    children: <LoginAdmin />,
     title: 'Login',
     withBackground: withBackground,
   })
@@ -155,7 +149,7 @@ export const SignInAdminScreen = ({
   MainScreen({
     screenProps,
     navigation,
-    ChildrenComp: SignInAdmin,
+    children: <SignInAdmin />,
     title: 'SignIn',
     withBackground: withBackground,
   })

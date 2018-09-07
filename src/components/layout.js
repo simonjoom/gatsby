@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import { Link } from 'gatsby'
 import get from 'lodash/get'
-import Helmet from 'react-helmet'
-import { withNavigation } from 'react-navigation'
-import LoginAdmin from 'views/admin/login/Login'
+import Helmet from 'react-helmet' 
 import { rhythm, scale } from '../utils/typography'
-import { MainStackAdmin, Signup, main2 } from './stack'
-import { View } from 'react-native'
+import { MainStackAdmin, Signup, main2 } from './stack' 
 import Transition from './stack/Transition'
 import {
   createBottomTabNavigator,
@@ -38,7 +35,7 @@ class Template extends React.Component {
   render() {
     // const HistoryNavigator = withBrowserHistory(Drawer)
     const { location, children, data } = this.props
-    console.log('renderLayout')
+    console.log('renderLayout',data)
     const siteTitle = get(data, 'site.siteMetadata.title')
     const siteDescription = get(data, 'site.siteMetadata.description')
     const rootPath = `${__PATH_PREFIX__}/`
@@ -106,6 +103,7 @@ class Template extends React.Component {
           screen: ({ navigation }) => (
             <Signup
               screenProps={{
+                header: header('h2'),
                 title: title ? title : 'notitle',
                 withBackground: false,
                 navigation,

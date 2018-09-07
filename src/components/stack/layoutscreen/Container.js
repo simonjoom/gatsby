@@ -52,7 +52,7 @@ export const LayoutContainer = props => {
   if (props.asScroll) {
     return (
       <ScrollView
-        contentContainerStyle={[styles.subContainer, props.innerStyle]}
+        contentContainerStyle={[styles.subContainer, props.style]}
       >
         <SafeAreaView forceInset={{ top: 'always' }}>
           <TopBar {...props} />
@@ -65,7 +65,7 @@ export const LayoutContainer = props => {
     <>
       {props.withBackground ? <View style={{ height: '200px' }} /> : null}
       <TopBar {...props} />
-      <View style={[styles.subContainer, props.innerStyle]}>
+      <View style={[styles.subContainer, props.style]}>
         {props.children}
       </View>
     </>

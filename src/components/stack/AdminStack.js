@@ -46,6 +46,7 @@ const Signup = createStackNavigator(
     Signup: {
       screen: ({ navigation, screenProps }) =>
         SignUpAdminscreen({
+          screenProps, 
           withBackground: screenProps.withBackground,
           navigation: screenProps.navigation,
           title: screenProps.title,
