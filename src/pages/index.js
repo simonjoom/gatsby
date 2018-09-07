@@ -1,31 +1,31 @@
 import React, {Component} from "react"
 import {Text, View, ImageBackground, Image, StyleSheet} from "react-native";
-import Layout from "components/layout"
-
-class BackgroundImage extends Component {
-  render(){
-    return (
-      <ImageBackground source={require('../../static/home-image.jpg')} style={styles.image}>
-        {this.props.children}
-      </ImageBackground>
-    )
-  }
-}
+import Layout from "components/layout";
+import Img from 'gatsby-image'
+import { StaticQuery } from "gatsby";
+import BgImg from "components/BgImg"
 
 class Home extends Component {
   render(){
     return (
       <Layout location={this.props.location}>
-        <View style={{flex:1}}>
-          {/* <Text>Hello World</Text> */}
-          <BackgroundImage>
-            <Text style={styles.text}>Fullscreen!</Text>
-          </BackgroundImage>
-          <Text>Hellower World</Text>
-          <Text>Hellower World</Text>
-          <Text>Hellower World</Text>
-          <Text>Hellower World</Text>
-          <Text>Hellower World</Text>
+        <View style={styles.portionParent}>
+         <BgImg></BgImg>
+
+         {/* Split into sections below */}
+          <View style={styles.viewPortion}>
+            <Text style={styles.text}>This is a Portion</Text>
+          </View>
+
+          {/* Split into sections below */}
+          <View style={styles.viewPortion}>
+            <Text style={styles.text}>This is another Portion</Text>
+          </View>
+
+          {/* Split into sections below */}
+          <View style={styles.viewPortion}>
+            <Text style={styles.text}>This is another Portion</Text>
+          </View>
         </View>
       </Layout>
     )
@@ -33,22 +33,18 @@ class Home extends Component {
 }
 
 const styles = StyleSheet.create({
-  image:{
-    flex: 1,
-    width: null,
-    height: 500,
-    backgroundPosition: 'top',
-    resizeMode: 'cover',
-    zIndex:100
-  },
-  text:{
-    display:'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '5em',
-    fontWeight: 'bold',
-    fontSize:'2em'
-  }
+viewPortion: {
+  width: '70%',
+  height: 150,
+  marginLeft: '14%'
+},
+portionParent:{
+  flex: 1,
+  justifyContent: 'center'
+},
+text:{
+  fontSize: '1.5em',
+}
 })
 
 export default Home

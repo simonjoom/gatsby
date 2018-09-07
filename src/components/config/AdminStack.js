@@ -134,7 +134,7 @@ const MainStackAdmin = ({ screen, title }) =>
           backgroundColor: Colors.$green,
         },
       }),
-      cardStyle:{backgroundColor:'#2980B9'}
+      cardStyle:{backgroundColor:'#F9F9F9'}
     }
   )
 

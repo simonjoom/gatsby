@@ -6,7 +6,14 @@ module.exports = {
     siteUrl: 'https://gatsbyjs.github.io/gatsby-starter-blog/',
   },
   pathPrefix: '/gatsby-starter-blog',
-  plugins: [ 
+  plugins: [
+    {
+      resolve: `gatsby-source-filesystem`,
+      options:{
+        name: 'img',
+        path:`${__dirname}/src/images`
+      }
+    },
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp', 
     {

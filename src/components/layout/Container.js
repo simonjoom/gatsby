@@ -95,12 +95,13 @@ const styles = StyleSheet.create({
   subContainer: {
     padding: 0,
   },
+  // Chuloo made edits here below
   containerTitle: {
-    backgroundColor: '#0748f6',
+    backgroundColor: '#f9f9f9',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 6,
+    paddingTop: 0,
     paddingRight: 0,
   },
 })

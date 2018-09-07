@@ -3,6 +3,12 @@ import { Link, StaticQuery } from 'gatsby'
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import Img from 'gatsby-image'
 
+                  /*  sizes(maxWidth: 50, maxHeight: 50) {
+                      srcSet
+                      src
+                      sizes
+                      aspectRatio
+                    }*/
 const styles = StyleSheet.create({
   box: { padding: 10, margin: 10, borderWidth: 1, borderColor: 'black' },
   text: { fontWeight: 'bold', color: 'red' },
@@ -37,11 +43,8 @@ export default () => (
                 title
                 cover_image {
                   childImageSharp {
-                    sizes(maxWidth: 50, maxHeight: 50) {
-                      srcSet
-                      src
-                      sizes
-                      aspectRatio
+                    fluid {
+                      ...GatsbyImageSharpFluid_withWebp_tracedSVG
                     }
                   }
                 }
@@ -58,15 +61,14 @@ export default () => (
     render={data => {
       const el = data.allMdx.edges.find(al => {
         return al.node.fields.slug === '/test/'
-      })
-      console.log("cover",el.node.frontmatter.cover_image)
-      const imgSizes = el.node.frontmatter.cover_image.childImageSharp.sizes
+      }) 
+      const fluid = el.node.frontmatter.cover_image.childImageSharp.fluid
       return (
         <View style={styles.box}>
           <Text style={styles.text}>
             Hi this is React-Native-Web rendered by Gatsby
           </Text>
-            <Img sizes={imgSizes} src={el.node.frontmatter.cover_image.childImageSharp.sizes.src} style={{position:"relative"}}/>
+          <Img fluid={fluid} height="300px" resizeMode="cover" />
           <TouchableOpacity
             style={styles.button}
             onPress={() => alert('it works')}
@@ -95,7 +97,6 @@ export default () => (
     }
     
             <Img resolutions={data.file.childImageSharp.resolutions} />
-
       query GatsbyImageSampleQuery {
         file(relativePath: { eq: "test/profile-pic.jpg" }) {
           childImageSharp {
