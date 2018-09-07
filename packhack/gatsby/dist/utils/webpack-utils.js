@@ -138,16 +138,16 @@ function () {
           }, options)
         };
       },
-      js: options => {
-        return {
-          options,
-          loader: require.resolve(`./babel-loader`)
-        };
-      },
       jsx: options => {
         return {
           options,
           loader: require.resolve(`./babel-loaderx`)
+        };
+      },
+      js: options => {
+        return {
+          options,
+          loader: require.resolve(`./babel-loader`)
         };
       },
       eslint: (schema = ``) => {

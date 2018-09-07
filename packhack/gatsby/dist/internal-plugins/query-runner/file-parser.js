@@ -126,43 +126,91 @@ function _findGraphQLTags() {
          */
 
 
-        const documentLocations = new WeakMap(); // Look for queries in <StaticQuery /> elements.
+        const documentLocations = new WeakMap();
+
+        const extractStaticQuery = taggedTemplateExpressPath => {
+          const _getGraphQLTag = getGraphQLTag(taggedTemplateExpressPath),
+                gqlAst = _getGraphQLTag.ast,
+                text = _getGraphQLTag.text,
+                hash = _getGraphQLTag.hash,
+                isGlobal = _getGraphQLTag.isGlobal;
+
+          if (!gqlAst) return;
+          if (isGlobal) warnForGlobalTag(file);
+          gqlAst.definitions.forEach(def => {
+            documentLocations.set(def, `${taggedTemplateExpressPath.node.start}-${def.loc.start}`);
+            generateQueryName({
+              def,
+              hash,
+              file
+            });
+          });
+          const definitions = [...gqlAst.definitions].map(d => {
+            d.isStaticQuery = true;
+            d.text = text;
+            d.hash = hash;
+            return d;
+          });
+          queries.push(...definitions);
+        }; // Look for queries in <StaticQuery /> elements.
+
 
         (0, _babelTraverse.default)(ast, {
-          TaggedTemplateExpression(path) {
-            var _path$parentPath, _path$parentPath$pare, _path$parentPath$pare2, _path$parentPath$pare3, _path$parentPath2, _path$parentPath2$par, _path$parentPath2$par2, _path$parentPath2$par3, _path$parentPath2$par4;
-
-            if (`descendant of query`, (path === null || path === void 0 ? void 0 : (_path$parentPath = path.parentPath) === null || _path$parentPath === void 0 ? void 0 : (_path$parentPath$pare = _path$parentPath.parentPath) === null || _path$parentPath$pare === void 0 ? void 0 : (_path$parentPath$pare2 = _path$parentPath$pare.node) === null || _path$parentPath$pare2 === void 0 ? void 0 : (_path$parentPath$pare3 = _path$parentPath$pare2.name) === null || _path$parentPath$pare3 === void 0 ? void 0 : _path$parentPath$pare3.name) !== `query`) {
+          JSXElement(path) {
+            if (path.node.openingElement.name.name !== `StaticQuery`) {
               return;
-            }
+            } // astexplorer.com link I (@kyleamathews) used when prototyping this algorithm
+            // https://astexplorer.net/#/gist/ab5d71c0f08f287fbb840bf1dd8b85ff/2f188345d8e5a4152fe7c96f0d52dbcc6e9da466
 
-            if (((_path$parentPath2 = path.parentPath) === null || _path$parentPath2 === void 0 ? void 0 : (_path$parentPath2$par = _path$parentPath2.parentPath) === null || _path$parentPath2$par === void 0 ? void 0 : (_path$parentPath2$par2 = _path$parentPath2$par.parentPath) === null || _path$parentPath2$par2 === void 0 ? void 0 : (_path$parentPath2$par3 = _path$parentPath2$par2.node) === null || _path$parentPath2$par3 === void 0 ? void 0 : (_path$parentPath2$par4 = _path$parentPath2$par3.name) === null || _path$parentPath2$par4 === void 0 ? void 0 : _path$parentPath2$par4.name) !== `StaticQuery`) {
-              return;
-            }
 
-            const _getGraphQLTag = getGraphQLTag(path),
-                  gqlAst = _getGraphQLTag.ast,
-                  text = _getGraphQLTag.text,
-                  hash = _getGraphQLTag.hash,
-                  isGlobal = _getGraphQLTag.isGlobal;
+            path.traverse({
+              JSXAttribute(jsxPath) {
+                if (jsxPath.node.name.name !== `query`) {
+                  return;
+                }
 
-            if (!gqlAst) return;
-            if (isGlobal) warnForGlobalTag(file);
-            gqlAst.definitions.forEach(def => {
-              documentLocations.set(def, `${path.node.start}-${def.loc.start}`);
-              generateQueryName({
-                def,
-                hash,
-                file
-              });
+                jsxPath.traverse({
+                  // Assume the query is inline in the component and extract that.
+                  TaggedTemplateExpression(templatePath) {
+                    extractStaticQuery(templatePath);
+                  },
+
+                  // Also see if it's a variable that's passed in as a prop
+                  // and if it is, go find it.
+                  Identifier(identifierPath) {
+                    if (identifierPath.node.name !== `graphql`) {
+                      const varName = identifierPath.node.name;
+                      let found = false;
+                      (0, _babelTraverse.default)(ast, {
+                        VariableDeclarator(varPath) {
+                          if (varPath.node.id.name === varName && varPath.node.init.type === `TaggedTemplateExpression`) {
+                            varPath.traverse({
+                              TaggedTemplateExpression(templatePath) {
+                                found = true;
+                                extractStaticQuery(templatePath);
+                              }
+
+                            });
+                          }
+                        }
+
+                      });
+
+                      if (!found) {
+                        report.warn(`\nWe were unable to find the declaration of variable "${varName}", which you passed as the "query" prop into the <StaticQuery> declaration in "${file}".
+
+Perhaps the variable name has a typo?
+
+Also note that we are currently unable to use queries defined in files other than the file where the <StaticQuery> is defined. If you're attempting to import the query, please move it into "${file}". If being able to import queries from another file is an important capability for you, we invite your help fixing it.\n`);
+                      }
+                    }
+                  }
+
+                });
+              }
+
             });
-            const definitions = [...gqlAst.definitions].map(d => {
-              d.isStaticQuery = true;
-              d.text = text;
-              d.hash = hash;
-              return d;
-            });
-            queries.push(...definitions);
+            return;
           }
 
         }); // Look for exported page queries

@@ -4,6 +4,7 @@ const babelLoader = require(`babel-loader`);
 
 const _require = require(`./babel-loader-helpers`),
       prepareOptions = _require.prepareOptions,
+      getCustomOptions = _require.getCustomOptions,
       mergeConfigItemOptions = _require.mergeConfigItemOptions;
 /**
  * Gatsby's custom loader for webpack & babel
@@ -30,7 +31,7 @@ module.exports = babelLoader.custom(babel => {
         loader: Object.assign({
           cacheDirectory: true,
           sourceType: `unambiguous`
-        }, options)
+        }, getCustomOptions(), options)
       };
     },
 

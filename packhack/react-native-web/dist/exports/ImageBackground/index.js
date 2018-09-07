@@ -101,11 +101,11 @@ function (_Component) {
 
   return ImageBackground;
 }(_react.Component);
-
+/*
 ImageBackground.propTypes = (0, _extends2.default)({}, _Image.default.propTypes, {
   imageStyle: _Image.default.propTypes.style,
   style: _ViewPropTypes.default.style
-});
+});*/
 ImageBackground.defaultProps = {
   style: emptyObject
 };

@@ -77,13 +77,17 @@ const handleQuery = ({
   components,
   staticQueryComponents
 }, query, component) => {
-console.log(components,component)
   // If this is a static query
   // Add action / reducer + watch staticquery files
   if (query.isStaticQuery) {
-    const isNewQuery = !staticQueryComponents.has(query.jsonName);
+    const oldQuery = staticQueryComponents.get(query.jsonName);
+    const isNewQuery = !oldQuery; // Compare query text because text is compiled query with any attached
+    // fragments and we want to rerun queries if fragments are edited.
+    // Compare hash because hash is used for identyfing query and
+    // passing data to component in development. Hash can change if user will
+    // format query text, but it doesn't mean that compiled text will change.
 
-    if (isNewQuery || staticQueryComponents.get(query.jsonName).query !== query.text) {
+    if (isNewQuery || oldQuery.hash !== query.hash || oldQuery.text !== query.text) {
       boundActionCreators.replaceStaticQuery({
         name: query.name,
         componentPath: query.path,

@@ -84,7 +84,6 @@ module.exports.srcPaths = [
   resolveApp('.cache/gatsby-mdx'), 
   resolveApp('node_modules/gatsby-mdx'),
   resolveApp('node_modules/react-navigation'),
-  resolveApp('node_modules/react-native-web'),
   resolveApp('node_modules/react-native-web-linear-gradient'),
   resolveApp('node_modules/react-native-tab-view'),
   //    resolveApp('node_modules/react-native-paper'),

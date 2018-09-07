@@ -5,7 +5,7 @@ const { renderToString, renderToStaticMarkup } = require(`react-dom/server`)
 const { ServerLocation, Router } = require(`@reach/router`)
 const { get, merge, isObject, flatten, uniqBy } = require(`lodash`)
 
-const apiRunner = require(`./api-runner-ssr`) 
+const apiRunner = require(`./api-runner-ssr`)
 const syncRequires = require(`./sync-requires`)
 const { dataPaths, pages } = require(`./data.json`)
 
@@ -15,6 +15,10 @@ pages.forEach(p => pagesObjectMap.set(p.path, p))
 
 const stats = JSON.parse(
   fs.readFileSync(`${process.cwd()}/public/webpack.stats.json`, `utf-8`)
+)
+
+const chunkMapping = JSON.parse(
+  fs.readFileSync(`${process.cwd()}/public/chunk-map.json`, `utf-8`)
 )
 
 // const testRequireError = require("./test-require-error")
@@ -173,186 +177,202 @@ export default (pagePath, callback) => {
     setPreBodyComponents,
     setPostBodyComponents,
     setBodyProps,
-  }).then(function() {
-    // If no one stepped up, we'll handle it.
-    if (!bodyHtml) {
-      bodyHtml = renderToString(bodyComponent)
-    }
+  }).then(function(){
 
-    // Create paths to scripts
-    let scriptsAndStyles = flatten(
-      [`app`, page.componentChunkName].map(s => {
-        const fetchKey = `assetsByChunkName[${s}]`
+  // If no one stepped up, we'll handle it.
+  if (!bodyHtml) {
+    bodyHtml = renderToString(bodyComponent)
+  }
 
-        let chunks = get(stats, fetchKey)
-        let namedChunkGroups = get(stats, `namedChunkGroups`)
+  // Create paths to scripts
+  let scriptsAndStyles = flatten(
+    [`app`, page.componentChunkName].map(s => {
+      const fetchKey = `assetsByChunkName[${s}]`
 
-        if (!chunks) {
+      let chunks = get(stats, fetchKey)
+      let namedChunkGroups = get(stats, `namedChunkGroups`)
+
+      if (!chunks) {
+        return null
+      }
+
+      chunks = chunks.map(chunk => {
+        if (chunk === `/`) {
           return null
         }
-
-        chunks = chunks.map(chunk => {
-          if (chunk === `/`) {
-            return null
-          }
-          return { rel: `preload`, name: chunk }
-        })
-
-        namedChunkGroups[s].assets.forEach(asset =>
-          chunks.push({ rel: `preload`, name: asset })
-        )
-
-        const childAssets = namedChunkGroups[s].childAssets
-        for (const rel in childAssets) {
-          chunks = merge(
-            chunks,
-            childAssets[rel].map(chunk => {
-              return { rel, name: chunk }
-            })
-          )
-        }
-
-        return chunks
+        return { rel: `preload`, name: chunk }
       })
-    )
-      .filter(s => isObject(s))
-      .sort((s1, s2) => (s1.rel == `preload` ? -1 : 1)) // given priority to preload
 
-    scriptsAndStyles = uniqBy(scriptsAndStyles, item => item.name)
+      namedChunkGroups[s].assets.forEach(asset =>
+        chunks.push({ rel: `preload`, name: asset })
+      )
 
-    const scripts = scriptsAndStyles.filter(
-      script => script.name && script.name.endsWith(`.js`)
-    )
-    const styles = scriptsAndStyles.filter(
-      style => style.name && style.name.endsWith(`.css`)
-    )
+      const childAssets = namedChunkGroups[s].childAssets
+      for (const rel in childAssets) {
+        chunks = merge(
+          chunks,
+          childAssets[rel].map(chunk => {
+            return { rel, name: chunk }
+          })
+        )
+      }
 
-    apiRunner(`onRenderBody`, {
-      setHeadComponents,
-      setHtmlAttributes,
-      setBodyAttributes,
-      setPreBodyComponents,
-      setPostBodyComponents,
-      setBodyProps,
-      pathname: pagePath,
-      bodyHtml,
-      scripts,
-      styles,
-      pathPrefix: __PATH_PREFIX__,
+      return chunks
     })
+  )
+    .filter(s => isObject(s))
+    .sort((s1, s2) => (s1.rel == `preload` ? -1 : 1)) // given priority to preload
 
-    scripts
-      .slice(0)
-      .reverse()
-      .forEach(script => {
-        // Add preload/prefetch <link>s for scripts.
-        headComponents.push(
-          <link
-            as="script"
-            rel={script.rel}
-            key={script.name}
-            href={`${__PATH_PREFIX__}/${script.name}`}
-          />
-        )
-      })
+  scriptsAndStyles = uniqBy(scriptsAndStyles, item => item.name)
 
-    if (page.jsonName in dataPaths) {
-      const dataPath = `${__PATH_PREFIX__}/static/d/${
-        dataPaths[page.jsonName]
-      }.json`
+  const scripts = scriptsAndStyles.filter(
+    script => script.name && script.name.endsWith(`.js`)
+  )
+  const styles = scriptsAndStyles.filter(
+    style => style.name && style.name.endsWith(`.css`)
+  )
+
+  apiRunner(`onRenderBody`, {
+    setHeadComponents,
+    setHtmlAttributes,
+    setBodyAttributes,
+    setPreBodyComponents,
+    setPostBodyComponents,
+    setBodyProps,
+    pathname: pagePath,
+    bodyHtml,
+    scripts,
+    styles,
+    pathPrefix: __PATH_PREFIX__,
+  })
+
+  scripts
+    .slice(0)
+    .reverse()
+    .forEach(script => {
+      // Add preload/prefetch <link>s for scripts.
       headComponents.push(
         <link
-          rel="preload"
-          key={dataPath}
-          href={dataPath}
-          as="fetch"
-          crossOrigin="use-credentials"
+          as="script"
+          rel={script.rel}
+          key={script.name}
+          href={`${__PATH_PREFIX__}/${script.name}`}
         />
       )
-    }
-
-    styles
-      .slice(0)
-      .reverse()
-      .forEach(style => {
-        // Add <link>s for styles that should be prefetched
-        // otherwise, inline as a <style> tag
-
-        if (style.rel === `prefetch`) {
-          headComponents.push(
-            <link
-              as="style"
-              rel={style.rel}
-              key={style.name}
-              href={`${__PATH_PREFIX__}/${style.name}`}
-            />
-          )
-        } else {
-          headComponents.unshift(
-            <style
-              data-href={`${__PATH_PREFIX__}/${style.name}`}
-              dangerouslySetInnerHTML={{
-                __html: fs.readFileSync(
-                  join(process.cwd(), `public`, style.name),
-                  `utf-8`
-                ),
-              }}
-            />
-          )
-        }
-      })
-
-    apiRunner(`onPreRenderHTML`, {
-      getHeadComponents,
-      replaceHeadComponents,
-      getPreBodyComponents,
-      replacePreBodyComponents,
-      getPostBodyComponents,
-      replacePostBodyComponents,
     })
 
-    // Add page metadata for the current page
-    const windowData = `/*<![CDATA[*/window.page=${JSON.stringify(page)};${
-      page.jsonName in dataPaths
-        ? `window.dataPath="${dataPaths[page.jsonName]}";`
-        : ``
-    }/*]]>*/`
-
-    postBodyComponents.push(
-      <script
-        key={`script-loader`}
-        id={`gatsby-script-loader`}
-        dangerouslySetInnerHTML={{
-          __html: windowData,
-        }}
+  if (page.jsonName in dataPaths) {
+    const dataPath = `${__PATH_PREFIX__}/static/d/${
+      dataPaths[page.jsonName]
+    }.json`
+    headComponents.push(
+      <link
+        rel="preload"
+        key={dataPath}
+        href={dataPath}
+        as="fetch"
+        crossOrigin="use-credentials"
       />
     )
+  }
 
-    // Filter out prefetched bundles as adding them as a script tag
-    // would force high priority fetching.
-    const bodyScripts = scripts.filter(s => s.rel !== `prefetch`).map(s => {
-      const scriptPath = `${__PATH_PREFIX__}/${JSON.stringify(s.name).slice(
-        1,
-        -1
-      )}`
-      return <script key={scriptPath} src={scriptPath} async />
+  styles
+    .slice(0)
+    .reverse()
+    .forEach(style => {
+      // Add <link>s for styles that should be prefetched
+      // otherwise, inline as a <style> tag
+
+      if (style.rel === `prefetch`) {
+        headComponents.push(
+          <link
+            as="style"
+            rel={style.rel}
+            key={style.name}
+            href={`${__PATH_PREFIX__}/${style.name}`}
+          />
+        )
+      } else {
+        headComponents.unshift(
+          <style
+            data-href={`${__PATH_PREFIX__}/${style.name}`}
+            dangerouslySetInnerHTML={{
+              __html: fs.readFileSync(
+                join(process.cwd(), `public`, style.name),
+                `utf-8`
+              ),
+            }}
+          />
+        )
+      }
     })
 
-    postBodyComponents.push(...bodyScripts)
+  apiRunner(`onPreRenderHTML`, {
+    getHeadComponents,
+    replaceHeadComponents,
+    getPreBodyComponents,
+    replacePreBodyComponents,
+    getPostBodyComponents,
+    replacePostBodyComponents,
+  })
 
-    const html = `<!DOCTYPE html>${renderToStaticMarkup(
-      <Html
-        {...bodyProps}
-        headComponents={headComponents}
-        htmlAttributes={htmlAttributes}
-        bodyAttributes={bodyAttributes}
-        preBodyComponents={preBodyComponents}
-        postBodyComponents={postBodyComponents}
-        body={bodyHtml}
-        path={pagePath}
-      />
+  // Add page metadata for the current page
+  const windowData = `/*<![CDATA[*/window.page=${JSON.stringify(page)};${
+    page.jsonName in dataPaths
+      ? `window.dataPath="${dataPaths[page.jsonName]}";`
+      : ``
+  }/*]]>*/`
+
+  postBodyComponents.push(
+    <script
+      key={`script-loader`}
+      id={`gatsby-script-loader`}
+      dangerouslySetInnerHTML={{
+        __html: windowData,
+      }}
+    />
+  )
+
+  // Add chunk mapping metadata
+  const scriptChunkMapping = `/*<![CDATA[*/window.___chunkMapping=${JSON.stringify(
+    chunkMapping
+  )};/*]]>*/`
+
+  postBodyComponents.push(
+    <script
+      key={`chunk-mapping`}
+      id={`gatsby-chunk-mapping`}
+      dangerouslySetInnerHTML={{
+        __html: scriptChunkMapping,
+      }}
+    />
+  )
+
+  // Filter out prefetched bundles as adding them as a script tag
+  // would force high priority fetching.
+  const bodyScripts = scripts.filter(s => s.rel !== `prefetch`).map(s => {
+    const scriptPath = `${__PATH_PREFIX__}/${JSON.stringify(s.name).slice(
+      1,
+      -1
     )}`
+    return <script key={scriptPath} src={scriptPath} async />
+  })
 
-    callback(null, html)
+  postBodyComponents.push(...bodyScripts)
+
+  const html = `<!DOCTYPE html>${renderToStaticMarkup(
+    <Html
+      {...bodyProps}
+      headComponents={headComponents}
+      htmlAttributes={htmlAttributes}
+      bodyAttributes={bodyAttributes}
+      preBodyComponents={preBodyComponents}
+      postBodyComponents={postBodyComponents}
+      body={bodyHtml}
+      path={pagePath}
+    />
+  )}`
+
+  callback(null, html)
   })
 }

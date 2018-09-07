@@ -53,9 +53,10 @@ function () {
         matchPath
       }));
     });
-    pagesData = _.sortBy(pagesData, // Sort pages with matchPath to end so explicit routes
+    pagesData = _(pagesData) // Ensure pages keep the same sorting through builds
+    // and sort pages with matchPath to end so explicit routes
     // will match before general.
-    p => p.matchPath ? 1 : 0);
+    .sortBy(p => `${p.matchPath ? 1 : 0}${p.path}`).value();
     const newHash = crypto.createHash(`md5`).update(JSON.stringify(pagesComponentDependencies)).digest(`hex`);
 
     if (newHash === lastHash) {
@@ -66,19 +67,11 @@ function () {
     lastHash = newHash; // Get list of components, and json files.
 
     let components = [];
-    let json = [];
     pages.forEach(p => {
       components.push({
         componentChunkName: p.componentChunkName,
         component: p.component
       });
-
-      if (p.jsonName && jsonDataPaths[p.jsonName]) {
-        json.push({
-          jsonName: p.jsonName,
-          dataPath: jsonDataPaths[p.jsonName]
-        });
-      }
     });
     components = _.uniqBy(components, c => c.componentChunkName); // Create file with sync requires of components/json files.
 
@@ -105,7 +98,9 @@ const preferDefault = m => m && m.default || m
 
     const result = yield Promise.all([writeAndMove(`pages.json`, JSON.stringify(pagesData, null, 4)), writeAndMove(`sync-requires.js`, syncRequires), writeAndMove(`async-requires.js`, asyncRequires), writeAndMove(`data.json`, JSON.stringify({
       pages: pagesData,
-      dataPaths: jsonDataPaths
+      // Sort dataPaths by keys to ensure keeping the same
+      // sorting through builds
+      dataPaths: _(jsonDataPaths).toPairs().sortBy(0).fromPairs().value()
     }))]);
     return result;
   });
@@ -116,6 +111,12 @@ const preferDefault = m => m && m.default || m
 }();
 
 exports.writePages = writePages;
+
+const resetLastHash = () => {
+  lastHash = null;
+};
+
+exports.resetLastHash = resetLastHash;
 let bootstrapFinished = false;
 let oldPages;
 

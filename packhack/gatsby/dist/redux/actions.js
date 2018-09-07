@@ -829,7 +829,9 @@ actions.replaceWebpackConfig = (config, plugin = null) => {
  * @param {Object} config An options object in the shape of a normal babelrc javascript object
  * @example
  * setBabelOptions({
- *   sourceMaps: `inline`,
+ *   options: {
+ *     sourceMaps: `inline`,
+ *   }
  * })
  */
 

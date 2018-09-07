@@ -161,7 +161,7 @@ function () {
       }
     });
     const program = store.getState().program;
-   plugins.push(processPlugin({
+    plugins.push(processPlugin({
       resolve: `gatsby-plugin-page-creator`,
       options: {
         path: slash(path.join(program.directory, `src/pages/index.js`)),

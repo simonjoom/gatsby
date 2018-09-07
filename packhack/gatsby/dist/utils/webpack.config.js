@@ -6,7 +6,6 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 require(`v8-compile-cache`);
 
-const webpack = require('webpack'); 
 const fs = require(`fs-extra`);
 
 const path = require(`path`);
@@ -157,7 +156,7 @@ function () {
       switch (stage) {
         case `develop`:
           return {
-            commons: [require.resolve(`react-hot-loader/patch`), `${require.resolve(`webpack-hot-middleware/client`)}?path=${getHmrPath()}&noInfo=true&reload=true&quiet=true`, directoryPath(`.cache/app`)]
+            commons: [require.resolve(`react-hot-loader/patch`), `${require.resolve(`webpack-hot-middleware/client`)}?path=${getHmrPath()}&quiet=true&reload=true`, directoryPath(`.cache/app`)]
           };
 
         case `develop-html`:
@@ -187,17 +186,18 @@ function () {
         "process.env": processEnv(stage, `development`),
         __PATH_PREFIX__: JSON.stringify(program.prefixPaths ? store.getState().config.pathPrefix : ``)
       })];
-    
-    
+
       switch (stage) {
+      
+        case `develop-html`:
         case `develop`:
-          configPlugins = configPlugins.concat([plugins.hotModuleReplacement(), plugins.noEmitOnErrors(),new webpack.DefinePlugin({
-      __DEV__: true,
-      __PROD__: false,
+         configPlugins = configPlugins.concat([plugins.hotModuleReplacement(), plugins.noEmitOnErrors(),plugins.define({
+      __DEV__: false,
+      __PROD__: true,
     }), new FriendlyErrorsWebpackPlugin({
             clearConsole: false
           })]);
-          break;
+          break;    
 
         case `build-javascript`:
           {
@@ -209,15 +209,16 @@ function () {
                 }
               }
             })]);
-            configPlugins = configPlugins.concat([plugins.extractText(),new webpack.DefinePlugin({
+             configPlugins = configPlugins.concat([plugins.extractText(),plugins.define({
       __DEV__: false,
       __PROD__: true,
-    }), // Write out stats object mapping named dynamic imports (aka page
+    }),
             // components) to all their async chunks.
             {
               apply: function apply(compiler) {
                 compiler.hooks.done.tapAsync(`gatsby-webpack-stats-extractor`, (stats, done) => {
                   let assets = {};
+                  let assetsMap = {};
 
                   for (var _iterator = stats.compilation.chunkGroups, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
                     var _ref3;
@@ -253,6 +254,7 @@ function () {
                       }
 
                       assets[chunkGroup.name] = files.filter(f => f.slice(-4) !== `.map`);
+                      assetsMap[chunkGroup.name] = `/` + files.filter(f => f.slice(-4) !== `.map` && f.slice(0, chunkGroup.name.length) === chunkGroup.name)[0];
                     }
                   }
 
@@ -262,7 +264,9 @@ function () {
                   }), {
                     assetsByChunkName: assets
                   });
-                  fs.writeFile(path.join(`public`, `webpack.stats.json`), JSON.stringify(webpackStats), done);
+                  fs.writeFile(path.join(`public`, `chunk-map.json`), JSON.stringify(assetsMap), () => {
+                    fs.writeFile(path.join(`public`, `webpack.stats.json`), JSON.stringify(webpackStats), done);
+                  });
                 });
               }
             }]);
@@ -276,7 +280,6 @@ function () {
     function getDevtool() {
       switch (stage) {
         case `develop`:
-        //  return `eval`;
           return `source-map`;
         // use a normal `source-map` for the html phases since
         // it gives better line and column numbers
@@ -369,9 +372,7 @@ function () {
       return {
         // Use the program's extension list (generated via the
         // 'resolvableExtensions' API hook).
-        extensions: 
-        //["*.web.js",...program.extensions],
-        [
+        extensions: [
         '.web.js',
         '.mjs',
         '.js',
@@ -396,10 +397,10 @@ function () {
           // relative path imports are used sometimes
           // See https://stackoverflow.com/a/49455609/6420957 for more details
           "@babel/runtime": path.dirname(require.resolve(`@babel/runtime/package.json`)),
-     //     "core-js": path.dirname(require.resolve(`core-js/package.json`)),
+          "core-js": path.dirname(require.resolve(`core-js/package.json`)),
           "react-hot-loader": path.dirname(require.resolve(`react-hot-loader/package.json`)),
           "react-lifecycles-compat": directoryPath(`.cache/react-lifecycles-compat.js`),
-          "create-react-context": directoryPath(`.cache/create-react-context.js`), 
+           "create-react-context": directoryPath(`.cache/create-react-context.js`),
            "lodash":"lodash-es",
         'react-native-vector-icons/FontAwesome':
           'expo-web/dist/exports/FontAwesome',

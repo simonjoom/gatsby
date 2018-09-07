@@ -4,7 +4,7 @@ const path = require(`path`);
 
 const _ = require(`lodash`);
 
-const prepareOptions = (babel, resolve = require.resolve) => {
+const loadCachedConfig = () => {
   let pluginBabelConfig = {
     test: {
       plugins: [],
@@ -12,10 +12,21 @@ const prepareOptions = (babel, resolve = require.resolve) => {
     }
   };
 
- if (process.env.NODE_ENV !== `test`) {
+  if (process.env.NODE_ENV !== `test`) {
     pluginBabelConfig = require(path.join(process.cwd(), `./.cache/babelState.json`));
   }
 
+  return pluginBabelConfig;
+};
+
+const getCustomOptions = () => {
+  const pluginBabelConfig = loadCachedConfig();
+  const stage = process.env.GATSBY_BUILD_STAGE || `test`;
+  return pluginBabelConfig[stage].options;
+};
+
+const prepareOptions = (babel, resolve = require.resolve) => {
+  let pluginBabelConfig = loadCachedConfig();
   const stage = process.env.GATSBY_BUILD_STAGE || `test`; // Required plugins/presets
 
   const requiredPlugins = [babel.createConfigItem([resolve(`babel-plugin-remove-graphql-queries`)], {
@@ -49,9 +60,11 @@ const prepareOptions = (babel, resolve = require.resolve) => {
       browsers: pluginBabelConfig.browserslist
     };
   }
+
 fallbackPlugins.push(babel.createConfigItem([resolve(`@babel/plugin-transform-flow-strip-types`)], {
     type: `plugin`
   }));
+  
   fallbackPresets.push(babel.createConfigItem([resolve(`@babel/preset-env`), {
     loose: true,
     modules: false,
@@ -118,8 +131,9 @@ const mergeConfigItemOptions = ({
   }
 
   return items;
-}; // Export helper functions for testing
+};
 
+exports.getCustomOptions = getCustomOptions; // Export helper functions for testing
 
 exports.prepareOptions = prepareOptions;
 exports.mergeConfigItemOptions = mergeConfigItemOptions;
