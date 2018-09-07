@@ -110,7 +110,7 @@ class Template extends React.Component {
               SimpleLineIcons: myicons.SimpleLineIcons,
             }),
             title: title ? title : 'notitle',
-            Icons: myicons.MaterialCommunityIcons,
+            isMain:true
           }),
         },
         Main: {
@@ -122,8 +122,7 @@ class Template extends React.Component {
               location,
               SimpleLineIcons: myicons.SimpleLineIcons,
             }),
-            title: title ? title : 'notitle',
-            Icons: myicons.MaterialCommunityIcons,
+            title: title ? title : 'notitle'
           }),
         },
       },
@@ -134,8 +133,7 @@ class Template extends React.Component {
         },
         useNativeAnimations: false,
       }
-    )
-    console.log('render Drawer', myicons.SimpleLineIcons)
+    ) 
     return (
       <>
         <Helmet
