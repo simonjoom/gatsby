@@ -5,7 +5,7 @@ import Helmet from 'react-helmet'
 import { withNavigation } from 'react-navigation'
 import LoginAdmin from 'views/admin/login/Login'
 import { rhythm, scale } from '../utils/typography'
-import { MainStackAdmin } from './stack'
+import { mainStackAdmin, signup, main2 } from './stack'
 import { View } from 'react-native'
 import {
   createBottomTabNavigator,
@@ -22,7 +22,7 @@ export const myicons = {
   MaterialCommunityIcons: 'div',
 }
 let DrawerNavigator
-const Vomp = ({ header, children, navigation, location, SimpleLineIcons }) => {
+const Vomp = ({ header, children, navigation, location }) => {
   return withNavigation(
     class Vomp extends Component {
       render() {
@@ -42,7 +42,7 @@ const Vomp = ({ header, children, navigation, location, SimpleLineIcons }) => {
             {children}
             <LoginAdmin
               navigation={this.props.navigation}
-              SimpleLineIcons={SimpleLineIcons}
+              SimpleLineIcons={myicons.SimpleLineIcons}
             />
           </View>
         )
@@ -65,6 +65,7 @@ class Template extends React.Component {
   render() {
     // const HistoryNavigator = withBrowserHistory(Drawer)
     const { location, children, data } = this.props
+    console.log('renderLayout')
     const siteTitle = get(data, 'site.siteMetadata.title')
     const siteDescription = get(data, 'site.siteMetadata.description')
     const rootPath = `${__PATH_PREFIX__}/`
@@ -100,35 +101,42 @@ class Template extends React.Component {
 
     DrawerNavigator = createDrawerNavigator(
       {
-        Main: {
-          path: '',
-          screen: MainStackAdmin({
-            screen: Vomp({
+        MainwithBackground: {
+          screen: mainStackAdmin({
+            view: Vomp({
               header: header('h2'),
               children,
               location,
-              SimpleLineIcons: myicons.SimpleLineIcons,
             }),
             title: title ? title : 'notitle',
-            type: 'Main',
+            type: 'withBackground',
           }),
         },
-        Other: {
-          path: 'sent',
-          screen: MainStackAdmin({
-            screen: Vomp({
-              header: header('h2'),
+        Main2: {
+          screen: main2({
+            view: Vomp({
+              header: header('h4'),
               children,
               location,
-              SimpleLineIcons: myicons.SimpleLineIcons,
             }),
-            title: title ? title : 'notitle',
+            title: title ? title : 'notitledd',
             type: 'noMain',
+          }),
+        },
+        Signup: {
+          screen: signup({
+            view: Vomp({
+              header: header('h4'),
+              children,
+              location,
+            }),
+            title: title ? title : 'notitledd',
+            type: 'Signup',
           }),
         },
       },
       {
-        initialRouteName: 'Main',
+        initialRouteName: 'MainwithBackground',
         contentOptions: {
           activeTintColor: '#e91e63',
         },
@@ -142,7 +150,7 @@ class Template extends React.Component {
           meta={[{ name: 'description', content: siteDescription }]}
           title={siteTitle}
         />
-        <DrawerNavigator location={location} />
+        <DrawerNavigator />
       </>
     )
   }

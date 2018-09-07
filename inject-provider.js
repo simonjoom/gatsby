@@ -142,7 +142,7 @@ export function setupApolloClient() {
   return client
 }
 
-const apolloClient = setupApolloClient()
+//const apolloClient = setupApolloClient()
 
 export const wrapPageElement = ({ element, props }) => {
   console.log(props)
@@ -152,5 +152,7 @@ export const wrapPageElement = ({ element, props }) => {
 }
 // eslint-disable-next-line react/prop-types,react/display-name
 export default ({ element }) => (
-  <ApolloProvider client={apolloClient}>{element}</ApolloProvider>
+  <div>{element}</div>
 )
+
+//<ApolloProvider client={apolloClient}>{element}</ApolloProvider>

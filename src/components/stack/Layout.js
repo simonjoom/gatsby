@@ -11,22 +11,26 @@ export const MainScreen = ({
   screenProps,
   ChildrenComp,
   title,
-  isMainPage,
+  withBackground,
 }) => {
   return (
     <LayoutContainer
       title={title}
       navigation={navigation}
       screenProps={screenProps}
-      isMainPage={isMainPage}
+      withBackground={withBackground}
     >
       <ChildrenComp navigation={navigation} />
-      <Button onPress={() => navigation.navigate('Login')} title="Login" />
+      <Button
+        onPress={() => navigation.navigate('MainwithBackground')}
+        title="Login"
+      />
     </LayoutContainer>
   )
 }
 
 export const navigationOptions = ({ navigation }) => {
+  console.log('navigation', navigation.state)
   return {
     headerTitle: 'Main',
     headerRight: (
@@ -38,7 +42,10 @@ export const navigationOptions = ({ navigation }) => {
     headerLeft: (
       <Plus
         navigation={navigation}
-        route="Login"
+        route={
+          (navigation.state && navigation.state.routeName) ||
+          'MainwithBackground'
+        }
         Icon={myicons.MaterialCommunityIcons}
       />
     ),
@@ -106,6 +113,14 @@ export const BackendScreen = dismissableStackNavigator(
     headerMode: 'none',
   }
 )
+export const SignUpAdminscreen = ({ navigation, screenProps, type }) =>
+  MainScreen({
+    screenProps,
+    navigation,
+    ChildrenComp: SignUpAdmin,
+    title: 'SignUp',
+    withBackground: type == 'Main',
+  })
 
 export const LoginAdminScreen = ({ navigation, screenProps }) =>
   MainScreen({
@@ -115,20 +130,14 @@ export const LoginAdminScreen = ({ navigation, screenProps }) =>
     title: 'Login',
   })
 
-export const SignUpAdminscreen = ({ navigation, screenProps }) =>
+export const SignInAdminScreen = ({ navigation, screenProps, type }) =>
   MainScreen({
     screenProps,
     navigation,
-    ChildrenComp: SignUpAdmin,
-    title: 'SignUp',
-  })
-
-export const SignInAdminScreen = ({ navigation, screenProps }) =>
-  MainScreen({
-    screenProps,
-    navigation: navigation,
     ChildrenComp: SignInAdmin,
     title: 'SignIn',
+    withBackground: type == 'Main',
   })
 
-SignInAdminScreen.navigationOptions = LoginAdminScreen.navigationOptions = SignUpAdminscreen.navigationOptions = navigationOptions
+SignInAdminScreen.navigationOptions = LoginAdminScreen.navigationOptions = navigationOptions
+export { SignUpAdmin, dismissableStackNavigator }

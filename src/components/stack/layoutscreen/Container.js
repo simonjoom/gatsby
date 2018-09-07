@@ -63,7 +63,7 @@ export const LayoutContainer = props => {
   }
   return (
     <>
-      {props.isMainPage ? <View style={{ height: '200px' }} /> : null}
+      {props.withBackground ? <View style={{ height: '200px' }} /> : null}
       <TopBar {...props} />
       <View style={[styles.subContainer, props.innerStyle]}>
         {props.children}
