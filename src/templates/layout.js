@@ -19,7 +19,9 @@ export default class MDXRuntimeTest extends Component {
     } = this.props
     console.log(data.allImageSharp)
     console.log(data.mdx)
-    const post = data.mdx
+    const post = data.mdx;
+    if(!post)
+    return null;
     const { previous, next } = pageContext
     return (
       <>
