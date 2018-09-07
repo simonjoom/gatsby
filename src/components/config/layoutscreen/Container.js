@@ -6,10 +6,8 @@ import {
   Platform,
   StyleSheet,
   ViewPropTypes,
-  ScrollView,
-  Dimensions,
-} from 'react-native' 
-import LinearGradient from 'react-native-linear-gradient'
+  ScrollView, 
+} from 'react-native'  
 import { SafeAreaView } from 'react-navigation'
 import Colors from 'src/statics/colors'
 import Title from '../../title/Title'

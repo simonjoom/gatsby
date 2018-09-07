@@ -151,8 +151,12 @@ const MainStackAdmin = ({ screen, title,Icons }) =>
               Icon={Icons}
             />
           ),
+          headerTitleStyle: {
+            color: Colors.$white,
+          },
+          headerTintColor: '#fff',
           headerStyle: {
-            backgroundColor: Colors.$green,
+            backgroundColor: '#f4511e',
           },
         }
       },
