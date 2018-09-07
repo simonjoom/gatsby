@@ -137,12 +137,7 @@ class Template extends React.Component {
         Signup: {
           screen: ({ navigation }) => (
             <Signup
-              screenProps={{
-                view: Vomp({
-                  header: header('h2'),
-                  children,
-                  location,
-                }),
+              screenProps={{ 
                 title: title ? title : 'notitle',
                 withBackground: false,
                 navigation,

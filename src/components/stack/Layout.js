@@ -31,7 +31,7 @@ export const MainScreen = ({
 }
 
 export const navigationOptions = ({ screenProps }) => {
-  const nav=screenProps.navigation
+  const nav = screenProps.navigation
   console.log('navigation', nav.state)
   return {
     headerTitle: 'Main',
@@ -126,30 +126,26 @@ export const SignUpAdminscreen = ({
     withBackground: withBackground,
   })
 
-export const LoginAdminScreen = ({ navigation, screenProps }) =>
+export const LoginAdminScreen = ({ navigation, screenProps, withBackground }) =>
   MainScreen({
     screenProps,
     navigation,
     ChildrenComp: LoginAdmin,
     title: 'Login',
+    withBackground: withBackground,
   })
 
-export const SignInAdminScreen = ({ navigation, screenProps, type }) =>
+export const SignInAdminScreen = ({
+  navigation,
+  screenProps,
+  withBackground,
+}) =>
   MainScreen({
     screenProps,
     navigation,
     ChildrenComp: SignInAdmin,
     title: 'SignIn',
-    withBackground: type == 'Main',
-  })
-
-export const Main2Screen = ({ view, navigation, screenProps, type }) =>
-  MainScreen({
-    screenProps,
-    navigation,
-    ChildrenComp: view,
-    title: 'SignIn',
-    withBackground: type == 'Main',
+    withBackground: withBackground,
   })
 
 //SignInAdminScreen.navigationOptions = LoginAdminScreen.navigationOptions = navigationOptions

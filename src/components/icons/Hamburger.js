@@ -7,8 +7,7 @@ import Colors from 'src/statics/colors'
 const Hamburger = ({ navigation, route ,Icon}) => (
   <View>
     <TouchableOpacity
-      onPress={() => {
-        console.log(navigation)
+      onPress={() => { 
         navigation.navigate(route)&&
         navigation.openDrawer()
       }}

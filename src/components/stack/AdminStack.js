@@ -42,42 +42,16 @@ const MainStackAdmin = createStackNavigator(
     navigationOptions: navigationOptions,
     cardStyle: { backgroundColor: '#2980B9' },
   }
-)
+) 
 
-/*
-const main2 = ({ view, title, screenProps, navigation }) => {
-  return createStackNavigator(
-    {
-      Main2: {
-        screen: ({ navigation, screenProps }) => {
-          return MainScreen({
-            withBackground: false,
-            screenProps,
-            navigation,
-            ChildrenComp: view,
-            title: title,
-          })
-        },
-      },
-    },
-    {
-      initialRouteName: 'Main2',
-      transitionConfig: Transition,
-      useNativeAnimations: false,
-      navigationOptions: navigationOptions,
-      cardStyle: { backgroundColor: '#2980B9' },
-    }
-  )
-}
-*/
+
 const Signup = createStackNavigator(
   {
     Signup: {
       screen: ({ navigation, screenProps }) =>
         SignUpAdminscreen({
           withBackground: screenProps.withBackground,
-          navigation: screenProps.navigation,
-          ChildrenComp: screenProps.view,
+          navigation: screenProps.navigation, 
           title: screenProps.title,
         }),
     },
