@@ -23,34 +23,6 @@ export const myicons = {
   MaterialCommunityIcons: 'div',
 }
 let DrawerNavigator
-const Vomp = ({ header, children, navigation, location }) => {
-  return withNavigation(
-    class Vomp extends Component {
-      render() {
-        console.log('location', location)
-        return (
-          <View
-            style={{
-              alignItems: 'center',
-              alignSelf: 'center',
-              flex: 1,
-              flexGrow: 1,
-              maxWidth: rhythm(24),
-              padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
-            }}
-          >
-            {header}
-            {children}
-            <LoginAdmin
-              navigation={this.props.navigation}
-              SimpleLineIcons={myicons.SimpleLineIcons}
-            />
-          </View>
-        )
-      }
-    }
-  )
-}
 
 class Template extends React.Component {
   //componentWillUnmount() {
@@ -106,14 +78,12 @@ class Template extends React.Component {
           screen: ({ navigation }) => (
             <MainStackAdmin
               screenProps={{
-                view: Vomp({
-                  header: header('h2'),
-                  children,
-                  location,
-                }),
+                children,
+                header: header('h2'),
+                location,
+                navigation,
                 title: title ? title : 'notitle',
                 withBackground: true,
-                navigation,
               }}
             />
           ),
@@ -122,14 +92,12 @@ class Template extends React.Component {
           screen: ({ navigation }) => (
             <MainStackAdmin
               screenProps={{
-                view: Vomp({
-                  header: header('h2'),
-                  children,
-                  location,
-                }),
+                children,
+                header: header('h2'),
+                location,
+                navigation,
                 title: title ? title : 'notitle',
                 withBackground: false,
-                navigation,
               }}
             />
           ),
@@ -137,7 +105,7 @@ class Template extends React.Component {
         Signup: {
           screen: ({ navigation }) => (
             <Signup
-              screenProps={{ 
+              screenProps={{
                 title: title ? title : 'notitle',
                 withBackground: false,
                 navigation,

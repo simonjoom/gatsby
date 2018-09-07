@@ -16,23 +16,20 @@ const MainStackAdmin = createStackNavigator(
     MainwithBackground: {
       screen: ({ navigation, screenProps }) =>
         MainScreen({
-          withBackground: screenProps.withBackground,
-          navigation: screenProps.navigation,
-          ChildrenComp: screenProps.view,
-          title: screenProps.title,
+          screenProps, 
+          navigation
         }),
     },
     Main2: {
       screen: ({ navigation, screenProps }) =>
         MainScreen({
-          withBackground: screenProps.withBackground,
-          navigation: screenProps.navigation,
-          ChildrenComp: screenProps.view,
-          title: screenProps.title,
+          screenProps, 
+          navigation
         }),
     },
     Backend: {
-      screen: BackendScreen,
+      screen: ({ navigation, screenProps }) =>
+        BackendScreen({ navigation, screenProps }),
     },
   },
   {
@@ -42,8 +39,7 @@ const MainStackAdmin = createStackNavigator(
     navigationOptions: navigationOptions,
     cardStyle: { backgroundColor: '#2980B9' },
   }
-) 
-
+)
 
 const Signup = createStackNavigator(
   {
@@ -51,7 +47,7 @@ const Signup = createStackNavigator(
       screen: ({ navigation, screenProps }) =>
         SignUpAdminscreen({
           withBackground: screenProps.withBackground,
-          navigation: screenProps.navigation, 
+          navigation: screenProps.navigation,
           title: screenProps.title,
         }),
     },

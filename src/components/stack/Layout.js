@@ -1,31 +1,41 @@
 import React from 'react'
 import dismissableStackNavigator from 'helpers'
-import { Button } from 'react-native'
+import { Button ,View} from 'react-native'
 import { Hamburger, Plus } from 'components/icons'
 import Colors from 'statics/colors'
+import { rhythm, scale } from 'src/utils/typography'
 import { myicons } from 'src/components/layout'
 import { LayoutContainer } from './layoutscreen/Container'
 
 export const MainScreen = ({
   navigation,
-  screenProps,
-  ChildrenComp,
-  title,
-  withBackground,
+  screenProps
 }) => {
-  console.log('screenProps', navigation, screenProps)
   return (
     <LayoutContainer
-      title={title}
+      title={screenProps.title}
       navigation={navigation}
       screenProps={screenProps}
-      withBackground={withBackground}
+      withBackground={screenProps.withBackground}
     >
-      <ChildrenComp navigation={navigation} />
-      <Button
-        onPress={() => navigation.navigate('MainwithBackground')}
-        title="Login"
-      />
+      <View
+        style={{
+          alignItems: 'center',
+          alignSelf: 'center',
+          flex: 1,
+          flexGrow: 1,
+          maxWidth: rhythm(24),
+          padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
+        }}
+      >
+        {screenProps.header}
+        {screenProps.children}
+        <LoginAdmin
+          navigation={navigation}
+          SimpleLineIcons={myicons.SimpleLineIcons}
+        />
+      </View>
+      <Button onPress={() => navigation.navigate('Backend')} title="Login" />
     </LayoutContainer>
   )
 }
@@ -94,25 +104,27 @@ const ModalNavigator = dismissableStackNavigator(mRoute, {
   headerMode: 'none',
 })
 
-export const BackendScreen = dismissableStackNavigator(
-  {
-    Backend: {
-      path: '',
-      screen: ({ navigation, screenProps }) =>
-        MainScreen({
-          screenProps,
-          navigation,
-          ChildrenComp: Backend,
-          title: 'SignIn',
-        }),
+export const BackendScreen = ({ navigation, screenProps }) =>
+  dismissableStackNavigator(
+    {
+      Backend: {
+        path: '',
+        screen: ({ screenProps }) =>
+          MainScreen({
+            screenProps,
+            navigation, 
+            header: screenProps.header,
+            children: Backend,
+            title: 'SignIn',
+          }),
+      },
+      Modal: { screen: ModalNavigator },
     },
-    Modal: { screen: ModalNavigator },
-  },
-  {
-    mode: 'modal',
-    headerMode: 'none',
-  }
-)
+    {
+      mode: 'modal',
+      headerMode: 'none',
+    }
+  )
 export const SignUpAdminscreen = ({
   navigation,
   screenProps,
