@@ -5,9 +5,8 @@ import Helmet from 'react-helmet'
 import { withNavigation } from 'react-navigation'
 import LoginAdmin from 'views/admin/login/Login'
 import { rhythm, scale } from '../utils/typography'
-import { MainStackAdmin } from './config'
-import { View } from 'react-native'
-import NavigationService from './config/NavigationService'
+import { MainStackAdmin } from './stack'
+import { View } from 'react-native' 
 import {
   createBottomTabNavigator,
   createSwitchNavigator,
@@ -22,7 +21,7 @@ export const myicons = {
   SimpleLineIcons: 'div',
   MaterialCommunityIcons: 'div',
 }
-
+let DrawerNavigator;
 const Vomp = ({ header, children, navigation, location, SimpleLineIcons }) => {
   return withNavigation(
     class Vomp extends Component {
@@ -99,7 +98,7 @@ class Template extends React.Component {
       </HH>
     )
 
-    const Drawer = createDrawerNavigator(
+    DrawerNavigator = createDrawerNavigator(
       {
         Inbox: {
           path: '',
@@ -144,10 +143,10 @@ class Template extends React.Component {
           meta={[{ name: 'description', content: siteDescription }]}
           title={siteTitle}
         />
-        <Drawer location={location} />
+        <DrawerNavigator location={location} />
       </>
     )
   }
 }
-
+export const Drawer=DrawerNavigator;
 export default Template

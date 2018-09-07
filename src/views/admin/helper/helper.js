@@ -7,7 +7,7 @@ import {
   Text,
   Image,
 } from 'react-native'
-import { Drawer } from 'src/components/config'
+import { Drawer } from 'src/components/layout'
 import Input from 'src/components/input/Input'
 //import mRoute from "src/AdminStack";
 import { translate } from 'src/i18n'
