@@ -269,12 +269,24 @@ function (_React$Component) {
     if (fluid) {
       var image = fluid; // var Pattern = /\(max-width: (.*)px\).*vw, (.*)px/
 
-      var srcImage, src, srcSet, presentationHeight;
+      var srcImage, src, srcSet, presentationHeight, Pattern, match;
 
       if (height) {
-        var Pattern = /(.*)px/;
-        var match = height.match(Pattern);
-        presentationHeight = parseInt(match[1], 10) / 2 + 'px'; //|| match[2] + 'px'
+        Pattern = /(.*)px/;
+        match = height.match(Pattern);
+
+        if (match) {
+          presentationHeight = parseInt(match[1], 10) / 2 + 'px'; //|| match[2] + 'px'
+        } else {
+          Pattern = /(.*)%/;
+          match = height.match(Pattern);
+
+          if (match) {
+            presentationHeight = parseInt(match[1], 10) / 2 + '%'; //|| match[2] + 'px'
+          } else {
+            presentationHeight = height + 'px';
+          }
+        }
       }
 
       var imagePlaceholderStyle = (0, _extends2.default)({
@@ -316,7 +328,7 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 289
+          lineNumber: 298
         },
         __self: this
       }, bgColor && _react.default.createElement(_reactNative.View, {
@@ -324,14 +336,14 @@ function (_React$Component) {
         style: bgStyle,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 295
+          lineNumber: 304
         },
         __self: this
       }), _react.default.createElement("div", {
         ref: this.handleRef,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 296
+          lineNumber: 305
         },
         __self: this
       }), this.state.isVisible && _react.default.createElement(_reactNative.Image, {
@@ -357,7 +369,7 @@ function (_React$Component) {
         onError: this.props.onError,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 299
+          lineNumber: 308
         },
         __self: this
       }));
