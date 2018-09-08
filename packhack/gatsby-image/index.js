@@ -187,9 +187,57 @@ function (_React$Component) {
     };
     _this.handleRef = _this.handleRef.bind((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
     return _this;
-  }
+  } // Implement srcset
+
 
   var _proto = GatsbyImage.prototype;
+
+  _proto.srcset = function srcset(images) {
+    var maxWidth = 800;
+    var maxHeight = 600;
+    var maxDensity = 1;
+
+    if (typeof window !== 'undefined') {
+      ;
+      maxWidth = window.innerWidth > 0 ? window.innerWidth : screen.width, maxHeight = window.innerHeight > 0 ? window.innerHeight : screen.height, maxDensity = window.devicePixelRatio;
+    }
+
+    var candidates = images.split(',');
+    if (candidates.length == 0) return false;
+    var result;
+    var filename, width, height, density;
+
+    for (var i = 0; i < candidates.length; i++) {
+      // The following regular expression was created based on the rules
+      // in the srcset W3C specification available at:
+      // http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/
+      var descriptors = candidates[i].match(/^\s*([^\s]+)\s*(\s(\d+)w)?\s*(\s(\d+)h)?\s*(\s(\d+)x)?\s*$/);
+      filename = descriptors[1];
+      width = descriptors[3] || false;
+      height = descriptors[5] || false;
+      density = descriptors[7] || 1;
+
+      if (width && width < maxWidth) {
+        continue;
+      }
+
+      if (density && density > maxDensity) {
+        continue;
+      }
+
+      return {
+        result: filename,
+        width: width,
+        height: height
+      };
+    }
+
+    return {
+      result: filename,
+      width: width,
+      height: height
+    };
+  };
 
   _proto.handleRef = function handleRef(ref) {
     var _this2 = this;
@@ -232,6 +280,7 @@ function (_React$Component) {
     if (fluid) {
       var image = fluid;
       var Pattern = /\(max-width: (.*)px\).*vw, (.*)px/;
+      var src, srcSet;
       var match = fluid.sizes.match(Pattern);
       var presentationWidth = match[1] + 'px';
       var presentationHeight = height || match[2] + 'px';
@@ -244,33 +293,40 @@ function (_React$Component) {
       }, imgStyle); // Use webp by default if browser supports it
 
       if (image.srcWebp && image.srcSetWebp && isWebpSupported()) {
-        image.src = image.srcWebp;
-        image.srcSet = image.srcSetWebp;
+        //  image.src = image.srcWebp
+        //  image.srcSet = image.srcSetWebp
+        src = this.srcset(image.srcSetWebp).result;
+        srcSet = image.srcSetWebp;
+      } else {
+        src = this.srcset(image.srcSet).result;
+        srcSet = image.srcSet;
       }
 
-      var srcFront = image.tracedSVG || image.base64; // The outer div is necessary to reset the z-index to 0.
+      console.log('srcselected', src);
+      var srcFront = image.tracedSVG || image.base64;
+      var bgStyle = {
+        backgroundColor: bgColor,
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        opacity: !this.state.imgLoaded ? 1 : 0,
+        transitionDelay: "0.35s",
+        right: 0,
+        left: 0 // The outer div is necessary to reset the z-index to 0.
 
+      };
       return _react.default.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 231
+          lineNumber: 286
         },
         __self: this
       }, bgColor && _react.default.createElement(_reactNative.View, {
         title: title,
-        style: {
-          backgroundColor: bgColor,
-          position: "absolute",
-          top: 0,
-          bottom: 0,
-          opacity: !this.state.imgLoaded ? 1 : 0,
-          transitionDelay: "0.35s",
-          right: 0,
-          left: 0
-        },
+        style: bgStyle,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 233
+          lineNumber: 287
         },
         __self: this
       }), _react.default.createElement("div", {
@@ -280,16 +336,16 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 247
+          lineNumber: 288
         },
         __self: this
       }), this.state.isVisible && _react.default.createElement(_reactNative.Image, {
-        alt: alt,
+        accessibilityLabel: alt,
         resizeMode: resizeMode,
         title: title,
-        srcSet: image.srcSet,
         defaultSource: srcFront,
-        source: image.src,
+        source: src,
+        srcSet: srcSet,
         sizes: image.sizes,
         styleAccessibilityImage: imagePlaceholderStyle,
         styleImage: imageStyle,
@@ -306,7 +362,7 @@ function (_React$Component) {
         onError: this.props.onError,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 255
+          lineNumber: 296
         },
         __self: this
       }), _react.default.createElement("noscript", {
@@ -318,7 +374,7 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 277
+          lineNumber: 318
         },
         __self: this
       }));

@@ -175,6 +175,42 @@ function (_Component) {
       }
     };
 
+    _this.srcset = function (images, maxWidth, maxHeight) {
+      var maxDensity = 1;
+      var candidates = images.split(',');
+      if (candidates.length == 0) return false;
+      var result;
+      var filename, width, height, density;
+
+      for (var i = 0; i < candidates.length; i++) {
+        var descriptors = candidates[i].match(/^\s*([^\s]+)\s*(\s(\d+)w)?\s*(\s(\d+)h)?\s*(\s(\d+)x)?\s*$/);
+        filename = descriptors[1];
+        width = descriptors[3] || false;
+        height = descriptors[5] || false;
+        density = descriptors[7] || 1;
+
+        if (width && width < maxWidth) {
+          continue;
+        }
+
+        if (density && density > maxDensity) {
+          continue;
+        }
+
+        return {
+          result: filename,
+          width: width,
+          height: height
+        };
+      }
+
+      return {
+        result: filename,
+        width: width,
+        height: height
+      };
+    };
+
     _this._getBackgroundSize = function (resizeMode) {
       if (_this._imageRef && (resizeMode === 'center' || resizeMode === 'repeat')) {
         var _this$_imageRef = _this._imageRef,
@@ -185,6 +221,11 @@ function (_Component) {
             width = _this$state$layout.width;
 
         if (naturalHeight && naturalWidth && height && width) {
+          if (window && _this.props.srcSet) {
+            var mywidth = _this.srcset(_this.props.srcSet, width, height).width; 
+            if (mywidth > naturalWidth) window.location.reload();
+          }
+
           var scaleFactor = Math.min(1, width / naturalWidth, height / naturalHeight);
           var x = Math.ceil(scaleFactor * naturalWidth);
           var y = Math.ceil(scaleFactor * naturalHeight);
@@ -372,7 +413,7 @@ function (_Component) {
       draggable: draggable || false,
       ref: this._setImageRef,
       src: displayImageUri,
-      srcSet,
+     // srcSet: srcSet,
       style: _StyleSheet.default.flatten([styles.accessibilityImage, styleAccessibilityImage])
     }) : null;
 

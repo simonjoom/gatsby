@@ -1,9 +1,9 @@
 import React from 'react'
-import { Link, StaticQuery,graphql } from 'gatsby'
+import { Link, StaticQuery, graphql } from 'gatsby'
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import Img from 'gatsby-image'
 
-                  /*  sizes(maxWidth: 50, maxHeight: 50) {
+/*  sizes(maxWidth: 50, maxHeight: 50) {
                       srcSet
                       src
                       sizes
@@ -44,7 +44,13 @@ export default () => (
                 cover_image {
                   childImageSharp {
                     fluid(maxWidth: 2048) {
-                      ...GatsbyImageSharpFluid_withWebp_tracedSVG
+                        base64
+                      aspectRatio
+                      src
+                      srcSet
+                      sizes
+                      srcWebp
+                      srcSetWebp
                     }
                   }
                 }
@@ -61,7 +67,7 @@ export default () => (
     render={data => {
       const el = data.allMdx.edges.find(al => {
         return al.node.fields.slug === '/test/'
-      }) 
+      })
       const fluid = el.node.frontmatter.cover_image.childImageSharp.fluid
       return (
         <View style={styles.box}>

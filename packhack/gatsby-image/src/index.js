@@ -173,6 +173,45 @@ class GatsbyImage extends React.Component {
     this.handleRef = this.handleRef.bind(this)
   }
 
+  // Implement srcset
+  srcset(images) {
+    var maxWidth = 800
+    var maxHeight = 600
+    var maxDensity = 1
+
+    if (typeof window !== 'undefined') {
+      ;(maxWidth = window.innerWidth > 0 ? window.innerWidth : screen.width),
+        (maxHeight =
+          window.innerHeight > 0 ? window.innerHeight : screen.height),
+        (maxDensity = window.devicePixelRatio)
+    }
+    let candidates = images.split(',')
+    if (candidates.length == 0) return false
+    let result
+    let filename, width, height, density
+    for (var i = 0; i < candidates.length; i++) {
+      // The following regular expression was created based on the rules
+      // in the srcset W3C specification available at:
+      // http://www.w3.org/html/wg/drafts/srcset/w3c-srcset/
+      var descriptors = candidates[i].match(
+        /^\s*([^\s]+)\s*(\s(\d+)w)?\s*(\s(\d+)h)?\s*(\s(\d+)x)?\s*$/
+      )
+      filename = descriptors[1]
+      width = descriptors[3] || false
+      height = descriptors[5] || false
+      density = descriptors[7] || 1
+      if (width && width < maxWidth) {
+        continue
+      }
+      if (density && density > maxDensity) {
+        continue
+      }
+
+      return { result: filename, width: width, height: height }
+    }
+    return { result: filename, width: width, height: height }
+  }
+
   handleRef(ref) {
     if (this.state.IOSupported && ref) {
       listenToIntersections(ref, () => {
@@ -203,7 +242,7 @@ class GatsbyImage extends React.Component {
     if (fluid) {
       const image = fluid
       var Pattern = /\(max-width: (.*)px\).*vw, (.*)px/
-
+      let src, srcSet
       let match = fluid.sizes.match(Pattern)
       const presentationWidth = match[1] + 'px'
       const presentationHeight = height || match[2] + 'px'
@@ -222,28 +261,30 @@ class GatsbyImage extends React.Component {
 
       // Use webp by default if browser supports it
       if (image.srcWebp && image.srcSetWebp && isWebpSupported()) {
-        image.src = image.srcWebp
-        image.srcSet = image.srcSetWebp
+        //  image.src = image.srcWebp
+        //  image.srcSet = image.srcSetWebp
+        src = this.srcset(image.srcSetWebp).result
+        srcSet = image.srcSetWebp
+      } else {
+        src = this.srcset(image.srcSet).result
+        srcSet = image.srcSet
       }
+      console.log('srcselected', src)
       const srcFront = image.tracedSVG || image.base64
+      const bgStyle = {
+        backgroundColor: bgColor,
+        position: `absolute`,
+        top: 0,
+        bottom: 0,
+        opacity: !this.state.imgLoaded ? 1 : 0,
+        transitionDelay: `0.35s`,
+        right: 0,
+        left: 0,
+      }
       // The outer div is necessary to reset the z-index to 0.
       return (
         <div>
-          {bgColor && (
-            <View
-              title={title}
-              style={{
-                backgroundColor: bgColor,
-                position: `absolute`,
-                top: 0,
-                bottom: 0,
-                opacity: !this.state.imgLoaded ? 1 : 0,
-                transitionDelay: `0.35s`,
-                right: 0,
-                left: 0,
-              }}
-            />
-          )}
+          {bgColor && <View title={title} style={bgStyle} />}
           <div
             ref={this.handleRef}
             style={{
@@ -256,9 +297,9 @@ class GatsbyImage extends React.Component {
               accessibilityLabel={alt}
               resizeMode={resizeMode}
               title={title}
-              srcSet={image.srcSet}
               defaultSource={srcFront}
-              source={image.src}
+              source={src}
+              srcSet={srcSet}
               sizes={image.sizes}
               styleAccessibilityImage={imagePlaceholderStyle}
               styleImage={imageStyle}

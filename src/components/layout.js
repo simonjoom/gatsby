@@ -38,8 +38,7 @@ class Template extends React.Component {
     console.log('renderLayout',data)
     const siteTitle = get(data, 'site.siteMetadata.title')
     const siteDescription = get(data, 'site.siteMetadata.description')
-    const rootPath = `${__PATH_PREFIX__}/`
-    const title = data.site.siteMetadata.title
+    const rootPath = `${__PATH_PREFIX__}/` 
     let style = {
       ...scale(1.5),
       marginBottom: rhythm(1.5),
@@ -79,7 +78,7 @@ class Template extends React.Component {
                 header: header('h2'),
                 location,
                 navigation,
-                title: title ? title : 'notitle',
+                title: siteTitle ? siteTitle : 'notitle',
                 withBackground: true,
               }}
             />
@@ -93,7 +92,7 @@ class Template extends React.Component {
                 header: header('h2'),
                 location,
                 navigation,
-                title: title ? title : 'notitle',
+                title: siteTitle ? siteTitle : 'notitle',
                 withBackground: false,
               }}
             />
@@ -104,7 +103,7 @@ class Template extends React.Component {
             <Signup
               screenProps={{
                 header: header('h2'),
-                title: title ? title : 'notitle',
+                title: siteTitle ? siteTitle : 'notitle',
                 withBackground: false,
                 navigation,
               }}

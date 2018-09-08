@@ -8,77 +8,90 @@
  * @flow
  */
 
-import applyNativeMethods from '../../modules/applyNativeMethods';
-import createElement from '../createElement';
-import { getAssetByID } from '../../modules/AssetRegistry';
-import resolveShadowValue from '../StyleSheet/resolveShadowValue';
-import ImageLoader from '../../modules/ImageLoader';
-import ImageResizeMode from './ImageResizeMode';
-import ImageSourcePropType from './ImageSourcePropType';
-import ImageStylePropTypes from './ImageStylePropTypes';
-import ImageUriCache from './ImageUriCache';
-import StyleSheet from '../StyleSheet';
-import StyleSheetPropType from '../../modules/StyleSheetPropType';
-import View from '../View';
-import ViewPropTypes from '../ViewPropTypes';
-import { bool, func, number, oneOf, shape } from 'prop-types';
-import React, { Component } from 'react';
+import applyNativeMethods from '../../modules/applyNativeMethods'
+import createElement from '../createElement'
+import { getAssetByID } from '../../modules/AssetRegistry'
+import resolveShadowValue from '../StyleSheet/resolveShadowValue'
+import ImageLoader from '../../modules/ImageLoader'
+import ImageResizeMode from './ImageResizeMode'
+import ImageSourcePropType from './ImageSourcePropType'
+import ImageStylePropTypes from './ImageStylePropTypes'
+import ImageUriCache from './ImageUriCache'
+import StyleSheet from '../StyleSheet'
+import StyleSheetPropType from '../../modules/StyleSheetPropType'
+import View from '../View'
+import ViewPropTypes from '../ViewPropTypes'
+import { bool, func, number, oneOf, shape } from 'prop-types'
+import React, { Component } from 'react'
 
-const emptyObject = {};
+const emptyObject = {}
 
-const STATUS_ERRORED = 'ERRORED';
-const STATUS_LOADED = 'LOADED';
-const STATUS_LOADING = 'LOADING';
-const STATUS_PENDING = 'PENDING';
-const STATUS_IDLE = 'IDLE';
+const STATUS_ERRORED = 'ERRORED'
+const STATUS_LOADED = 'LOADED'
+const STATUS_LOADING = 'LOADING'
+const STATUS_PENDING = 'PENDING'
+const STATUS_IDLE = 'IDLE'
 
 const getImageState = (uri, shouldDisplaySource) => {
-  return shouldDisplaySource ? STATUS_LOADED : uri ? STATUS_PENDING : STATUS_IDLE;
-};
+  return shouldDisplaySource
+    ? STATUS_LOADED
+    : uri
+      ? STATUS_PENDING
+      : STATUS_IDLE
+}
 
 const resolveAssetDimensions = source => {
   if (typeof source === 'number') {
-    const { height, width } = getAssetByID(source);
-    return { height, width };
+    const { height, width } = getAssetByID(source)
+    return { height, width }
   } else if (typeof source === 'object') {
-    const { height, width } = source;
-    return { height, width };
+    const { height, width } = source
+    return { height, width }
   }
-};
+}
 
-const svgDataUriPattern = /^(data:image\/svg\+xml;utf8,)(.*)/;
+const svgDataUriPattern = /^(data:image\/svg\+xml;utf8,)(.*)/
 const resolveAssetUri = source => {
-  let uri = '';
+  let uri = ''
   if (typeof source === 'number') {
     // get the URI from the packager
-    const asset = getAssetByID(source);
-    const scale = asset.scales[0];
-    const scaleSuffix = scale !== 1 ? `@${scale}x` : '';
-    uri = asset ? `${asset.httpServerLocation}/${asset.name}${scaleSuffix}.${asset.type}` : '';
+    const asset = getAssetByID(source)
+    const scale = asset.scales[0]
+    const scaleSuffix = scale !== 1 ? `@${scale}x` : ''
+    uri = asset
+      ? `${asset.httpServerLocation}/${asset.name}${scaleSuffix}.${asset.type}`
+      : ''
   } else if (typeof source === 'string') {
-    uri = source;
+    uri = source
   } else if (source && typeof source.uri === 'string') {
-    uri = source.uri;
+    uri = source.uri
   }
 
   if (uri) {
-    const match = uri.match(svgDataUriPattern);
+    const match = uri.match(svgDataUriPattern)
     // inline SVG markup may contain characters (e.g., #, ") that need to be escaped
     if (match) {
-      const [, prefix, svg] = match;
-      const encodedSvg = encodeURIComponent(svg);
-      return `${prefix}${encodedSvg}`;
+      const [, prefix, svg] = match
+      const encodedSvg = encodeURIComponent(svg)
+      return `${prefix}${encodedSvg}`
     }
   }
 
-  return uri;
-};
+  return uri
+}
 
-let filterId = 0;
+let filterId = 0
 
 const createTintColorSVG = (tintColor, id) =>
   tintColor && id != null ? (
-    <svg style={{ position: 'absolute', height: 0, visibility: 'hidden', width: 0 }}>
+    <svg
+      style={{
+        position: 'absolute',
+        height: 0,
+        visibility: 'hidden',
+        width: 0,
+      }}
+    >
       <defs>
         <filter id={`tint-${id}`}>
           <feFlood floodColor={`${tintColor}`} />
@@ -86,19 +99,19 @@ const createTintColorSVG = (tintColor, id) =>
         </filter>
       </defs>
     </svg>
-  ) : null;
+  ) : null
 
 type State = {
   layout: Object,
-  shouldDisplaySource: boolean
-};
+  shouldDisplaySource: boolean,
+}
 
 class Image extends Component<*, State> {
-  static displayName = 'Image';
+  static displayName = 'Image'
 
   static contextTypes = {
-    isInAParentText: bool
-  };
+    isInAParentText: bool,
+  }
 
   static propTypes = {
     ...ViewPropTypes,
@@ -115,74 +128,79 @@ class Image extends Component<*, State> {
     style: StyleSheetPropType(ImageStylePropTypes),
     // compatibility with React Native
     /* eslint-disable react/sort-prop-types */
-    capInsets: shape({ top: number, left: number, bottom: number, right: number }),
-    resizeMethod: oneOf(['auto', 'resize', 'scale'])
+    capInsets: shape({
+      top: number,
+      left: number,
+      bottom: number,
+      right: number,
+    }),
+    resizeMethod: oneOf(['auto', 'resize', 'scale']),
     /* eslint-enable react/sort-prop-types */
-  };
+  }
 
   static defaultProps = {
-    style: emptyObject
-  };
+    style: emptyObject,
+  }
 
   static getSize(uri, success, failure) {
-    ImageLoader.getSize(uri, success, failure);
+    ImageLoader.getSize(uri, success, failure)
   }
 
   static prefetch(uri) {
-    return ImageLoader.prefetch(uri);
+    return ImageLoader.prefetch(uri)
   }
 
-  static resizeMode = ImageResizeMode;
+  static resizeMode = ImageResizeMode
 
-  _filterId = 0;
-  _imageRef = null;
-  _imageRequestId = null;
-  _imageState = null;
-  _isMounted = false;
+  _filterId = 0
+  _imageRef = null
+  _imageRequestId = null
+  _imageState = null
+  _isMounted = false
 
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
     // If an image has been loaded before, render it immediately
-    const uri = resolveAssetUri(props.source);
-    const shouldDisplaySource = ImageUriCache.has(uri);
-    this.state = { layout: {}, shouldDisplaySource };
-    this._imageState = getImageState(uri, shouldDisplaySource);
-    this._filterId = filterId;
-    filterId++;
+    const uri = resolveAssetUri(props.source)
+    const shouldDisplaySource = ImageUriCache.has(uri)
+    this.state = { layout: {}, shouldDisplaySource }
+    this._imageState = getImageState(uri, shouldDisplaySource)
+    this._filterId = filterId
+    filterId++
   }
 
   componentDidMount() {
-    this._isMounted = true;
+    this._isMounted = true
     if (this._imageState === STATUS_PENDING) {
-      this._createImageLoader();
+      this._createImageLoader()
     } else if (this._imageState === STATUS_LOADED) {
-      this._onLoad({ target: this._imageRef });
+      this._onLoad({ target: this._imageRef })
     }
   }
 
   componentDidUpdate(prevProps) {
-    const prevUri = resolveAssetUri(prevProps.source);
-    const uri = resolveAssetUri(this.props.source);
+    const prevUri = resolveAssetUri(prevProps.source)
+    const uri = resolveAssetUri(this.props.source)
     if (prevUri !== uri) {
-      ImageUriCache.remove(prevUri);
-      const isPreviouslyLoaded = ImageUriCache.has(uri);
-      isPreviouslyLoaded && ImageUriCache.add(uri);
-      this._updateImageState(getImageState(uri, isPreviouslyLoaded));
+      ImageUriCache.remove(prevUri)
+      const isPreviouslyLoaded = ImageUriCache.has(uri)
+      isPreviouslyLoaded && ImageUriCache.add(uri)
+      this._updateImageState(getImageState(uri, isPreviouslyLoaded))
     }
     if (this._imageState === STATUS_PENDING) {
-      this._createImageLoader();
+      this._createImageLoader()
     }
   }
 
   componentWillUnmount() {
-    const uri = resolveAssetUri(this.props.source);
-    ImageUriCache.remove(uri);
-    this._destroyImageLoader();
-    this._isMounted = false;
+    const uri = resolveAssetUri(this.props.source)
+    ImageUriCache.remove(uri)
+    this._destroyImageLoader()
+    this._isMounted = false
   }
 
   render() {
-    const { shouldDisplaySource } = this.state;
+    const { shouldDisplaySource } = this.state
     const {
       accessibilityLabel,
       srcSet,
@@ -193,7 +211,7 @@ class Image extends Component<*, State> {
       source,
       testID,
       /* eslint-disable */
-      capInsets, 
+      capInsets,
       style,
       styleAccessibilityImage,
       styleImage,
@@ -206,81 +224,87 @@ class Image extends Component<*, State> {
       resizeMode,
       /* eslint-enable */
       ...other
-    } = this.props;
+    } = this.props
 
     if (process.env.NODE_ENV !== 'production') {
       if (this.props.src) {
-        console.warn('The <Image> component requires a `source` property rather than `src`.');
+        console.warn(
+          'The <Image> component requires a `source` property rather than `src`.'
+        )
       }
 
       if (this.props.children) {
         throw new Error(
           'The <Image> component cannot contain children. If you want to render content on top of the image, consider using the <ImageBackground> component or absolute positioning.'
-        );
+        )
       }
     }
 
-    const selectedSource = shouldDisplaySource ? source : defaultSource;
-    const displayImageUri = resolveAssetUri(selectedSource);
-    const imageSizeStyle = resolveAssetDimensions(selectedSource);
-    const backgroundImage = displayImageUri ? `url("${displayImageUri}")` : null;
-    const flatStyle = { ...StyleSheet.flatten(style) };
-    const finalResizeMode = resizeMode || flatStyle.resizeMode || ImageResizeMode.cover;
+    const selectedSource = shouldDisplaySource ? source : defaultSource
+    const displayImageUri = resolveAssetUri(selectedSource)
+    const imageSizeStyle = resolveAssetDimensions(selectedSource)
+    const backgroundImage = displayImageUri ? `url("${displayImageUri}")` : null
+    const flatStyle = { ...StyleSheet.flatten(style) }
+    const finalResizeMode =
+      resizeMode || flatStyle.resizeMode || ImageResizeMode.cover
 
     // CSS filters
-    const filters = [];
-    const tintColor = flatStyle.tintColor;
+    const filters = []
+    const tintColor = flatStyle.tintColor
     if (flatStyle.filter) {
-      filters.push(flatStyle.filter);
+      filters.push(flatStyle.filter)
     }
     if (blurRadius) {
-      filters.push(`blur(${blurRadius}px)`);
+      filters.push(`blur(${blurRadius}px)`)
     }
     if (flatStyle.shadowOffset) {
-      const shadowString = resolveShadowValue(flatStyle);
+      const shadowString = resolveShadowValue(flatStyle)
       if (shadowString) {
-        filters.push(`drop-shadow(${shadowString})`);
+        filters.push(`drop-shadow(${shadowString})`)
       }
     }
     if (flatStyle.tintColor) {
-      filters.push(`url(#tint-${this._filterId})`);
+      filters.push(`url(#tint-${this._filterId})`)
     }
 
     // these styles were converted to filters
-    delete flatStyle.shadowColor;
-    delete flatStyle.shadowOpacity;
-    delete flatStyle.shadowOffset;
-    delete flatStyle.shadowRadius;
-    delete flatStyle.tintColor;
+    delete flatStyle.shadowColor
+    delete flatStyle.shadowOpacity
+    delete flatStyle.shadowOffset
+    delete flatStyle.shadowRadius
+    delete flatStyle.tintColor
     // these styles are not supported on View
-    delete flatStyle.overlayColor;
-    delete flatStyle.resizeMode;
+    delete flatStyle.overlayColor
+    delete flatStyle.resizeMode
 
     // Accessibility image allows users to trigger the browser's image context menu
     const hiddenImage = displayImageUri
-      ? createElement('img', { 
+      ? createElement('img', {
           alt: accessibilityLabel || '',
           draggable: draggable || false,
           ref: this._setImageRef,
           src: displayImageUri,
-          srcset:srcSet,
-          style: StyleSheet.flatten([styles.accessibilityImage,styleAccessibilityImage])
+          srcSet,
+          style: StyleSheet.flatten([
+            styles.accessibilityImage,
+            styleAccessibilityImage,
+          ]),
         })
-      : null;
-      const styleImages=StyleSheet.flatten([styles.image,styleImage]);
-      const View1Style=StyleSheet.flatten([
-          styles.root,
-          this.context.isInAParentText && styles.inline,
-          imageSizeStyle,
-          flatStyle
-        ]);
-    const View2style=StyleSheet.flatten([
-            styleImages,
-            this._getBackgroundSize(finalResizeMode),
-            backgroundImage && { backgroundImage },
-            filters.length > 0 && { filter: filters.join(' ') }
-          ]); 
-          
+      : null
+    const styleImages = StyleSheet.flatten([styles.image, styleImage])
+    const View1Style = StyleSheet.flatten([
+      styles.root,
+      this.context.isInAParentText && styles.inline,
+      imageSizeStyle,
+      flatStyle,
+    ])
+    const View2style = StyleSheet.flatten([
+      styleImages,
+      this._getBackgroundSize(finalResizeMode),
+      backgroundImage && { backgroundImage },
+      filters.length > 0 && { filter: filters.join(' ') },
+    ])
+
     return (
       <View
         {...other}
@@ -290,107 +314,142 @@ class Image extends Component<*, State> {
         style={View1Style}
         testID={testID}
       >
-        <View
-          style={View2style}
-        />
+        <View style={View2style} />
         {hiddenImage}
         {createTintColorSVG(tintColor, this._filterId)}
       </View>
-    );
+    )
   }
 
   _createImageLoader() {
-    const { source } = this.props;
-    this._destroyImageLoader();
-    const uri = resolveAssetUri(source);
-    this._imageRequestId = ImageLoader.load(uri, this._onLoad, this._onError);
-    this._onLoadStart();
+    const { source } = this.props
+    this._destroyImageLoader()
+    const uri = resolveAssetUri(source)
+    this._imageRequestId = ImageLoader.load(uri, this._onLoad, this._onError)
+    this._onLoadStart()
   }
 
   _destroyImageLoader() {
     if (this._imageRequestId) {
-      ImageLoader.abort(this._imageRequestId);
-      this._imageRequestId = null;
+      ImageLoader.abort(this._imageRequestId)
+      this._imageRequestId = null
     }
   }
 
   _createLayoutHandler = resizeMode => {
-    const { onLayout } = this.props;
+    const { onLayout } = this.props
     if (resizeMode === 'center' || resizeMode === 'repeat' || onLayout) {
       return e => {
-        const { layout } = e.nativeEvent;
-        onLayout && onLayout(e);
-        this.setState(() => ({ layout }));
-      };
-    }
-  };
-
-  _getBackgroundSize = resizeMode => {
-    if (this._imageRef && (resizeMode === 'center' || resizeMode === 'repeat')) {
-      const { naturalHeight, naturalWidth } = this._imageRef;
-      const { height, width } = this.state.layout;
-      if (naturalHeight && naturalWidth && height && width) {
-        const scaleFactor = Math.min(1, width / naturalWidth, height / naturalHeight);
-        const x = Math.ceil(scaleFactor * naturalWidth);
-        const y = Math.ceil(scaleFactor * naturalHeight);
-        return {
-          backgroundSize: `${x}px ${y}px`
-        };
+        const { layout } = e.nativeEvent
+        onLayout && onLayout(e)
+        this.setState(() => ({ layout }))
       }
     }
-  };
+  }
+  srcset = function(images, maxWidth, maxHeight) {
+    var maxDensity = 1
+
+    var candidates = images.split(',')
+    if (candidates.length == 0) return false 
+    var filename, width, height, density
+    for (var i = 0; i < candidates.length; i++) {
+      var descriptors = candidates[i].match(
+        /^\s*([^\s]+)\s*(\s(\d+)w)?\s*(\s(\d+)h)?\s*(\s(\d+)x)?\s*$/
+      )
+      filename = descriptors[1]
+      width = descriptors[3] || false
+      height = descriptors[5] || false
+      density = descriptors[7] || 1
+      if (width && width < maxWidth) {
+        continue
+      }
+      if (density && density > maxDensity) {
+        continue
+      }
+
+      return { result: filename, width: width, height: height }
+    }
+    return { result: filename, width: width, height: height }
+  }
+
+  _getBackgroundSize = resizeMode => {
+    if (
+      this._imageRef &&
+      (resizeMode === 'center' || resizeMode === 'repeat')
+    ) {
+      const { naturalHeight, naturalWidth } = this._imageRef
+      const { height, width } = this.state.layout
+      if (naturalHeight && naturalWidth && height && width) {
+        if (window && this.props.srcSet) {
+          let mywidth = this.srcset(this.props.srcSet, width, height).width
+          if (mywidth > naturalWidth) window.location.reload()
+        }
+
+        const scaleFactor = Math.min(
+          1,
+          width / naturalWidth,
+          height / naturalHeight
+        )
+        const x = Math.ceil(scaleFactor * naturalWidth)
+        const y = Math.ceil(scaleFactor * naturalHeight)
+        return {
+          backgroundSize: `${x}px ${y}px`,
+        }
+      }
+    }
+  }
 
   _onError = () => {
-    const { onError, source } = this.props;
-    this._updateImageState(STATUS_ERRORED);
+    const { onError, source } = this.props
+    this._updateImageState(STATUS_ERRORED)
     if (onError) {
       onError({
         nativeEvent: {
-          error: `Failed to load resource ${resolveAssetUri(source)} (404)`
-        }
-      });
+          error: `Failed to load resource ${resolveAssetUri(source)} (404)`,
+        },
+      })
     }
-    this._onLoadEnd();
-  };
+    this._onLoadEnd()
+  }
 
   _onLoad = e => {
-    const { onLoad, source } = this.props;
-    const event = { nativeEvent: e };
-    ImageUriCache.add(resolveAssetUri(source));
-    this._updateImageState(STATUS_LOADED);
+    const { onLoad, source } = this.props
+    const event = { nativeEvent: e }
+    ImageUriCache.add(resolveAssetUri(source))
+    this._updateImageState(STATUS_LOADED)
     if (onLoad) {
-      onLoad(event);
+      onLoad(event)
     }
-    this._onLoadEnd();
-  };
+    this._onLoadEnd()
+  }
 
   _onLoadEnd() {
-    const { onLoadEnd } = this.props;
+    const { onLoadEnd } = this.props
     if (onLoadEnd) {
-      onLoadEnd();
+      onLoadEnd()
     }
   }
 
   _onLoadStart() {
-    const { onLoadStart } = this.props;
-    this._updateImageState(STATUS_LOADING);
+    const { onLoadStart } = this.props
+    this._updateImageState(STATUS_LOADING)
     if (onLoadStart) {
-      onLoadStart();
+      onLoadStart()
     }
   }
 
-  _setImageRef = ref => { 
-    this._imageRef = ref;
-  };
+  _setImageRef = ref => {
+    this._imageRef = ref
+  }
 
   _updateImageState(status) {
-    this._imageState = status;
+    this._imageState = status
     const shouldDisplaySource =
-      this._imageState === STATUS_LOADED || this._imageState === STATUS_LOADING;
+      this._imageState === STATUS_LOADED || this._imageState === STATUS_LOADING
     // only triggers a re-render when the image is loading (to support PJEG), loaded, or failed
     if (shouldDisplaySource !== this.state.shouldDisplaySource) {
       if (this._isMounted) {
-        this.setState(() => ({ shouldDisplaySource }));
+        this.setState(() => ({ shouldDisplaySource }))
       }
     }
   }
@@ -400,10 +459,10 @@ const styles = StyleSheet.create({
   root: {
     flexBasis: 'auto',
     overflow: 'hidden',
-    zIndex: 0
+    zIndex: 0,
   },
   inline: {
-    display: 'inline-flex'
+    display: 'inline-flex',
   },
   image: {
     ...StyleSheet.absoluteFillObject,
@@ -413,39 +472,39 @@ const styles = StyleSheet.create({
     backgroundSize: 'cover',
     height: '100%',
     width: '100%',
-    zIndex: -1
+    zIndex: -1,
   },
   accessibilityImage: {
     ...StyleSheet.absoluteFillObject,
     height: '100%',
     opacity: 0,
     width: '100%',
-    zIndex: -1
-  }
-});
+    zIndex: -1,
+  },
+})
 
 const resizeModeStyles = StyleSheet.create({
   center: {
-    backgroundSize: 'auto'
+    backgroundSize: 'auto',
   },
   contain: {
-    backgroundSize: 'contain'
+    backgroundSize: 'contain',
   },
   cover: {
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
   },
   none: {
     backgroundPosition: '0 0',
-    backgroundSize: 'auto'
+    backgroundSize: 'auto',
   },
   repeat: {
     backgroundPosition: '0 0',
     backgroundRepeat: 'repeat',
-    backgroundSize: 'auto'
+    backgroundSize: 'auto',
   },
   stretch: {
-    backgroundSize: '100% 100%'
-  }
-});
+    backgroundSize: '100% 100%',
+  },
+})
 
-export default applyNativeMethods(Image);
+export default applyNativeMethods(Image)
