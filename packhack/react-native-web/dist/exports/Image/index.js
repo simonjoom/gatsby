@@ -179,20 +179,19 @@ function (_Component) {
       var maxDensity = 1;
       var candidates = images.split(',');
       if (candidates.length == 0) return false;
-      var result;
+      var result; 
       var filename, width, height, density;
 
       for (var i = 0; i < candidates.length; i++) {
         var descriptors = candidates[i].match(/^\s*([^\s]+)\s*(\s(\d+)w)?\s*(\s(\d+)h)?\s*(\s(\d+)x)?\s*$/);
         filename = descriptors[1];
-        width = descriptors[3] || false;
-        height = descriptors[5] || false;
+        width = descriptors[3] || false; 
         density = descriptors[7] || 1;
 
         if (width && width < maxWidth) {
           continue;
         }
-
+        
         if (density && density > maxDensity) {
           continue;
         }
@@ -223,7 +222,7 @@ function (_Component) {
         if (naturalHeight && naturalWidth && height && width) {
           if (window && _this.props.srcSet) {
             var mywidth = _this.srcset(_this.props.srcSet, width, height).width; 
-            if (mywidth > naturalWidth) window.location.reload();
+     		if (mywidth > naturalWidth) window.location.reload();
           }
 
           var scaleFactor = Math.min(1, width / naturalWidth, height / naturalHeight);

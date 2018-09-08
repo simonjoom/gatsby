@@ -15,12 +15,9 @@ export const MainScreen = ({ navigation, screenProps, children }) => {
       navigation={navigation}
       screenProps={screenProps}
       withBackground={screenProps.withBackground}
-      style={{
-        alignItems: 'center',
-        alignSelf: 'center',
+      style={{ 
         flex: 1,
         flexGrow: 1,
-        maxWidth: rhythm(24),
         padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
       }}
     >

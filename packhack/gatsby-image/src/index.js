@@ -174,20 +174,24 @@ class GatsbyImage extends React.Component {
   }
 
   // Implement srcset
-  srcset(images) {
-    var maxWidth = 800
-    var maxHeight = 600
+  srcset(images, mxW, mxH, aspectRatio) {
+    var maxWidth = mxW ? mxW : 800
+    var maxHeight = mxH ? mxH : 600
     var maxDensity = 1
+    const ratio = 1 / aspectRatio
 
     if (typeof window !== 'undefined') {
-      ;(maxWidth = window.innerWidth > 0 ? window.innerWidth : screen.width),
-        (maxHeight =
-          window.innerHeight > 0 ? window.innerHeight : screen.height),
-        (maxDensity = window.devicePixelRatio)
+      if (!mxW || mxW === '100%')
+        maxWidth = window.innerWidth > 0 ? window.innerWidth : screen.width
+      else maxWidth = mxW
+      if (!mxH || mxH === '100%')
+        maxHeight = window.innerHeight > 0 ? window.innerHeight : screen.height
+      else maxHeight = mxH
+      maxDensity = window.devicePixelRatio
     }
+
     let candidates = images.split(',')
     if (candidates.length == 0) return false
-    let result
     let filename, width, height, density
     for (var i = 0; i < candidates.length; i++) {
       // The following regular expression was created based on the rules
@@ -198,9 +202,13 @@ class GatsbyImage extends React.Component {
       )
       filename = descriptors[1]
       width = descriptors[3] || false
-      height = descriptors[5] || false
+      if (width) height = width * ratio
+
       density = descriptors[7] || 1
       if (width && width < maxWidth) {
+        continue
+      }
+      if (height && height < maxHeight) {
         continue
       }
       if (density && density > maxDensity) {
@@ -224,6 +232,7 @@ class GatsbyImage extends React.Component {
       title,
       alt,
       resizeMode,
+      width,
       height,
       className,
       outerWrapperClassName,
@@ -241,11 +250,12 @@ class GatsbyImage extends React.Component {
 
     if (fluid) {
       const image = fluid
-      var Pattern = /\(max-width: (.*)px\).*vw, (.*)px/
-      let src, srcSet
-      let match = fluid.sizes.match(Pattern)
-      const presentationWidth = match[1] + 'px'
-      const presentationHeight = height || match[2] + 'px'
+      // var Pattern = /\(max-width: (.*)px\).*vw, (.*)px/
+      let srcImage, src, srcSet
+      // let match = fluid.sizes.match(Pattern)
+      // const presentationWidth = match[1] + 'px'
+      const presentationHeight = height
+      //|| match[2] + 'px'
 
       const imagePlaceholderStyle = {
         opacity: this.state.imgLoaded ? 0 : 1,
@@ -260,16 +270,22 @@ class GatsbyImage extends React.Component {
       }
 
       // Use webp by default if browser supports it
-      if (image.srcWebp && image.srcSetWebp && isWebpSupported()) {
-        //  image.src = image.srcWebp
-        //  image.srcSet = image.srcSetWebp
-        src = this.srcset(image.srcSetWebp).result
+      if (image.srcWebp && image.srcSetWebp && isWebpSupported()) { 
+        srcImage = this.srcset(
+          image.srcSetWebp,
+          width,
+          height,
+          image.aspectRatio
+        )
         srcSet = image.srcSetWebp
       } else {
-        src = this.srcset(image.srcSet).result
+        srcImage = this.srcset(image.srcSet, width, height, image.aspectRatio)
         srcSet = image.srcSet
       }
-      console.log('srcselected', src)
+      src = srcImage.result
+      image.width = srcImage.width
+      image.height = srcImage.height
+
       const srcFront = image.tracedSVG || image.base64
       const bgStyle = {
         backgroundColor: bgColor,
@@ -281,16 +297,17 @@ class GatsbyImage extends React.Component {
         right: 0,
         left: 0,
       }
+      var isconstrained = width !== '100%' && width
       // The outer div is necessary to reset the z-index to 0.
       return (
-        <div>
+        <div
+          style={{
+            height: presentationHeight ? presentationHeight : 'auto',
+            width: width !== '100%' ? srcImage.width : '100%',
+          }}
+        >
           {bgColor && <View title={title} style={bgStyle} />}
-          <div
-            ref={this.handleRef}
-            style={{
-              width: `100%`,
-            }}
-          />
+          <div ref={this.handleRef} />
           {/* Once the image is visible (or the browser doesn't support IntersectionObserver), start downloading the image */}
           {this.state.isVisible && (
             <Image
@@ -299,12 +316,12 @@ class GatsbyImage extends React.Component {
               title={title}
               defaultSource={srcFront}
               source={src}
-              srcSet={srcSet}
+              srcSet={!isconstrained ? srcSet : false}
               sizes={image.sizes}
               styleAccessibilityImage={imagePlaceholderStyle}
               styleImage={imageStyle}
               style={{
-                height: presentationHeight,
+                paddingBottom: presentationHeight ? presentationHeight : '60%',
                 maxWidth: '100%',
               }}
               onLoadEnd={() => {

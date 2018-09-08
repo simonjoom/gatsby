@@ -192,19 +192,20 @@ function (_React$Component) {
 
   var _proto = GatsbyImage.prototype;
 
-  _proto.srcset = function srcset(images) {
-    var maxWidth = 800;
-    var maxHeight = 600;
+  _proto.srcset = function srcset(images, mxW, mxH, aspectRatio) {
+    var maxWidth = mxW ? mxW : 800;
+    var maxHeight = mxH ? mxH : 600;
     var maxDensity = 1;
+    var ratio = 1 / aspectRatio;
 
     if (typeof window !== 'undefined') {
-      ;
-      maxWidth = window.innerWidth > 0 ? window.innerWidth : screen.width, maxHeight = window.innerHeight > 0 ? window.innerHeight : screen.height, maxDensity = window.devicePixelRatio;
+      if (!mxW || mxW === '100%') maxWidth = window.innerWidth > 0 ? window.innerWidth : screen.width;else maxWidth = mxW;
+      if (!mxH || mxH === '100%') maxHeight = window.innerHeight > 0 ? window.innerHeight : screen.height;else maxHeight = mxH;
+      maxDensity = window.devicePixelRatio;
     }
 
     var candidates = images.split(',');
     if (candidates.length == 0) return false;
-    var result;
     var filename, width, height, density;
 
     for (var i = 0; i < candidates.length; i++) {
@@ -214,10 +215,14 @@ function (_React$Component) {
       var descriptors = candidates[i].match(/^\s*([^\s]+)\s*(\s(\d+)w)?\s*(\s(\d+)h)?\s*(\s(\d+)x)?\s*$/);
       filename = descriptors[1];
       width = descriptors[3] || false;
-      height = descriptors[5] || false;
+      if (width) height = width * ratio;
       density = descriptors[7] || 1;
 
       if (width && width < maxWidth) {
+        continue;
+      }
+
+      if (height && height < maxHeight) {
         continue;
       }
 
@@ -259,6 +264,7 @@ function (_React$Component) {
         title = _convertProps.title,
         alt = _convertProps.alt,
         resizeMode = _convertProps.resizeMode,
+        width = _convertProps.width,
         height = _convertProps.height,
         className = _convertProps.className,
         outerWrapperClassName = _convertProps.outerWrapperClassName,
@@ -278,12 +284,13 @@ function (_React$Component) {
     }
 
     if (fluid) {
-      var image = fluid;
-      var Pattern = /\(max-width: (.*)px\).*vw, (.*)px/;
-      var src, srcSet;
-      var match = fluid.sizes.match(Pattern);
-      var presentationWidth = match[1] + 'px';
-      var presentationHeight = height || match[2] + 'px';
+      var image = fluid; // var Pattern = /\(max-width: (.*)px\).*vw, (.*)px/
+
+      var srcImage, src, srcSet; // let match = fluid.sizes.match(Pattern)
+      // const presentationWidth = match[1] + 'px'
+
+      var presentationHeight = height; //|| match[2] + 'px'
+
       var imagePlaceholderStyle = (0, _extends2.default)({
         opacity: this.state.imgLoaded ? 0 : 1,
         transitionDelay: "0.25s"
@@ -293,16 +300,16 @@ function (_React$Component) {
       }, imgStyle); // Use webp by default if browser supports it
 
       if (image.srcWebp && image.srcSetWebp && isWebpSupported()) {
-        //  image.src = image.srcWebp
-        //  image.srcSet = image.srcSetWebp
-        src = this.srcset(image.srcSetWebp).result;
+        srcImage = this.srcset(image.srcSetWebp, width, height, image.aspectRatio);
         srcSet = image.srcSetWebp;
       } else {
-        src = this.srcset(image.srcSet).result;
+        srcImage = this.srcset(image.srcSet, width, height, image.aspectRatio);
         srcSet = image.srcSet;
       }
 
-      console.log('srcselected', src);
+      src = srcImage.result;
+      image.width = srcImage.width;
+      image.height = srcImage.height;
       var srcFront = image.tracedSVG || image.base64;
       var bgStyle = {
         backgroundColor: bgColor,
@@ -312,13 +319,18 @@ function (_React$Component) {
         opacity: !this.state.imgLoaded ? 1 : 0,
         transitionDelay: "0.35s",
         right: 0,
-        left: 0 // The outer div is necessary to reset the z-index to 0.
-
+        left: 0
       };
+      var isconstrained = width !== '100%' && width; // The outer div is necessary to reset the z-index to 0.
+
       return _react.default.createElement("div", {
+        style: {
+          height: presentationHeight ? presentationHeight : 'auto',
+          width: width !== '100%' ? srcImage.width : '100%'
+        },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 286
+          lineNumber: 303
         },
         __self: this
       }, bgColor && _react.default.createElement(_reactNative.View, {
@@ -326,17 +338,14 @@ function (_React$Component) {
         style: bgStyle,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 287
+          lineNumber: 309
         },
         __self: this
       }), _react.default.createElement("div", {
         ref: this.handleRef,
-        style: {
-          width: "100%"
-        },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 288
+          lineNumber: 310
         },
         __self: this
       }), this.state.isVisible && _react.default.createElement(_reactNative.Image, {
@@ -345,12 +354,12 @@ function (_React$Component) {
         title: title,
         defaultSource: srcFront,
         source: src,
-        srcSet: srcSet,
+        srcSet: !isconstrained ? srcSet : false,
         sizes: image.sizes,
         styleAccessibilityImage: imagePlaceholderStyle,
         styleImage: imageStyle,
         style: {
-          height: presentationHeight,
+          paddingBottom: presentationHeight ? presentationHeight : '60%',
           maxWidth: '100%'
         },
         onLoadEnd: function onLoadEnd() {
@@ -362,7 +371,7 @@ function (_React$Component) {
         onError: this.props.onError,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 296
+          lineNumber: 313
         },
         __self: this
       }), _react.default.createElement("noscript", {
@@ -374,7 +383,7 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 318
+          lineNumber: 335
         },
         __self: this
       }));

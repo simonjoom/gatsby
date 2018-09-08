@@ -74,7 +74,7 @@ export default () => (
           <Text style={styles.text}>
             Hi this is React-Native-Web rendered by Gatsby
           </Text>
-          <Img fluid={fluid} height="300px" resizeMode="center" />
+          <Img fluid={fluid}  width="400px"  height="300px" resizeMode="center" />
           <TouchableOpacity
             style={styles.button}
             onPress={() => alert('it works')}
@@ -87,6 +87,11 @@ export default () => (
     }}
   />
 )
+
+//fullscreen <Img fluid={fluid}  width="100%" resizeMode="center" />
+//constrainte height <Img fluid={fluid}  height="300px" width="100%" resizeMode="center" />
+//constrainte height <Img fluid={fluid}  height="300px" width="400px" resizeMode="center" />
+
 
 /*
     file(relativePath: { eq: "salty_egg.jpg" }) {

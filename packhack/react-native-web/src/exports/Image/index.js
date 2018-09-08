@@ -284,7 +284,7 @@ class Image extends Component<*, State> {
           draggable: draggable || false,
           ref: this._setImageRef,
           src: displayImageUri,
-          srcSet,
+         // srcSet,
           style: StyleSheet.flatten([
             styles.accessibilityImage,
             styleAccessibilityImage,
@@ -357,9 +357,9 @@ class Image extends Component<*, State> {
         /^\s*([^\s]+)\s*(\s(\d+)w)?\s*(\s(\d+)h)?\s*(\s(\d+)x)?\s*$/
       )
       filename = descriptors[1]
-      width = descriptors[3] || false
-      height = descriptors[5] || false
+      width = descriptors[3] || false 
       density = descriptors[7] || 1
+      
       if (width && width < maxWidth) {
         continue
       }
