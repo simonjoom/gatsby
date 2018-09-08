@@ -7,11 +7,13 @@ import {
   StyleSheet,
   ViewPropTypes,
   ScrollView,
+  Text
 } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import Colors from 'src/statics/colors'
 import Title from '../../title/Title'
 import NavigationButton from '../../navigation-button/NavigationButton'
+import BgImg from '../../BgImg'
 
 const TopBar = props => {
   return (
@@ -63,7 +65,10 @@ export const LayoutContainer = props => {
   }
   return (
     <>
-      {props.withBackground ? <View style={{ height: '200px' }} /> : null}
+      {props.withBackground ? <View style={{ height: '700px' }}> 
+      <BgImg height="700px"></BgImg>
+      </View>
+      : null }
       <TopBar {...props} />
       <View style={[styles.subContainer, props.style]}>
         {props.children}
@@ -99,7 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 6,
+    paddingTop: 5,
     paddingRight: 0,
   },
 }) 

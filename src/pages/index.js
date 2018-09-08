@@ -1,72 +1,43 @@
-import React from 'react'
-import { graphql,Link } from 'gatsby'
-import get from 'lodash/get'
+import React, {Component} from 'react'
+import { graphql,Link, StaticQuery } from 'gatsby'
+import {View, Text} from 'react-native'
+import Img from "gatsby-image"
 
-import Bio from 'components/Bio' 
-import { rhythm } from '../utils/typography'
- 
-//const BlogIndex = ({ data,location }) => {
-class BlogIndex extends React.Component {
-  render() {
-    const posts = get(this.props.data, 'allMdx.edges')
-    //const morePosts = get(this, 'props.data.allContentfulBlogPostMdx.edges')
-
-    //const posts = get(this, 'props.data.allMarkdownRemark.edges')
+const BgImg = ({name, style}) => (
+  <StaticQuery
+  query = {graphql`
+  query BackgroundImage{
+    file(relativePath: { regex: "/home-image/" }){
+      childImageSharp {
+        fluid(maxWidth:1000) {
+          ...GatsbyImageSharpFluid_tracedSVG
+        }
+      }  
+    }
+  }
+  `}
+  render={data=>{
     return (
-      <>
-        <Bio />
-        <Link style={{ boxShadow: 'none' }} to="/test">
-          Test
-        </Link>
+      <View style={{display: 'flex', border:"2px solid black"}}>
+        <View>
+        <Text>{name}</Text>
+        <Img fluid={data.file.childImageSharp.fluid}/>
+        </View>
+      </View>
+    )
+  }}
+  />
+)
 
-        {posts.map(({ node }) => {
-          const title = get(node, 'frontmatter.title') || node.fields.slug
-          return (
-            <div key={node.id}>
-              <h3
-                style={{
-                  marginBottom: rhythm(1 / 4),
-                }}
-              >
-                <Link style={{ boxShadow: 'none' }} to={node.fields.slug}>
-                  {title}
-                </Link>
-              </h3>
-              <small>{node.frontmatter && node.frontmatter.date}</small>
-              <p dangerouslySetInnerHTML={{ __html: node.excerpt }} />
-            </div>
-          )
-        })}
-      </>
+class Home extends Component {
+  render(){
+    return (
+      <View>
+        {/* <BgImg name="Background-Image"></BgImg> */}
+        <Text>Hello World!</Text>
+      </View>
     )
   }
 }
-//}
 
-export default BlogIndex
-
-export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-        description
-      }
-    }
-    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
-      edges {
-        node {
-          id
-          fields {
-            slug
-          }
-          excerpt
-          frontmatter {
-            date(formatString: "DD MMMM, YYYY")
-            title
-          }
-        }
-      }
-    }
-  }
-`
+export default Home
