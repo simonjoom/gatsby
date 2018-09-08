@@ -101,23 +101,6 @@ var isWebpSupported = function isWebpSupported() {
 
   return isWebpSupportedCache;
 };
-
-var noscriptImg = function noscriptImg(props) {
-  // Check if prop exists before adding each attribute to the string output below to prevent
-  // HTML validation issues caused by empty values like width="" and height=""
-  var src = props.src ? "src=\"" + props.src + "\" " : "src=\"\" "; // required attribute
-
-  var srcSet = props.srcSet ? "srcset=\"" + props.srcSet + "\" " : "";
-  var sizes = props.sizes ? "sizes=\"" + props.sizes + "\" " : "";
-  var title = props.title ? "title=\"" + props.title + "\" " : "";
-  var alt = props.alt ? "alt=\"" + props.alt + "\" " : "alt=\"\" "; // required attribute
-
-  var width = props.width ? "width=\"" + props.width + "\" " : "";
-  var height = props.height ? "height=\"" + props.height + "\" " : "";
-  var opacity = props.opacity ? props.opacity : "1";
-  var transitionDelay = props.transitionDelay ? props.transitionDelay : "0.5s";
-  return "<img " + width + height + src + srcSet + alt + title + sizes + "style=\"position:absolute;top:0;left:0;transition:opacity 0.5s;transition-delay:" + transitionDelay + ";opacity:" + opacity + ";width:100%;height:100%;object-fit:cover;object-position:center\"/>";
-};
 /*
 const Img = props => {
   const { style, onLoad, onError, ...otherProps } = props
@@ -286,10 +269,13 @@ function (_React$Component) {
     if (fluid) {
       var image = fluid; // var Pattern = /\(max-width: (.*)px\).*vw, (.*)px/
 
-      var srcImage, src, srcSet; // let match = fluid.sizes.match(Pattern)
-      // const presentationWidth = match[1] + 'px'
+      var srcImage, src, srcSet, presentationHeight;
 
-      var presentationHeight = height; //|| match[2] + 'px'
+      if (height) {
+        var Pattern = /(.*)px/;
+        var match = height.match(Pattern);
+        presentationHeight = parseInt(match[1], 10) / 2 + 'px'; //|| match[2] + 'px'
+      }
 
       var imagePlaceholderStyle = (0, _extends2.default)({
         opacity: this.state.imgLoaded ? 0 : 1,
@@ -330,7 +316,7 @@ function (_React$Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 303
+          lineNumber: 289
         },
         __self: this
       }, bgColor && _react.default.createElement(_reactNative.View, {
@@ -338,14 +324,14 @@ function (_React$Component) {
         style: bgStyle,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 309
+          lineNumber: 295
         },
         __self: this
       }), _react.default.createElement("div", {
         ref: this.handleRef,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 310
+          lineNumber: 296
         },
         __self: this
       }), this.state.isVisible && _react.default.createElement(_reactNative.Image, {
@@ -371,19 +357,7 @@ function (_React$Component) {
         onError: this.props.onError,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 313
-        },
-        __self: this
-      }), _react.default.createElement("noscript", {
-        dangerouslySetInnerHTML: {
-          __html: noscriptImg((0, _extends2.default)({
-            alt: alt,
-            title: title
-          }, image))
-        },
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 335
+          lineNumber: 299
         },
         __self: this
       }));

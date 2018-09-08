@@ -1,13 +1,12 @@
 const _ = require('lodash')
 const Promise = require('bluebird')
-const path = require('path') 
+const path = require('path')
 const { createFilePath } = require('gatsby-source-filesystem')
-const componentWithMDXScope = require('gatsby-mdx/component-with-mdx-scope') 
+const componentWithMDXScope = require('gatsby-mdx/component-with-mdx-scope')
 const paths = require('./paths')
 const escapeStringRegexp = require('escape-string-regexp')
 const defaultOptions = require('gatsby-mdx/utils/default-options')
 const extractExports = require('gatsby-mdx/utils/extract-exports')
-  
 
 exports.onCreateNode = async ({ node, actions, getNode }) => {
   const { createNodeField } = actions
@@ -38,7 +37,7 @@ exports.onCreateNode = async ({ node, actions, getNode }) => {
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
-  
+
   return new Promise((resolve, reject) => {
     return graphql(
       `
@@ -61,10 +60,13 @@ exports.createPages = ({ graphql, actions }) => {
                   title
                   cover_image {
                     childImageSharp {
-                      sizes(maxWidth: 1240) {
-                        srcSet
+                      fluid {
+                        base64
                         aspectRatio
                         src
+                        srcSet
+                        srcWebp
+                        srcSetWebp
                         sizes
                       }
                     }
@@ -95,32 +97,34 @@ exports.createPages = ({ graphql, actions }) => {
         reject(result.errors)
       }
       const posts = result.data.allMdx.edges
-      const aray = []
+      const aray = []
       console.log('pists', posts)
       _.each(posts, (post, index) => {
         const previous =
           index === posts.length - 1 ? null : posts[index + 1].node
         const next = index === 0 ? null : posts[index - 1].node
-        console.log('scope',post.node.code.scope)
+        console.log('scope', post.node.code.scope)
         const cmp = componentWithMDXScope(
           path.resolve('./src/templates/layout.js'),
           post.node.code.scope,
           __dirname
         )
-        aray.push(createPage({
-          path: post.node.fields.slug,
-          // component: post.node.parent.absolutePath,
-          component: cmp,
-          context: {
-            absPath: post.node.parent.absolutePath,
-            previous,
-            next,
-            id: post.node.id,
-            tableOfContents: post.node.tableOfContents,
-          },
-        }))
+        aray.push(
+          createPage({
+            path: post.node.fields.slug,
+            // component: post.node.parent.absolutePath,
+            component: cmp,
+            context: {
+              absPath: post.node.parent.absolutePath,
+              previous,
+              next,
+              id: post.node.id,
+              tableOfContents: post.node.tableOfContents,
+            },
+          })
+        )
       })
-      return Promise.all(aray).then(()=>resolve())
+      return Promise.all(aray).then(() => resolve())
       //resolve()
     })
   })
@@ -286,7 +290,7 @@ exports.onCreateWebpackConfig = (
   pluginOptions
 ) => {
   const options = defaultOptions(pluginOptions)
-  const testPattern = new RegExp(
+  /* const testPattern = new RegExp(
     options.extensions.map(ext => `${escapeStringRegexp(ext)}$`).join('|')
   )
   const mdxTestPattern = new RegExp(
@@ -296,7 +300,7 @@ exports.onCreateWebpackConfig = (
       .join('|')
   )
   const decks = options.decks.map(ext => `${escapeStringRegexp(ext)}`)
-
+*/
   actions.setWebpackConfig({
     module: {
       rules: [
