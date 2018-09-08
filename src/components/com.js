@@ -74,7 +74,7 @@ export default () => (
           <Text style={styles.text}>
             Hi this is React-Native-Web rendered by Gatsby
           </Text>
-          <Img fluid={fluid}  width="400px"  height="300px" resizeMode="center" />
+          <Img fluid={fluid} resizeMode="center" />
           <TouchableOpacity
             style={styles.button}
             onPress={() => alert('it works')}

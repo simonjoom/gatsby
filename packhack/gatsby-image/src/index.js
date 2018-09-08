@@ -87,22 +87,6 @@ const isWebpSupported = () => {
 
   return isWebpSupportedCache
 }
-
-const noscriptImg = props => {
-  // Check if prop exists before adding each attribute to the string output below to prevent
-  // HTML validation issues caused by empty values like width="" and height=""
-  const src = props.src ? `src="${props.src}" ` : `src="" ` // required attribute
-  const srcSet = props.srcSet ? `srcset="${props.srcSet}" ` : ``
-  const sizes = props.sizes ? `sizes="${props.sizes}" ` : ``
-  const title = props.title ? `title="${props.title}" ` : ``
-  const alt = props.alt ? `alt="${props.alt}" ` : `alt="" ` // required attribute
-  const width = props.width ? `width="${props.width}" ` : ``
-  const height = props.height ? `height="${props.height}" ` : ``
-  const opacity = props.opacity ? props.opacity : `1`
-  const transitionDelay = props.transitionDelay ? props.transitionDelay : `0.5s`
-
-  return `<img ${width}${height}${src}${srcSet}${alt}${title}${sizes}style="position:absolute;top:0;left:0;transition:opacity 0.5s;transition-delay:${transitionDelay};opacity:${opacity};width:100%;height:100%;object-fit:cover;object-position:center"/>`
-}
 /*
 const Img = props => {
   const { style, onLoad, onError, ...otherProps } = props
@@ -251,11 +235,13 @@ class GatsbyImage extends React.Component {
     if (fluid) {
       const image = fluid
       // var Pattern = /\(max-width: (.*)px\).*vw, (.*)px/
-      let srcImage, src, srcSet
-      // let match = fluid.sizes.match(Pattern)
-      // const presentationWidth = match[1] + 'px'
-      const presentationHeight = height
-      //|| match[2] + 'px'
+      let srcImage, src, srcSet, presentationHeight
+
+      if (height) {
+        var Pattern = /(.*)px/
+        var match = height.match(Pattern)
+        presentationHeight = parseInt(match[1], 10) / 2 + 'px' //|| match[2] + 'px'
+      }
 
       const imagePlaceholderStyle = {
         opacity: this.state.imgLoaded ? 0 : 1,
@@ -270,7 +256,7 @@ class GatsbyImage extends React.Component {
       }
 
       // Use webp by default if browser supports it
-      if (image.srcWebp && image.srcSetWebp && isWebpSupported()) { 
+      if (image.srcWebp && image.srcSetWebp && isWebpSupported()) {
         srcImage = this.srcset(
           image.srcSetWebp,
           width,
@@ -331,12 +317,6 @@ class GatsbyImage extends React.Component {
               onError={this.props.onError}
             />
           )}
-          {/* Show the original image during server-side rendering if JavaScript is disabled */}
-          <noscript
-            dangerouslySetInnerHTML={{
-              __html: noscriptImg({ alt, title, ...image }),
-            }}
-          />
         </div>
       )
     }
