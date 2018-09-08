@@ -9,7 +9,7 @@ export default ({ data, height }) => (
   query NewBackgroundImage{
     file(relativePath: { regex: "/home-image/" }){
       childImageSharp {
-        fluid(maxWidth: 1000){
+        fluid(maxWidth: 2048){
           ...GatsbyImageSharpFluid_tracedSVG
         }
       }  

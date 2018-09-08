@@ -65,10 +65,7 @@ export const LayoutContainer = props => {
   }
   return (
     <>
-      {props.withBackground ? <View style={{ height: '700px' }}> 
-      <BgImg height="700px"></BgImg>
-      </View>
-      : null }
+      {props.withBackground ? <BgImg height="400px"></BgImg> : null }
       <TopBar {...props} />
       <View style={[styles.subContainer, props.style]}>
         {props.children}
