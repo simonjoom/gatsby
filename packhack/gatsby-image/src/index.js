@@ -235,14 +235,23 @@ class GatsbyImage extends React.Component {
     if (fluid) {
       const image = fluid
       // var Pattern = /\(max-width: (.*)px\).*vw, (.*)px/
-      let srcImage, src, srcSet, presentationHeight
+      let srcImage, src, srcSet, presentationHeight, Pattern, match
 
       if (height) {
-        var Pattern = /(.*)px/
-        var match = height.match(Pattern)
-        presentationHeight = parseInt(match[1], 10) / 2 + 'px' //|| match[2] + 'px'
+        Pattern = /(.*)px/
+        match = height.match(Pattern)
+        if (match) {
+          presentationHeight = parseInt(match[1], 10) / 2 + 'px' //|| match[2] + 'px'
+        } else {
+          Pattern = /(.*)%/
+          match = height.match(Pattern)
+          if (match) {
+            presentationHeight = parseInt(match[1], 10) / 2 + '%' //|| match[2] + 'px'
+          } else {
+            presentationHeight = height + 'px'
+          }
+        }
       }
-
       const imagePlaceholderStyle = {
         opacity: this.state.imgLoaded ? 0 : 1,
         transitionDelay: `0.25s`,
