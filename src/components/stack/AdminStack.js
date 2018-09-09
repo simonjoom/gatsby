@@ -37,7 +37,7 @@ const MainStackAdmin = createStackNavigator(
     transitionConfig: Transition,
     useNativeAnimations: false,
     navigationOptions: navigationOptions,
-    cardStyle: { backgroundColor: '#2980B9' },
+    cardStyle: { backgroundColor: '#DEEDF9' },
   }
 )
 

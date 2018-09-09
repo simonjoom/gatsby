@@ -36,7 +36,7 @@ export const navigationOptions = ({ screenProps }) => {
   const nav = screenProps.navigation
   console.log('navigation', nav.state)
   return {
-    headerTitle: 'Main',
+    headerTitle: 'SKISCOOL',
     headerRight: (
       <Hamburger
         route={(nav.state && nav.state.routeName) || 'Main'}
@@ -44,19 +44,19 @@ export const navigationOptions = ({ screenProps }) => {
         Icon={myicons.MaterialCommunityIcons}
       />
     ),
-    headerLeft: (
-      <Plus
-        navigation={nav}
-        route={(nav.state && nav.state.routeName) || 'Main'}
-        Icon={myicons.MaterialCommunityIcons}
-      />
-    ),
+    // headerLeft: (
+    //   <Plus
+    //     navigation={nav}
+    //     route={(nav.state && nav.state.routeName) || 'Main'}
+    //     Icon={myicons.MaterialCommunityIcons}
+    //   />
+    // ),
     headerTitleStyle: {
-      color: Colors.$white,
+      color: "#fff",
     },
     headerTintColor: '#fff',
     headerStyle: {
-      backgroundColor: '#f4511e',
+      backgroundColor: 'rgb(11, 44, 68)',
     },
   }
 }

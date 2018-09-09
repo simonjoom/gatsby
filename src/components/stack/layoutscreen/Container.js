@@ -15,7 +15,7 @@ import Title from '../../title/Title'
 import NavigationButton from '../../navigation-button/NavigationButton'
 import BgImg from '../../BgImg'
 
-const TopBar = props => {
+const menuBar = props => {
   return (
     <View
       style={[
@@ -65,8 +65,8 @@ export const LayoutContainer = props => {
   }
   return (
     <>
-      {props.withBackground ? <BgImg height="400px"></BgImg> : null }
-      <TopBar {...props} />
+      {props.withBackground ? <BgImg height="700px"></BgImg> : null }
+      {/* <TopBar {...props} /> */}
       <View style={[styles.subContainer, props.style]}>
         {props.children}
       </View>
