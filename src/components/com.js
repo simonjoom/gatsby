@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, StaticQuery, graphql } from 'gatsby'
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import Img from 'gatsby-image'
+import Carousel from './Carousel.js'
 
 /*  sizes(maxWidth: 50, maxHeight: 50) {
                       srcSet
@@ -74,13 +75,7 @@ export default () => (
           <Text style={styles.text}>
             Hi this is React-Native-Web rendered by Gatsby
           </Text>
-          <Img fluid={fluid} resizeMode="center" />
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => alert('it works')}
-          >
-            <Text style={styles.buttonText}>Button</Text>
-          </TouchableOpacity>
+          <Carousel /> 
           <Link to="/page-2/">Go to page 2</Link>
         </View>
       )
@@ -89,6 +84,7 @@ export default () => (
 )
 
 //fullscreen <Img fluid={fluid}  width="100%" resizeMode="center" />
+//<Img fluid={fluid} resizeMode="center" />
 //constrainte height <Img fluid={fluid}  height="300px" width="100%" resizeMode="center" />
 //constrainte height <Img fluid={fluid}  height="300px" width="400px" resizeMode="center" />
 
