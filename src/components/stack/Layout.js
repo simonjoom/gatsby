@@ -7,6 +7,7 @@ import LoginAdmin from 'views/admin/login/Login'
 import { rhythm, scale } from 'src/utils/typography'
 import { myicons } from 'src/components/layout'
 import { LayoutContainer } from './layoutscreen/Container'
+import Logo from 'src/svgcomp'
 
 export const MainScreen = ({ navigation, screenProps, children }) => { 
   return (
@@ -23,11 +24,11 @@ export const MainScreen = ({ navigation, screenProps, children }) => {
     >
       {screenProps.header}
       {screenProps.children||children}
-      <LoginAdmin
+      {/* <LoginAdmin
         navigation={navigation}
         SimpleLineIcons={myicons.SimpleLineIcons}
-      />
-      <Button onPress={() => navigation.navigate('Backend')} title="Login" />
+      /> */}
+      {/* <Button onPress={() => navigation.navigate('Backend')} title="Login" /> */}
     </LayoutContainer>
   )
 }
@@ -44,13 +45,14 @@ export const navigationOptions = ({ screenProps }) => {
         Icon={myicons.MaterialCommunityIcons}
       />
     ),
-    // headerLeft: (
-    //   <Plus
-    //     navigation={nav}
-    //     route={(nav.state && nav.state.routeName) || 'Main'}
-    //     Icon={myicons.MaterialCommunityIcons}
-    //   />
-    // ),
+    headerLeft: (
+      // <Plus
+      //   navigation={nav}
+      //   route={(nav.state && nav.state.routeName) || 'Main'}
+      //   Icon={myicons.MaterialCommunityIcons}
+      // />
+      <Logo id="feature-svg-component" style={{height: 30, width: 30, marginLeft: '10px'}}/>
+    ),
     headerTitleStyle: {
       color: "#fff",
     },
@@ -116,40 +118,40 @@ export const BackendScreen = ({ navigation, screenProps }) =>
       headerMode: 'none',
     }
   )
-export const SignUpAdminscreen = ({
-  navigation,
-  screenProps,
-  withBackground,
-}) =>
-  MainScreen({
-    screenProps,
+  export const SignUpAdminscreen = ({
     navigation,
-    children: <SignUpAdmin />,
-    title: 'SignUp',
-    withBackground: withBackground,
-  })
+    screenProps,
+    withBackground,
+  }) =>
+    MainScreen({
+      screenProps,
+      navigation,
+      children: <SignUpAdmin />,
+      title: 'SignUp',
+      withBackground: withBackground,
+    })
 
-export const LoginAdminScreen = ({ navigation, screenProps, withBackground }) =>
-  MainScreen({
-    screenProps,
-    navigation,
-    children: <LoginAdmin />,
-    title: 'Login',
-    withBackground: withBackground,
-  })
+  export const LoginAdminScreen = ({ navigation, screenProps, withBackground }) =>
+    MainScreen({
+      screenProps,
+      navigation,
+      children: <LoginAdmin />,
+      title: 'Login',
+      withBackground: withBackground,
+    })
 
-export const SignInAdminScreen = ({
-  navigation,
-  screenProps,
-  withBackground,
-}) =>
-  MainScreen({
-    screenProps,
+  export const SignInAdminScreen = ({
     navigation,
-    children: <SignInAdmin />,
-    title: 'SignIn',
-    withBackground: withBackground,
-  })
+    screenProps,
+    withBackground,
+  }) =>
+    MainScreen({
+      screenProps,
+      navigation,
+      children: <SignInAdmin />,
+      title: 'SignIn',
+      withBackground: withBackground,
+    })
 
 //SignInAdminScreen.navigationOptions = LoginAdminScreen.navigationOptions = navigationOptions
 export { SignUpAdmin, dismissableStackNavigator }

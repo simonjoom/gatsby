@@ -9,7 +9,7 @@ const styles=StyleSheet.create({
   }
 });
  
-export default () => <Image source={starUrl} alt="star" style={styles.logo}/>;
+export default ({style}) => <Image source={starUrl} alt="star" style={[styles.logo, ...style]}/>;
 
  //:<Logo id="feature-svg-component" />}</div>;
 // <Image source={require('../../assets/logo.png')} style={styles.logo} />

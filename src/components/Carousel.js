@@ -204,7 +204,7 @@ class SideSwipe extends Component {
     )
   }
 
-  getRef = (ref: *) => {
+  getRef = (ref) => {
     if (ref) {
       this.list = ref._component ? ref._component : ref
     }
