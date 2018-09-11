@@ -53,20 +53,20 @@ class Template extends React.Component {
       }
     }
 
-    let header = HH => (
-      <HH style={style}>
-        <Link
-          style={{
-            boxShadow: 'none',
-            textDecoration: 'none',
-            color: 'inherit',
-          }}
-          to={'/'}
-        >
-          SkiScool
-        </Link>
-      </HH>
-    )
+    // let header = HH => (
+    //   <HH style={style}>
+    //     <Link
+    //       style={{
+    //         boxShadow: 'none',
+    //         textDecoration: 'none',
+    //         color: 'inherit',
+    //       }}
+    //       to={'/'}
+    //     >
+    //       SkiScool
+    //     </Link>
+    //   </HH>
+    // )
 
     DrawerNavigator = createDrawerNavigator(
       {
@@ -75,7 +75,7 @@ class Template extends React.Component {
             <MainStackAdmin
               screenProps={{
                 children,
-                header: header('h2'),
+                // header: header('h2'),
                 location,
                 navigation,
                 title: siteTitle ? siteTitle : 'notitle',
@@ -89,7 +89,7 @@ class Template extends React.Component {
             <MainStackAdmin
               screenProps={{
                 children,
-                header: header('h2'),
+                // header: header('h2'),
                 location,
                 navigation,
                 title: siteTitle ? siteTitle : 'notitle',
@@ -102,7 +102,7 @@ class Template extends React.Component {
           screen: ({ navigation }) => (
             <Signup
               screenProps={{
-                header: header('h2'),
+                // header: header('h2'),
                 title: siteTitle ? siteTitle : 'notitle',
                 withBackground: false,
                 navigation,
